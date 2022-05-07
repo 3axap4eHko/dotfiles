@@ -1,0 +1,15 @@
+[alias]
+        ar = remote add
+        vr = remote -v
+        co = checkout
+        br = branch
+        ci = commit
+        cie = commit --allow-empty
+        st = status
+        uc = reset --soft HEAD^
+        unstage = reset HEAD --
+        last = log -1 HEAD
+[init]
+        defaultBranch = develop
+[pull]
+        rebase = true

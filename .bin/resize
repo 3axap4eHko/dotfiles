@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Find, resize and move a window
+WND=$(xdotool search --onlyvisible --name $1)
+if [ ! -z $WND ]; then
+  xdotool windowsize $WND 2560 1440
+  xdotool windowmove $WND 700 200
+else
+  echo "Windows '$1' not found"
+fi

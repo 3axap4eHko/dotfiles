@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# https://scriptim.github.io/bash-prompt-generator/
+PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\[\033[01;31m\]$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/(\1)/")\[\033[00m\]\$ '
+
+PS_USER_COLOR='\[\033[01;32m\]'
+PS_PATH_COLOR='\[\033[01;34m\]'
+PS_LNG_COLOR='\[\033[01;33m\]'
+PS_GIT_COLOR='\[\033[01;31m\]'
+
+PS_GIT_BRANCH='$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/(\1)/")'
+PS_NODE_VERSION='$(node --version 2> /dev/null | sed -e "/^[^v]/d" -e "s/v\([^\.]*.[^\.]*\).*/[\1]/")'
+PS_PYTHON_VERSION='$(python --version 2> /dev/null | sed -e "/^[^P]/d" -e "s/Python \([^\.]*.[^\.]*\).*/[\1]/")'
+PS_RUST_VERSION='$(rustc --version 2> /dev/null | sed -e "/^[^r]/d" -e "s/rustc \([^\.]*.[^\.]*\).*/[\1]/")'
+
+PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\[\033[01;33m\]'$PS_NODE_VERSION'\[\033[00m\]\[\033[01;31m\]'$PS_GIT_BRANCH'\[\033[00m\]\$ '
