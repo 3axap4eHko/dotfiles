@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+function resize() {
+	# Find, resize and move a window
+	WND=$(xdotool search --onlyvisible --name $1)
+	if [ ! -z $WND ]; then
+		xdotool windowsize $WND 2560 1440
+		xdotool windowmove $WND 700 200
+	else
+		echo "Windows '$1' not found"
+	fi
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+  if du -b /dev/null >/dev/null 2>&1; then
+    local arg=-sbh
+  else
+    local arg=-sh
+  fi
+  if [[ -n "$@" ]]; then
+    du $arg -- "$@"
+  else
+    du $arg .[^.]* ./*
+  fi
+}
+
+# Create a data URL from a file
+function dataurl() {
+  local mimeType=$(file -b --mime-type "$1")
+  if [[ $mimeType == text/* ]]; then
+    mimeType="${mimeType};charset=utf-8"
+  fi
+  echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
+}
+
+# Create a playlist
+function mkplaylist() {
+  find -type f -iname "*.mp4" -or -iname "*.mp3" -or -iname "*.flac" -or -iname "*.m4a" | sort >playlist.m3u
+}
+
+# curl/jq
+function jcurl() {
+  curl -s $1 | jq
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+  if [ $# -eq 0 ]; then
+    open .
+  else
+    open "$@"
+  fi
+}
+
+# `c` with no arguments opens the current directory, otherwise opens the given
+
+psid() {
+  ps -ef | grep "$1" | awk '{print $2}' | head -n -2
+}
+
+# Node.js
+nxa() {
+  TARGET=$1
+  shift
+  nx run-many --target=$TARGET --all --parallel=3 "$@"
+}
+
+nxf() {
+  TARGET=$1
+  shift
+  nx affected --target=$TARGET --parallel=3 --output-stream "$@"
+}

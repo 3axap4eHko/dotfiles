@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Return a list of ids to use with kill
-ps -ef | grep $1 | awk '{print $2}' | head -n -2

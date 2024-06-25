@@ -3,13 +3,20 @@
         vr = remote -v
         co = checkout
         br = branch
+        brls = branch --sort=-committerdate
+
         ci = commit
-        cie = commit --allow-empty
-        st = status
+        cie = commit --allow-empty -m empty
+        cin = commit --no-verify
+
+        re = restore
+        res = restore --staged
         uc = reset --soft HEAD^
+
+        st = status
         unstage = reset HEAD --
         last = log -1 HEAD
 [init]
-        defaultBranch = develop
+        defaultBranch = master
 [pull]
         rebase = true

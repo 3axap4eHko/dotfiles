@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Force yarn to pump versions
-yarn add $(cat package.json|jq -rc '.dependencies|keys|.[]')
-yarn add --dev $(cat package.json|jq -rc '.devDependencies|keys|.[]')

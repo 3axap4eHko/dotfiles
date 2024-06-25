@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
+# OS
+if grep -qi microsoft /proc/version; then
+	export OS="WINDOWS"
+elif [[ "$(uname)" == "Linux" ]]; then
+	export OS="LINUX"
+elif [[ "$(uname)" == "Darwin" ]]; then
+	export OS="MACOS"
+else
+	export OS="UNKNOWN"
+fi
+
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # Make nano the default editor.
-export EDITOR='nano';
+export EDITOR='nvim';
 
 # Enable persistent REPL history for `node`.
 export NODE_REPL_HISTORY=~/.node_history;
