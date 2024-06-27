@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # OS
-if grep -qi microsoft /proc/version; then
+if grep -qi microsoft /proc/version 2>/dev/null; then
 	export OS="WINDOWS"
 elif [[ "$(uname)" == "Linux" ]]; then
 	export OS="LINUX"
