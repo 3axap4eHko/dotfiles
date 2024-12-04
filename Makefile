@@ -5,6 +5,7 @@ pre-install:
 	echo "Pre Install"
 
 install-linux:
+	sudo locale-gen en_US.UTF-8
 	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget curl libbz2-dev jq -y
 	sudo apt-get remove -y tmux
 	cp -r home/.* ~/
