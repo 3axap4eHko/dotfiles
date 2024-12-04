@@ -4,6 +4,7 @@
         co = checkout
         br = branch
         brls = branch --sort=-committerdate
+        brc = git rev-parse --abbrev-ref HEAD
 
         ci = commit
         cie = commit --allow-empty -m empty

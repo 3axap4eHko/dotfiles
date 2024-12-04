@@ -25,6 +25,12 @@ function fs() {
   fi
 }
 
+# Install certificate from the address
+function getcert() {
+  echo | openssl s_client -showcerts -connect $1:443 2>/dev/null | openssl x509 -outform=PEM > /usr/local/share/ca-certificates/$1.crt
+  update-ca-certificates
+}
+
 # Create a data URL from a file
 function dataurl() {
   local mimeType=$(file -b --mime-type "$1")
