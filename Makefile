@@ -8,10 +8,9 @@ install-linux:
 	sudo locale-gen en_US.UTF-8
 	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget curl libbz2-dev jq -y
 	sudo apt-get remove -y tmux
-	cp -r home/.* ~/
-	cp -r home/* ~/
-	if ! grep -q '#dotfiles' ~/.bashrc; then \
-		echo '\n#dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> ~/.bashrc; \
+	cp -r home/.* home/* $$HOME/
+	if ! grep -q '# dotfiles' ~/.bashrc; then \
+		echo '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> ~/.bashrc; \
 	fi
 
 install-wsl: install-linux
@@ -50,6 +49,14 @@ install-miniconda:
 	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh
 
+FIRA_VERSION=3.3.0
+
+install-fira:
+	rm -rf FiraCode.zip
+	wget https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FIRA_VERSION)/FiraCode.zip
+	unzip -o FiraCode.zip -d ~/.fonts
+	fc-cache -fv
+
 ZIG_VERSION=0.13.0
 
 install-zig:
@@ -60,10 +67,14 @@ install-zig:
 	rm -rf ~/.zig
 	mv zig-linux-x86_64-$(ZIG_VERSION) ~/.zig/
 	rm -rf zig-linux-x86_64-$(ZIG_VERSION)*
-	if ! grep -q '#zig' ~/.bashrc; then \
-		echo '\n#zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> ~/.bashrc; \
+	if ! grep -q '# zig' ~/.bashrc; then \
+		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> ~/.bashrc; \
 	fi
 	source ~/.bashrc
+
+install-fzf:
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
 
 TMUX_VERSION=3.5a
 install-tmux:
@@ -76,18 +87,44 @@ install-tmux:
 	mkdir -p ~/.config/tmux
 	cp ./home/.config/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
+uninstall-nvim:
+	rm -rf ~/.nvim
+	rm -rf ~/.config/nvim
+	rm -rf ~/.local/state/nvim
+	rm -rf ~/.local/share/nvim
+
 install-nvim:
 	wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-	mkdir -p ~/.local/etc/
-	tar -xzvf nvim-linux64.tar.gz -C ~/.local/etc/
-	rm nvim-linux64.tar.gz
-	sudo ln -s ~/.local/etc/nvim-linux64/bin/nvim /usr/local/bin/nvim
-	git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+	tar -xzvf nvim-linux64.tar.gz
+	rm -rf nvim-linux64.tar.gz ~/.nvim/
+	mv nvim-linux64/ ~/.nvim/
+	if ! grep -q '# nvim' ~/.bashrc; then \
+		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> ~/.bashrc; \
+	fi
+
+install-nvim-lazyvim: install-nvim
+	@if [ -d "$$HOME/.config/nvim" ]; then \
+		echo "Error: ~/.config/nvim exists, please backup or remove it"; \
+		exit 1; \
+	fi
+	git clone https://github.com/LazyVim/starter ~/.config/nvim --depth 1 && nvim
+	rm -rf ~/.config/nvim/.git/
+
+install-nvim-nvchad: install-nvim
+	@if [ -d "$$HOME/.config/nvim" ]; then \
+		echo "Error: ~/.config/nvim exists, please backup or remove it"; \
+		exit 1; \
+	fi
+	git clone https://github.com/NvChad/starter.git ~/.config/nvim --depth 1 && nvim
+	rm -rf ~/.config/nvim/.git/
+
+install-nvim-config:
+	mkdir -p ~/.config/nvim/lua/custom/
 	cp -r ./home/.config/nvim/lua/custom/* ~/.config/nvim/lua/custom/
 
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
-	cp -r ~/.config/nvim/lua/custom/* ./home/.config/nvim/lua/custom/
+	cp -r ~/.config/nvim/lua/* ./home/.config/nvim/lua/
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups
