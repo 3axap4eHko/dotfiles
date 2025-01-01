@@ -76,6 +76,13 @@ install-fzf:
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install
 
+uninstall-tmux:
+	rm -rf ~/.tmux
+	rm -rf $(XDG_CONFIG_HOME)/tmux
+
+test:
+	echo $(XDG_CONFIG_HOME)
+
 TMUX_VERSION=3.5a
 install-tmux:
 	wget https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
@@ -84,12 +91,14 @@ install-tmux:
 	bash -c "tmux -V"
 	rm -rf tmux-*
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-	mkdir -p ~/.config/tmux
-	cp ./home/.config/tmux/tmux.conf ~/.config/tmux/tmux.conf
+
+install-tmux-config:
+	mkdir -p $(XDG_CONFIG_HOME)/tmux
+	cp ./home/.config/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
 
 uninstall-nvim:
 	rm -rf ~/.nvim
-	rm -rf ~/.config/nvim
+	rm -rf $(XDG_CONFIG_HOME)/nvim
 	rm -rf ~/.local/state/nvim
 	rm -rf ~/.local/share/nvim
 
@@ -103,20 +112,20 @@ install-nvim:
 	fi
 
 install-nvim-lazyvim: install-nvim
-	@if [ -d "$$HOME/.config/nvim" ]; then \
-		echo "Error: ~/.config/nvim exists, please backup or remove it"; \
+	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
+		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
 		exit 1; \
 	fi
 	git clone https://github.com/LazyVim/starter ~/.config/nvim --depth 1 && nvim
 	rm -rf ~/.config/nvim/.git/
 
 install-nvim-nvchad: install-nvim
-	@if [ -d "$$HOME/.config/nvim" ]; then \
-		echo "Error: ~/.config/nvim exists, please backup or remove it"; \
+	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
+		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
 		exit 1; \
 	fi
-	git clone https://github.com/NvChad/starter.git ~/.config/nvim --depth 1 && nvim
-	rm -rf ~/.config/nvim/.git/
+	git clone https://github.com/NvChad/starter.git $(XDG_CONFIG_HOME)/nvim --depth 1 && nvim
+	rm -rf $(XDG_CONFIG_HOME)/nvim/.git/
 
 install-nvim-config:
 	mkdir -p ~/.config/nvim/lua/custom/
