@@ -6,7 +6,7 @@ pre-install:
 
 install-linux:
 	sudo locale-gen en_US.UTF-8
-	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget curl libbz2-dev jq -y
+	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl -LO curl libbz2-dev jq -y
 	sudo apt-get remove -y tmux
 	cp -r home/.* home/* $$HOME/
 	if ! grep -q '# dotfiles' ~/.bashrc; then \
@@ -46,14 +46,14 @@ install-deno: install
 	source ~/.bashrc
 
 install-miniconda:
-	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh
 
 FIRA_VERSION=3.3.0
 
 install-fira:
 	rm -rf FiraCode.zip
-	wget https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FIRA_VERSION)/FiraCode.zip
+	curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FIRA_VERSION)/FiraCode.zip
 	unzip -o FiraCode.zip -d ~/.fonts
 	fc-cache -fv
 
@@ -61,7 +61,7 @@ ZIG_VERSION=0.13.0
 
 install-zig:
 	rm -rf zig-linux-x86_64*
-	wget https://ziglang.org/download/$(ZIG_VERSION)/zig-linux-x86_64-$(ZIG_VERSION).tar.xz
+	curl -LO https://ziglang.org/download/$(ZIG_VERSION)/zig-linux-x86_64-$(ZIG_VERSION).tar.xz
 	unxz zig-linux-x86_64-$(ZIG_VERSION).tar.xz
 	tar -xvf zig-linux-x86_64-$(ZIG_VERSION).tar
 	rm -rf ~/.zig
@@ -70,7 +70,6 @@ install-zig:
 	if ! grep -q '# zig' ~/.bashrc; then \
 		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> ~/.bashrc; \
 	fi
-	source ~/.bashrc
 
 install-fzf:
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -80,12 +79,9 @@ uninstall-tmux:
 	rm -rf ~/.tmux
 	rm -rf $(XDG_CONFIG_HOME)/tmux
 
-test:
-	echo $(XDG_CONFIG_HOME)
-
 TMUX_VERSION=3.5a
 install-tmux:
-	wget https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
+	curl -LO https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
 	tar -xzvf tmux-$(TMUX_VERSION).tar.gz
 	(cd tmux-$(TMUX_VERSION) && ./configure && make && sudo make install)
 	bash -c "tmux -V"
@@ -103,7 +99,7 @@ uninstall-nvim:
 	rm -rf ~/.local/share/nvim
 
 install-nvim:
-	wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 	tar -xzvf nvim-linux64.tar.gz
 	rm -rf nvim-linux64.tar.gz ~/.nvim/
 	mv nvim-linux64/ ~/.nvim/
