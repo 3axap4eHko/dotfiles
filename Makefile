@@ -1,3 +1,20 @@
+OS := $(shell \
+  if grep -qi microsoft /proc/version 2>/dev/null; then \
+    echo WINDOWS; \
+  elif [ "$(shell uname)" = "Linux" ]; then \
+    echo LINUX; \
+  elif [ "$(shell uname)" = "Darwin" ]; then \
+    echo MACOS; \
+  else \
+    echo UNKNOWN; \
+  fi)
+
+ifeq ($(OS),MACOS)
+	PROFILE=~/.bash_profile
+else
+	PROFILE=~/.bashrc
+endif
+
 install: pre-install
 	echo "Install"
 
@@ -8,9 +25,11 @@ install-linux:
 	sudo locale-gen en_US.UTF-8
 	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl -LO curl libbz2-dev jq -y
 	sudo apt-get remove -y tmux
-	cp -r home/.* home/* $$HOME/
-	if ! grep -q '# dotfiles' ~/.bashrc; then \
-		echo '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> ~/.bashrc; \
+
+install-configs:
+	find home/ -maxdepth 1 -type f -name ".*" -exec cp {} $$HOME \;
+	if ! grep -q '# dotfiles' $(PROFILE); then \
+		echo '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
 	fi
 
 install-wsl: install-linux
@@ -19,56 +38,66 @@ install-wsl: install-linux
 install-macos:
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+install-macos-noroot:
+	mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew
+	if ! grep -q '# homebrew' $(PROFILE); then \
+		echo '\n# homebrew\nexport HOMEBREW_HOME=$$HOME/.homebrew\nexport PATH=$$HOMEBREW_HOME/bin:$$PATH' >> $(PROFILE); \
+	fi
+
 install-python: install
 	curl https://pyenv.run | bash
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-go: install
 	sudo add-apt-repository ppa:longsleep/golang-backports
 	sudo apt update
 	sudo apt install golang-go
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-rust: install
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-fnm: install
 	curl -fsSL https://fnm.vercel.app/install | bash
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-bun: install
 	curl -fsSL https://bun.sh/install | bash
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-deno: install
 	curl -fsSL https://deno.land/install.sh | sh
-	source ~/.bashrc
+	source $(PROFILE) 
 
 install-miniconda:
 	curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh
 
 FIRA_VERSION=3.3.0
-
 install-fira:
-	rm -rf FiraCode.zip
+	rm FiraCode.zip
 	curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FIRA_VERSION)/FiraCode.zip
 	unzip -o FiraCode.zip -d ~/.fonts
+	rm FiraCode.zip
 	fc-cache -fv
 
 ZIG_VERSION=0.13.0
-
+ifeq ($(OS),MACOS)
+	ZIG_ARCH=macos-aarch64
+else
+	ZIG_ARCH=linux-x86_64
+endif
+ZIG_FILE=zig-$(ZIG_ARCH)-$(ZIG_VERSION)
 install-zig:
-	rm -rf zig-linux-x86_64*
-	curl -LO https://ziglang.org/download/$(ZIG_VERSION)/zig-linux-x86_64-$(ZIG_VERSION).tar.xz
-	unxz zig-linux-x86_64-$(ZIG_VERSION).tar.xz
-	tar -xvf zig-linux-x86_64-$(ZIG_VERSION).tar
+	rm -rf zig-*
+	curl -LO https://ziglang.org/download/$(ZIG_VERSION)/$(ZIG_FILE).tar.xz
+	tar -xvf $(ZIG_FILE).tar.xz
 	rm -rf ~/.zig
-	mv zig-linux-x86_64-$(ZIG_VERSION) ~/.zig/
-	rm -rf zig-linux-x86_64-$(ZIG_VERSION)*
-	if ! grep -q '# zig' ~/.bashrc; then \
-		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> ~/.bashrc; \
+	mv $(ZIG_FILE) ~/.zig/
+	rm -rf zig-*
+	if ! grep -q '# zig' $(PROFILE); then \
+		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 
 install-fzf:
@@ -98,22 +127,21 @@ uninstall-nvim:
 	rm -rf ~/.local/state/nvim
 	rm -rf ~/.local/share/nvim
 
+NVIM_VERSION=v0.10.3
+ifeq ($(OS),MACOS)
+	NVIM_ARCH=macos-x86_64
+else
+	NVIM_ARCH=linux64
+endif
+NVIM_FILE=nvim-$(NVIM_ARCH)
 install-nvim:
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-	tar -xzvf nvim-linux64.tar.gz
-	rm -rf nvim-linux64.tar.gz ~/.nvim/
-	mv nvim-linux64/ ~/.nvim/
-	if ! grep -q '# nvim' ~/.bashrc; then \
-		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> ~/.bashrc; \
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/$(NVIM_FILE).tar.gz
+	tar -xzvf $(NVIM_FILE).tar.gz
+	rm -rf $(NVIM_FILE).tar.gz ~/.nvim/
+	mv $(NVIM_FILE)/ ~/.nvim/
+	if ! grep -q '# nvim' $(PROFILE); then \
+		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
-
-install-nvim-lazyvim: install-nvim
-	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
-		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
-		exit 1; \
-	fi
-	git clone https://github.com/LazyVim/starter ~/.config/nvim --depth 1 && nvim
-	rm -rf ~/.config/nvim/.git/
 
 install-nvim-nvchad: install-nvim
 	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
@@ -123,9 +151,9 @@ install-nvim-nvchad: install-nvim
 	git clone https://github.com/NvChad/starter.git $(XDG_CONFIG_HOME)/nvim --depth 1 && nvim
 	rm -rf $(XDG_CONFIG_HOME)/nvim/.git/
 
-install-nvim-config:
-	mkdir -p ~/.config/nvim/lua/custom/
-	cp -r ./home/.config/nvim/lua/custom/* ~/.config/nvim/lua/custom/
+install-nvim-config: install-nvim-nvchad
+	mkdir -p $(XDG_CONFIG_HOME)/nvim/lua/
+	cp -r ./home/.config/nvim/lua/* $(XDG_CONFIG_HOME)/nvim/lua/
 
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/

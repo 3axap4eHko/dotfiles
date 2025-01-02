@@ -3,12 +3,20 @@ require "nvchad.mappings"
 local map = vim.keymap.set
 local buf = vim.lsp.buf
 local diag = vim.diagnostic
--- map("n", ";", ":", { desc = "CMD enter command mode" })
--- map("i", "jk", "<ESC>")
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
 -- Buffers
 map("n", "<leader><Tab>", ":lua require('telescope.builtin').buffers()<CR>", { desc = "List buffers" })
+-- Panes navigation
+map("n", "<C-A-h>", ":wincmd h<CR>")
+map("n", "<C-A-j>", ":wincmd j<CR>")
+map("n", "<C-A-k>", ":wincmd k<CR>")
+map("n", "<C-A-l>", ":wincmd l<CR>")
+
+map("n", "<C-A-h>", ":TmuxNavigateLeft<CR>")
+map("n", "<C-A-j>", ":TmuxNavigateDown<CR>")
+map("n", "<C-A-k>", ":TmuxNavigateUp<CR>")
+map("n", "<C-A-l>", ":TmuxNavigateRight<CR>")
+
 -- Move lines
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move line(s) up" })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move line(s) down" })
@@ -28,13 +36,6 @@ map("n", "<leader>rf", buf.format, { desc = "Format document" })
 map("n", "<leader>rr", buf.references, { desc = "Find references" })
 map("n", "<leader>[", diag.goto_prev, { desc = "Previous diagnostic" })
 map("n", "<leader>]", diag.goto_next, { desc = "Next diagnostic" })
--- map("n", "<leader>li", function()
---   vim.lsp.buf.execute_command({
---     command = "_typescript.organizeImports",
---     arguments = { vim.uri_from_bufnr(0) },
---   })
--- end, { desc = "Organize imports" })
-
 -- Keybinding to toggle Aerial
 map("n", "<leader>ao", ":AerialToggle<CR>", { desc = "Toggle Aerial" })
 -- Keybinding to open Spectre
@@ -47,6 +48,3 @@ map(
   ":lua require('spectre').open_visual({select_word=true})<CR>",
   { desc = "Spectre for word under cursor" }
 )
--- Toggle Term
--- map("n", "<C-`>", ":ToggleTerm<CR>", { desc = "Toggle Terminal", noremap = true, silent = true }) -- Normal mode
--- map("t", "<C-`>", "<C-\\><C-n>:ToggleTerm<CR>", { desc = "Close Terminal", noremap = true, silent = true }) -- Terminal mode

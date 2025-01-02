@@ -2,6 +2,24 @@ local args = vim.fn.argv()
 local is_directory = #args == 1 and vim.fn.isdirectory(args[1]) == 1
 
 return {
+  -- {
+  --   "L3MON4D3/LuaSnip",
+  --   config = function()
+  --     require("luasnip").filetype_extend("typescript", {"javascript"})
+  --     require "snippets.typescript"
+  --   end
+  -- },
+  {
+    "christoomey/vim-tmux-navigator",
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+  },
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
@@ -20,13 +38,13 @@ return {
     lazy = not is_directory,
   },
   {
-  	"nvim-treesitter/nvim-treesitter",
-  	opts = {
-  		ensure_installed = {
-  			"vim", "lua", "vimdoc",
-       "html", "css"
-  		},
-  	},
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim", "lua", "vimdoc",
+        "html", "css"
+      },
+    },
   },
   {
     "github/copilot.vim",
@@ -34,6 +52,9 @@ return {
   },
   {
     "stevearc/aerial.nvim",
+    cmd = {
+      "AerialToggle"
+    },
     config = function()
       require("aerial").setup({
         -- Customize options here
