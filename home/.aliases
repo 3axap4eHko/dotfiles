@@ -17,6 +17,11 @@ alias nx='pnx nx'
 # Python
 alias venv='python3 -m venv $1'
 
+# Normalize `wget` across Linux, macOS, and Windows.
+if [[ "$OS" == "MACOS" ]]; then
+	alias wget='curl -LO'
+fi
+
 # Normalize `pbcopy` across Linux, macOS, and Windows.
 if [[ "$OS" == "WINDOWS" ]]; then
 	alias pbcopy='clip.exe'
