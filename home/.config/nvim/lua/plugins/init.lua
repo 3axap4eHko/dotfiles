@@ -1,3 +1,6 @@
+local args = vim.fn.argv()
+local is_directory = #args == 1 and vim.fn.isdirectory(args[1]) == 1
+
 return {
   {
     "stevearc/conform.nvim",
@@ -11,6 +14,10 @@ return {
     config = function()
       require "configs.lspconfig"
     end,
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    lazy = not is_directory,
   },
   {
   	"nvim-treesitter/nvim-treesitter",
