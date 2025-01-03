@@ -10,10 +10,6 @@ alias mkrsa='ssh-keygen -t rsa -b 4096 -N "" -C $2 -f ~/.ssh/$1_rsa'
 alias mkplaylist='find -type f -iname "*.mp4" -or -iname "*.mp3" -or -iname "*.flac" -or -iname "*.m4a" | sort > playlist.m3u'
 alias xtype=$'sh -c \'sleep 5; xdotool type "$(xclip -o -selection clipboard)"\''
 
-# Pack/Unpack
-alias btar='tar -czf - "$1" | base64'
-alias unbtar='base64 -d | tar -xzf -'
-
 # NodeJS
 alias pn=pnpm
 alias pnx='pnpm dlx'

@@ -60,6 +60,14 @@ function o() {
   fi
 }
 
+function btar() {
+   tar -cz "$1" | base64
+}
+
+function buntar() {
+   base64 -d | tar -xzf - -C "$1"
+}
+
 # `c` with no arguments opens the current directory, otherwise opens the given
 
 psid() {
@@ -78,3 +86,4 @@ nxf() {
   shift
   nx affected --target=$TARGET --parallel=3 --output-stream "$@"
 }
+
