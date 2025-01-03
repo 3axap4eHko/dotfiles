@@ -2,6 +2,7 @@ local args = vim.fn.argv()
 local is_directory = #args == 1 and vim.fn.isdirectory(args[1]) == 1
 
 return {
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000, opts = { flavour = "mocha" } },
   -- {
   --   "L3MON4D3/LuaSnip",
   --   config = function()
