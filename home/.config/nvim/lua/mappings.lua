@@ -7,15 +7,15 @@ local diag = vim.diagnostic
 -- Buffers
 map("n", "<leader><Tab>", ":lua require('telescope.builtin').buffers()<CR>", { desc = "List buffers" })
 -- Panes navigation
-map("n", "<C-A-h>", ":wincmd h<CR>")
-map("n", "<C-A-j>", ":wincmd j<CR>")
-map("n", "<C-A-k>", ":wincmd k<CR>")
-map("n", "<C-A-l>", ":wincmd l<CR>")
+map("n", "<C-A-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
+map("n", "<C-A-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
+map("n", "<C-A-k>", ":wincmd k<CR>", { desc = "Naviagte to top pane" })
+map("n", "<C-A-l>", ":wincmd l<CR>", { desc = "Naviagte to right pane" })
 
-map("n", "<C-A-h>", ":TmuxNavigateLeft<CR>")
-map("n", "<C-A-j>", ":TmuxNavigateDown<CR>")
-map("n", "<C-A-k>", ":TmuxNavigateUp<CR>")
-map("n", "<C-A-l>", ":TmuxNavigateRight<CR>")
+map("n", "<C-A-h>", ":TmuxNavigateLeft<CR>", { desc = "Naviagte to left pane" })
+map("n", "<C-A-j>", ":TmuxNavigateDown<CR>", { desc = "Naviagte to bottom pane" })
+map("n", "<C-A-k>", ":TmuxNavigateUp<CR>", { desc = "Naviagte to top pane" })
+map("n", "<C-A-l>", ":TmuxNavigateRight<CR>", { desc = "Naviagte to right pane" })
 
 -- Move lines
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move line(s) up" })
@@ -34,10 +34,16 @@ map("n", "<leader>pa", ":let @+=expand('%:p')<CR>", { desc = "Copy file absolute
 map("n", "<leader>rn", buf.rename, { desc = "Rename symbol" })
 map("n", "<leader>rf", buf.format, { desc = "Format document" })
 map("n", "<leader>rr", buf.references, { desc = "Find references" })
-map("n", "<leader>[", diag.goto_prev, { desc = "Previous diagnostic" })
-map("n", "<leader>]", diag.goto_next, { desc = "Next diagnostic" })
+map("n", "]d", diag.goto_next, { desc = "Next diagnostic" })
+map("n", "[d", diag.goto_prev, { desc = "Previous diagnostic" })
 -- Keybinding to toggle Aerial
 map("n", "<leader>ao", ":AerialToggle<CR>", { desc = "Toggle Aerial" })
+map("n", "<A-`>", ":ToggleTerm<CR>", { desc = "Toggle Terminal" })
+map("t", "<A-`>", [[<Cmd>ToggleTerm<CR>]], { desc = "Toggle Terminal" })
+map("t", "<C-A-h>", [[<Cmd>wincmd h<CR>]], { desc = "Naviagte to left pane" })
+map("t", "<C-A-j>", [[<Cmd>wincmd j<CR>]], { desc = "Naviagte to bottom pane" })
+map("t", "<C-A-k>", [[<Cmd>wincmd k<CR>]], { desc = "Naviagte to top pane" })
+map("t", "<C-A-l>", [[<Cmd>wincmd l<CR>]], { desc = "Naviagte to right pane" })
 -- Keybinding to open Spectre
 map("n", "<leader>S", ":lua require('spectre').toggle()<CR>", { desc = "Toggle Spectre" })
 map("n", "<leader>sr", ":lua require('spectre').open()<CR>", { desc = "Open Spectre" })

@@ -1,3 +1,4 @@
+local vim = vim
 local args = vim.fn.argv()
 local is_directory = #args == 1 and vim.fn.isdirectory(args[1]) == 1
 
@@ -10,6 +11,13 @@ return {
   --     require "snippets.typescript"
   --   end
   -- },
+  {
+    "tpope/vim-fugitive",
+    opts = require("configs.git"),
+    cmd = {
+      "Git"
+    }
+  },
   {
     "christoomey/vim-tmux-navigator",
     cmd = {
@@ -85,6 +93,11 @@ return {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
-    lazy = false,
+    opts = {
+      size = 15,
+    },
+    cmd = {
+      "ToggleTerm"
+    },
   },
 }

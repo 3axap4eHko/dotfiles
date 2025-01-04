@@ -24,7 +24,7 @@ pre-install:
 install-linux:
 	sudo locale-gen en_US.UTF-8
 	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl -LO curl libbz2-dev jq -y
-	sudo apt-get remove -y tmux
+	sudo apt-get remove -y tmux neovim
 
 install-configs:
 	find home/ -maxdepth 1 -type f -name ".*" -exec cp {} $$HOME \;
@@ -101,7 +101,7 @@ install-zig:
 	fi
 
 install-fzf:
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	git clone --depth 1 git@github.com:junegunn/fzf.git ~/.fzf
 	~/.fzf/install
 
 uninstall-tmux:
@@ -115,7 +115,7 @@ install-tmux:
 	(cd tmux-$(TMUX_VERSION) && ./configure && make && sudo make install)
 	bash -c "tmux -V"
 	rm -rf tmux-*
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
 
 install-tmux-config:
 	mkdir -p $(XDG_CONFIG_HOME)/tmux
@@ -148,8 +148,9 @@ install-nvim-nvchad: install-nvim
 		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
 		exit 1; \
 	fi
-	git clone https://github.com/NvChad/starter.git $(XDG_CONFIG_HOME)/nvim --depth 1 && nvim
-	rm -rf $(XDG_CONFIG_HOME)/nvim/.git/
+	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
+	unzip main.zip 
+	mv starter-main $(XDG_CONFIG_HOME)/nvim && nvim
 
 install-nvim-config: install-nvim-nvchad
 	mkdir -p $(XDG_CONFIG_HOME)/nvim/lua/
