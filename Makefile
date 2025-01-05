@@ -74,10 +74,17 @@ install-miniconda:
 	curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh
 
-FIRA_VERSION=3.3.0
+FONT_VERSION=3.3.0
+install-jb:
+	rm JetBrainsMono.zip
+	curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FONT_VERSION)/JetBrainsMono.zip
+	unzip -o JetBrainsMono.zip -d ~/.fonts
+	rm JetBrainsMono.zip
+	fc-cache -fv
+
 install-fira:
 	rm FiraCode.zip
-	curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FIRA_VERSION)/FiraCode.zip
+	curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v$(FONT_VERSION)/FiraCode.zip
 	unzip -o FiraCode.zip -d ~/.fonts
 	rm FiraCode.zip
 	fc-cache -fv

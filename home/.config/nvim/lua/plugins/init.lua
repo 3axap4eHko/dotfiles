@@ -1,22 +1,55 @@
-local vim = vim
-local args = vim.fn.argv()
-local is_directory = #args == 1 and vim.fn.isdirectory(args[1]) == 1
-
 return {
   { "catppuccin/nvim", name = "catppuccin", priority = 1000, opts = { flavour = "mocha" } },
-  -- {
-  --   "L3MON4D3/LuaSnip",
-  --   config = function()
-  --     require("luasnip").filetype_extend("typescript", {"javascript"})
-  --     require "snippets.typescript"
-  --   end
-  -- },
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.startify")
+      dashboard.section.header.val = {
+        [[                                                                       ]],
+        [[                                                                       ]],
+        [[                                                                       ]],
+        [[                                                                       ]],
+        [[                                                                     ]],
+        [[       ████ ██████           █████      ██                     ]],
+        [[      ███████████             █████                             ]],
+        [[      █████████ ███████████████████ ███   ███████████   ]],
+        [[     █████████  ███    █████████████ █████ ██████████████   ]],
+        [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
+        [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
+        [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+        [[                                                                       ]],
+        [[                                                                       ]],
+        [[                                                                       ]],
+      }
+      alpha.setup(dashboard.opts)
+    end,
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    config = function()
+      print("Snip")
+      require("luasnip").filetype_extend("typescript", {"javascript"})
+      require "snippets.typescript"
+    end
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    cmd = {
+      "Gitsigns"
+    }
+    -- lazy = not vim.g.is_git,
+  },
   {
     "tpope/vim-fugitive",
-    opts = require("configs.git"),
+    -- lazy = not vim.g.is_git,
     cmd = {
-      "Git"
-    }
+      "Git",
+    },
   },
   {
     "christoomey/vim-tmux-navigator",
@@ -34,8 +67,6 @@ return {
     -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
-
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -44,28 +75,50 @@ return {
   },
   {
     "nvim-tree/nvim-tree.lua",
-    lazy = not is_directory,
+    lazy = not vim.g.is_directory,
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       ensure_installed = {
-        "vim", "lua", "vimdoc",
-        "html", "css"
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
       },
     },
   },
   {
+    "nvim-telescope/telescope.nvim",
+    config = function()
+      require("telescope").load_extension "ui-select"
+    end,
+  },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    config = function()
+      require("telescope").setup {
+        extensions = {
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {},
+          },
+        },
+      }
+    end,
+  },
+  {
     "github/copilot.vim",
-    config = true
+    config = true,
   },
   {
     "stevearc/aerial.nvim",
     cmd = {
-      "AerialToggle"
+      "AerialToggle",
     },
     config = function()
-      require("aerial").setup({
+      require("aerial").setup {
         -- Customize options here
         backends = { "lsp", "treesitter", "markdown" },
         layout = {
@@ -78,15 +131,15 @@ return {
           nested_top = "│ ",
           whitespace = "  ",
         },
-      })
+      }
     end,
   },
   {
     "nvim-pack/nvim-spectre",
     config = function()
-      require("spectre").setup({
+      require("spectre").setup {
         highlight = { ui = "String", search = "IncSearch", replace = "DiffChange" },
-      })
+      }
     end,
   },
   {
@@ -97,7 +150,26 @@ return {
       size = 15,
     },
     cmd = {
-      "ToggleTerm"
+      "ToggleTerm",
     },
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "nvimtools/none-ls-extras.nvim",
+    },
+    config = function()
+      local null_ls = require "null-ls"
+
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.completion.spell,
+          require "none-ls.diagnostics.eslint_d",
+        },
+      })
+    end,
   },
 }

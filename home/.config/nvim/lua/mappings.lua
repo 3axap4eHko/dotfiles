@@ -1,11 +1,15 @@
 require "nvchad.mappings"
+require "configs.git"
 
 local map = vim.keymap.set
 local buf = vim.lsp.buf
 local diag = vim.diagnostic
 
 -- Buffers
-map("n", "<leader><Tab>", ":lua require('telescope.builtin').buffers()<CR>", { desc = "List buffers" })
+map("n", "<leader><Tab>", ":Telescope buffers<CR>", { desc = "list buffers" })
+map("n", "<C-p>", ":Telescope find_files<CR>", { desc = "Find Files" })
+map("n", "<leader>lg", ":Telescope live_grep<CR>", { desc = "Live grep" })
+map("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
 -- Panes navigation
 map("n", "<C-A-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-A-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
@@ -16,7 +20,6 @@ map("n", "<C-A-h>", ":TmuxNavigateLeft<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-A-j>", ":TmuxNavigateDown<CR>", { desc = "Naviagte to bottom pane" })
 map("n", "<C-A-k>", ":TmuxNavigateUp<CR>", { desc = "Naviagte to top pane" })
 map("n", "<C-A-l>", ":TmuxNavigateRight<CR>", { desc = "Naviagte to right pane" })
-
 -- Move lines
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move line(s) up" })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move line(s) down" })
@@ -36,8 +39,9 @@ map("n", "<leader>rf", buf.format, { desc = "Format document" })
 map("n", "<leader>rr", buf.references, { desc = "Find references" })
 map("n", "]d", diag.goto_next, { desc = "Next diagnostic" })
 map("n", "[d", diag.goto_prev, { desc = "Previous diagnostic" })
--- Keybinding to toggle Aerial
+-- Keybinding
 map("n", "<leader>ao", ":AerialToggle<CR>", { desc = "Toggle Aerial" })
+-- Terminal
 map("n", "<A-`>", ":ToggleTerm<CR>", { desc = "Toggle Terminal" })
 map("t", "<A-`>", [[<Cmd>ToggleTerm<CR>]], { desc = "Toggle Terminal" })
 map("t", "<C-A-h>", [[<Cmd>wincmd h<CR>]], { desc = "Naviagte to left pane" })

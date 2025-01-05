@@ -1,24 +1,24 @@
 [alias]
-        ar = remote add
-        vr = remote -v
-        co = checkout
-        br = branch
-        brls = branch --sort=-committerdate
-        brc = git rev-parse --abbrev-ref HEAD
+  ar = remote add
+  vr = remote -v
+  co = checkout
+  br = branch
+  brls = branch --sort=-committerdate
+  brc = rev-parse --abbrev-ref HEAD
 
-        ci = commit
-        cia = commit --amend
-        cie = commit --allow-empty -m empty
-        cin = commit --no-verify
+  ci = commit
+  cia = commit --amend
+  cie = commit --allow-empty -m empty
+  cin = commit --no-verify
 
-        re = restore
-        res = restore --staged
-        uc = reset --soft HEAD^
+  re = restore
+  res = restore --staged
+  uc = reset --soft HEAD^
 
-        st = status
-        unstage = reset HEAD --
-        last = log -1 HEAD
+  st = status
+  unstage = reset HEAD --
+  last = log -1 HEAD
 [init]
-        defaultBranch = master
+  defaultBranch = master
 [pull]
-        rebase = true
+  rebase = true
