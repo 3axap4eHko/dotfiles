@@ -44,3 +44,6 @@ if [[ "$OS" == "WINDOWS" ]]; then
 elif [[ "$OS" == "LINUX" ]]; then
 	alias open='xdg-open'
 fi
+
+alias ghst='nohup ghostty > /dev/null 2>&1 &'
+

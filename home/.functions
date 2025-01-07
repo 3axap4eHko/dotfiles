@@ -87,3 +87,4 @@ nxf() {
   nx affected --target=$TARGET --parallel=3 --output-stream "$@"
 }
 
+[[ -f ~/.preexec ]] && . ~/.preexec

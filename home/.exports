@@ -11,7 +11,12 @@ else
 	export OS="UNKNOWN"
 fi
 
-export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_LIB_HOME=$HOME/.local/lib
+export XDG_BIN_HOME=$HOME/.local/bin
+export XDG_INCLUDE_HOME=$HOME/.local/include
 
 # Make nano the default editor.
 export EDITOR='nvim';
