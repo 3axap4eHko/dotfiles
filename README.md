@@ -1,7 +1,11 @@
 # DOTFILES
 
-Use files in the following order
-1. `.exports`
-2. `.aliases`
-3. `.functions`
-4. `.prompt`
+Installation
+
+```bash
+curl -LO https://github.com/3axap4eHko/dotfiles/archive/refs/heads/master.zip
+unzip master.zip
+rm master.zip
+cd dotfiles-master
+```
+
