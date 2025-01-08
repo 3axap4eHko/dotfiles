@@ -4,11 +4,15 @@ alias ll='ls -alhF'
 alias la='ls -Ah'
 alias l='ls -CFh'
 
-alias mkbackup='zip -r backup-$(date +%s).zip ~/projects ~/.bin ~/.npmrc ~/.yarnrc ~/.ssh ~/.bashrc ~/.prettierrc ~/.gitconfig ~/.wakatime* ~/*.kdbx ~/.aws -x "**/node_modules/*" -x "**/.next/*" -x "**/.venv/*" -x "**/.yarn/*" -x "**/build/*" -x "**/dist/*" -x "**/.nx/*"'
-alias mkclean="rm -rf ~/.npm && rm -rf ~/.yarn && find ~/projects \( -name 'node_modules' -o -name '.next' -o name '.nx' \) -type d -prune -exec rm -rf '{}' +"
+alias mkbackup='zip -r backup-$(date +%s).zip $HOME/projects $HOME/.bin $HOME/.npmrc $HOME/.yarnrc $HOME/.ssh $HOME/.bashrc $HOME/.prettierrc $HOME/.gitconfig $HOME/*.kdbx $HOME/.aws -x "**/node_modules/*" -x "**/.next/*" -x "**/.venv/*" -x "**/.yarn/*" -x "**/build/*" -x "**/dist/*" -x "**/.nx/*"'
+alias mkclean="rm -rf $HOME/.npm && rm -rf $HOME/.yarn && find $HOME/projects \( -name 'node_modules' -o -name '.next' -o -name '.nx' \) -type d -prune -exec rm -rf '{}' +"
 alias mkrsa='ssh-keygen -t rsa -b 4096 -N "" -C $2 -f ~/.ssh/$1_rsa'
 alias mkplaylist='find -type f -iname "*.mp4" -or -iname "*.mp3" -or -iname "*.flac" -or -iname "*.m4a" | sort > playlist.m3u'
 alias xtype=$'sh -c \'sleep 5; xdotool type "$(xclip -o -selection clipboard)"\''
+
+# helpful
+alias myip='curl ifconfig.me; echo'
+alias weather='curl wttr.in; echo'
 
 # NodeJS
 alias pn=pnpm
@@ -17,11 +21,6 @@ alias nx='pnx nx'
 
 # Python
 alias venv='python3 -m venv $1'
-
-# Normalize `wget` across Linux, macOS, and Windows.
-if [[ "$OS" == "MACOS" ]]; then
-	alias wget='curl -LO'
-fi
 
 # Normalize `pbcopy` across Linux, macOS, and Windows.
 if [[ "$OS" == "WINDOWS" ]]; then

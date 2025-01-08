@@ -23,7 +23,7 @@ pre-install:
 
 install-linux:
 	sudo locale-gen en_US.UTF-8
-	sudo dpkg-reconfigure locales
+	sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl wget libbz2-dev jq -y
 	sudo apt-get remove -y tmux neovim
 
@@ -124,8 +124,6 @@ install-tmux:
 	bash -c "tmux -V"
 	rm -rf tmux-*
 	git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
-
-install-tmux-config:
 	mkdir -p $(XDG_CONFIG_HOME)/tmux
 	cp ./home/.config/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
 
@@ -141,8 +139,13 @@ ifeq ($(OS),MACOS)
 else
 	NVIM_ARCH=linux64
 endif
+
 NVIM_FILE=nvim-$(NVIM_ARCH)
 install-nvim:
+	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
+		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
+		exit 1; \
+	fi
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/$(NVIM_FILE).tar.gz
 	tar -xzvf $(NVIM_FILE).tar.gz
 	rm -rf $(NVIM_FILE).tar.gz ~/.nvim/
@@ -150,19 +153,12 @@ install-nvim:
 	if ! grep -q '# nvim' $(PROFILE); then \
 		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
-
-install-nvim-nvchad: install-nvim
-	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
-		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
-		exit 1; \
-	fi
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
 	unzip main.zip 
-	mv starter-main $(XDG_CONFIG_HOME)/nvim && nvim
-
-install-nvim-config: install-nvim-nvchad
+	mv starter-main $(XDG_CONFIG_HOME)/nvim
 	mkdir -p $(XDG_CONFIG_HOME)/nvim/lua/
 	cp -r ./home/.config/nvim/lua/* $(XDG_CONFIG_HOME)/nvim/lua/
+	nvim
 
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/

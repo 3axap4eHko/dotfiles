@@ -70,18 +70,23 @@ function buntar() {
 
 # `c` with no arguments opens the current directory, otherwise opens the given
 
-psid() {
+function psid() {
   ps -ef | grep "$1" | awk '{print $2}' | head -n -2
 }
 
+# Python
+function venv() {
+    python3 -m venv "$1"
+}
+
 # Node.js
-nxa() {
+function nxa() {
   TARGET=$1
   shift
   nx run-many --target=$TARGET --all --parallel=3 "$@"
 }
 
-nxf() {
+function nxf() {
   TARGET=$1
   shift
   nx affected --target=$TARGET --parallel=3 --output-stream "$@"
