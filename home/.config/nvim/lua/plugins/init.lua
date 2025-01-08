@@ -7,8 +7,8 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      local alpha = require("alpha")
-      local dashboard = require("alpha.themes.startify")
+      local alpha = require "alpha"
+      local dashboard = require "alpha.themes.startify"
       dashboard.section.header.val = {
         [[                                                                       ]],
         [[                                                                       ]],
@@ -32,16 +32,16 @@ return {
   {
     "L3MON4D3/LuaSnip",
     config = function()
-      print("Snip")
-      require("luasnip").filetype_extend("typescript", {"javascript"})
+      print "Snip"
+      require("luasnip").filetype_extend("typescript", { "javascript" })
       require "snippets.typescript"
-    end
+    end,
   },
   {
     "lewis6991/gitsigns.nvim",
     cmd = {
-      "Gitsigns"
-    }
+      "Gitsigns",
+    },
     -- lazy = not vim.g.is_git,
   },
   {
@@ -76,6 +76,9 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     lazy = not vim.g.is_directory,
+    opts = {
+      update_focused_file = { enable = true, },
+    },
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -92,6 +95,21 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    opts = {
+      file_ignore_patterns = {
+        "node%_modules", -- NodeJS modules
+        "%.git",         -- Git metadata
+        "%.DS_Store",    -- macOS system files
+        "%.lock",        -- Lock files
+        "%.log",         -- Log files
+        "%.cache",       -- Cache directories
+        "%.nx",          -- NX files
+        "%.idea",        -- JetBrains IDE files
+        "%.vscode",      -- VSCode settings
+        "dist",          -- Build outputs
+        "build",         -- Build directories
+      },
+    },
     config = function()
       require("telescope").load_extension "ui-select"
     end,
@@ -119,7 +137,6 @@ return {
     },
     config = function()
       require("aerial").setup {
-        -- Customize options here
         backends = { "lsp", "treesitter", "markdown" },
         layout = {
           default_direction = "right",
@@ -148,6 +165,7 @@ return {
     config = true,
     opts = {
       size = 15,
+      direction = "horizontal",
     },
     cmd = {
       "ToggleTerm",
@@ -162,14 +180,14 @@ return {
     config = function()
       local null_ls = require "null-ls"
 
-      null_ls.setup({
+      null_ls.setup {
         sources = {
           null_ls.builtins.formatting.stylua,
           null_ls.builtins.formatting.prettier,
           null_ls.builtins.completion.spell,
           require "none-ls.diagnostics.eslint_d",
         },
-      })
+      }
     end,
   },
 }
