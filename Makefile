@@ -108,6 +108,9 @@ install-zig:
 		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 
+install-bat:
+	cargo install bat
+
 install-fzf:
 	git clone --depth 1 git@github.com:junegunn/fzf.git ~/.fzf
 	~/.fzf/install

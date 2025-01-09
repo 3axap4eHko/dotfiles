@@ -30,6 +30,15 @@ return {
     end,
   },
   {
+    "rmagatti/auto-session",
+    lazy = false,
+    opts = {
+      allowed_dirs = { "~/projects/*" },
+      -- suppressed_dirs = {  },
+      -- log_level = 'debug',
+    },
+  },
+  {
     "L3MON4D3/LuaSnip",
     config = function()
       print "Snip"
@@ -75,9 +84,9 @@ return {
   },
   {
     "nvim-tree/nvim-tree.lua",
-    lazy = not vim.g.is_directory,
+    -- lazy = not vim.g.is_directory,
     opts = {
-      update_focused_file = { enable = true, },
+      update_focused_file = { enable = true },
     },
   },
   {
