@@ -97,6 +97,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
+      auto_install = true,
       ensure_installed = {
         "vim",
         "lua",
@@ -108,7 +109,8 @@ return {
         "typescript",
         "rust",
         "toml",
-        "yaml"
+        "yaml",
+        "bash"
       },
     },
   },
@@ -190,23 +192,23 @@ return {
       "ToggleTerm",
     },
   },
-  {
-    "nvimtools/none-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "nvimtools/none-ls-extras.nvim",
-    },
-    config = function()
-      local null_ls = require "null-ls"
-
-      null_ls.setup {
-        sources = {
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.completion.spell,
-          require "none-ls.diagnostics.eslint_d",
-        },
-      }
-    end,
-  },
+  -- {
+  --   "nvimtools/none-ls.nvim",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   dependencies = {
+  --     "nvimtools/none-ls-extras.nvim",
+  --   },
+  --   config = function()
+  --     local null_ls = require "null-ls"
+  --
+  --     null_ls.setup {
+  --       sources = {
+  --         null_ls.builtins.formatting.stylua,
+  --         null_ls.builtins.formatting.prettier,
+  --         null_ls.builtins.completion.spell,
+  --         require "none-ls.diagnostics.eslint_d",
+  --       },
+  --     }
+  --   end,
+  -- },
 }

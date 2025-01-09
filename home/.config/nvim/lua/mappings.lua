@@ -39,6 +39,7 @@ map("n", "<leader>rf", buf.format, { desc = "Format document" })
 map("n", "<leader>rr", buf.references, { desc = "Find references" })
 map("n", "]d", diag.goto_next, { desc = "Next diagnostic" })
 map("n", "[d", diag.goto_prev, { desc = "Previous diagnostic" })
+map("n", "<leader>re", vim.diagnostic.open_float, { desc = "Show LSP error" })
 -- Keybinding
 map("n", "<leader>ao", ":AerialToggle<CR>", { desc = "Toggle Aerial" })
 -- Terminal
