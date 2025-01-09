@@ -86,7 +86,11 @@ return {
     "nvim-tree/nvim-tree.lua",
     -- lazy = not vim.g.is_directory,
     opts = {
-      update_focused_file = { enable = true },
+      git = { ignore = false },
+      update_focused_file = {
+        enable = true,
+        update_root = true,
+      },
     },
   },
   {
@@ -99,6 +103,12 @@ return {
         "vimdoc",
         "html",
         "css",
+        "json",
+        "javascript",
+        "typescript",
+        "rust",
+        "toml",
+        "yaml"
       },
     },
   },

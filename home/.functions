@@ -51,6 +51,22 @@ function getcert() {
   echo "Certificate from $HOST:$PORT added successfully and trusted."
 }
 
+function mkrsa() {
+  if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: mkrsa <key_name> <comment>"
+    return 1
+  fi
+  ssh-keygen -t rsa -b 4096 -N "" -C "$2" -f "$HOME/.ssh/${1}_rsa"
+}
+
+function mked() {
+  if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: mked <key_name> <comment>"
+    return 1
+  fi
+  ssh-keygen -t ed25519 -N "" -C "$2" -f "$HOME/.ssh/${1}_ed"
+}
+
 # Set/Unset Proxy
 function onproxy() {
   export HTTPS_PROXY=$SET_HTTPS_PROXY
