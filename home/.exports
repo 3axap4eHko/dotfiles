@@ -2,13 +2,13 @@
 
 # OS
 if grep -qi microsoft /proc/version 2>/dev/null; then
-	export OS="WINDOWS"
+	export OS="WSL"
 elif [[ "$(uname)" == "Linux" ]]; then
 	export OS="LINUX"
 elif [[ "$(uname)" == "Darwin" ]]; then
 	export OS="MACOS"
 else
-	export OS="UNKNOWN"
+	export OS="WINDOWS"
 fi
 
 export XDG_CONFIG_HOME=$HOME/.config
@@ -53,3 +53,4 @@ export GPG_TTY=$(tty);
 
 # Hide the “default interactive shell is now zsh” warning on macOS.
 export BASH_SILENCE_DEPRECATION_WARNING=1;
+
