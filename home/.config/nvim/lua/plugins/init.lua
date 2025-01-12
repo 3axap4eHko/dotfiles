@@ -1,5 +1,10 @@
 return {
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000, opts = { flavour = "mocha" } },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    opts = { flavour = "mocha" }
+  },
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
@@ -34,8 +39,6 @@ return {
     lazy = false,
     opts = {
       allowed_dirs = { "~/projects/*" },
-      -- suppressed_dirs = {  },
-      -- log_level = 'debug',
     },
   },
   {
@@ -51,11 +54,9 @@ return {
     cmd = {
       "Gitsigns",
     },
-    -- lazy = not vim.g.is_git,
   },
   {
     "tpope/vim-fugitive",
-    -- lazy = not vim.g.is_git,
     cmd = {
       "Git",
     },
@@ -84,7 +85,6 @@ return {
   },
   {
     "nvim-tree/nvim-tree.lua",
-    -- lazy = not vim.g.is_directory,
     opts = {
       git = { ignore = false },
       update_focused_file = {
@@ -148,39 +148,6 @@ return {
     end,
   },
   {
-    "github/copilot.vim",
-    config = true,
-  },
-  {
-    "stevearc/aerial.nvim",
-    cmd = {
-      "AerialToggle",
-    },
-    config = function()
-      require("aerial").setup {
-        backends = { "lsp", "treesitter", "markdown" },
-        layout = {
-          default_direction = "right",
-        },
-        show_guides = true,
-        guides = {
-          mid_item = "├ ",
-          last_item = "└ ",
-          nested_top = "│ ",
-          whitespace = "  ",
-        },
-      }
-    end,
-  },
-  {
-    "nvim-pack/nvim-spectre",
-    config = function()
-      require("spectre").setup {
-        highlight = { ui = "String", search = "IncSearch", replace = "DiffChange" },
-      }
-    end,
-  },
-  {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
@@ -192,6 +159,35 @@ return {
       "ToggleTerm",
     },
   },
+  -- {
+  --   "stevearc/aerial.nvim",
+  --   cmd = {
+  --     "AerialToggle",
+  --   },
+  --   config = function()
+  --     require("aerial").setup {
+  --       backends = { "lsp", "treesitter", "markdown" },
+  --       layout = {
+  --         default_direction = "right",
+  --       },
+  --       show_guides = true,
+  --       guides = {
+  --         mid_item = "├ ",
+  --         last_item = "└ ",
+  --         nested_top = "│ ",
+  --         whitespace = "  ",
+  --       },
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   "nvim-pack/nvim-spectre",
+  --   config = function()
+  --     require("spectre").setup {
+  --       highlight = { ui = "String", search = "IncSearch", replace = "DiffChange" },
+  --     }
+  --   end,
+  -- },
   -- {
   --   "nvimtools/none-ls.nvim",
   --   event = { "BufReadPre", "BufNewFile" },

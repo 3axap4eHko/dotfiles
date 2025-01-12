@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# dotfiles
+. ~/.exports
+. ~/.aliases
+. ~/.functions
+. ~/.preexec
+
+COLOR_ROSEWATER='\[\033[38;2;245;224;220m\]'
+COLOR_FLAMINGO='\[\033[38;2;242;205;205m\]'
+COLOR_PINK='\[\033[38;2;245;194;231m\]'
+COLOR_MAUVE='\[\033[38;2;203;166;247m\]'
+COLOR_RED='\[\033[38;2;243;139;168m\]'
+COLOR_MAROON='\[\033[38;2;235;160;172m\]'
+COLOR_PEACH='\[\033[38;2;250;179;135m\]'
+COLOR_YELLOW='\[\033[38;2;249;226;175m\]'
+COLOR_GREEN='\[\033[38;2;166;227;161m\]'
+COLOR_TEAL='\[\033[38;2;148;226;213m\]'
+COLOR_SKY='\[\033[38;2;137;220;235m\]'
+COLOR_SAPPHIRE='\[\033[38;2;116;199;236m\]'
+COLOR_BLUE='\[\033[38;2;137;180;250m\]'
+COLOR_LAVENDER='\[\033[38;2;180;190;254m\]'
+NO_COLOR='\[\033[00m\]'
+
+PS_COMMAND_RESULT='$(if [[ $LAST_EXIT_CODE == 0 ]]; then echo "'$COLOR_GREEN'тЭп"; else echo "'$COLOR_RED'тЭп"; fi)'$NO_COLOR' '
+PS_GIT_BRANCH='$((git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2> /dev/null) | { read branch && echo " ($branch)"; })'
+PS_NODE_VERSION='$(node --version 2> /dev/null | sed -e "/^[^v]/d" -e "s/v\([^\.]*\).*/[\1]/")'
+PS_PYTHON_VERSION='$(python --version 2> /dev/null | sed -e "/^[^P]/d" -e "s/Python \([^\.]*.[^\.]*\).*/[\1]/")'
+PS_RUST_VERSION='$(rustc --version 2> /dev/null | sed -e "/^[^r]/d" -e "s/rustc \([^\.]*.[^\.]*\).*/[\1]/")'
+
+function section {
+    local text="$1"
+    local color="$2"
+    local suffix="${3:-}"
+    PS1+="$color$text$NO_COLOR$suffix"
+}
+function lastcommand {
+    history | tail -1 | cut -c 8-
+}
+function deleteprompt {
+    n=${PS1@P}
+    n=${n//[^$'\n']}
+    n=${#n}
+    tput cuu $((n + 1))
+    tput ed
+}
+
+PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}'
+section '\u' 			"$COLOR_TEAL" " "
+section "$PS_NODE_VERSION"	"$COLOR_GREEN"
+section "$PS_GIT_BRANCH" 	"$COLOR_MAROON" " "
+section '\W' 			"$COLOR_SKY"
+section '\n' 			"$COLOR_RESET" "$PS_COMMAND_RESULT"
+
+
+PS0='\[$(deleteprompt)\]\$ $(lastcommand)\n\[${PS1:0:$((EXPS0=1,0))}\]'
+PROMPT_COMMAND='LAST_EXIT_CODE=$?; [ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'

@@ -45,6 +45,9 @@ install-macos-noroot:
 		echo '\n# homebrew\nexport HOMEBREW_HOME=$$HOME/.homebrew\nexport PATH=$$HOMEBREW_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 
+install-zsh:
+	curl -s https://ohmyposh.dev/install.sh | bash -s
+
 install-python: install
 	curl https://pyenv.run | bash
 	source $(PROFILE) 
@@ -166,6 +169,8 @@ install-nvim:
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
 	cp -r ~/.config/nvim/lua/* ./home/.config/nvim/lua/
+	cp -r ~/.config/ohmyposh/ ./home/.config/
+	cp ~/.init_* ./home/
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups

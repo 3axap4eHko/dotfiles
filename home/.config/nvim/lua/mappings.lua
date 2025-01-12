@@ -10,6 +10,13 @@ map("n", "<leader><Tab>", ":Telescope buffers<CR>", { desc = "list buffers" })
 map("n", "<C-p>", ":Telescope find_files<CR>", { desc = "Find Files" })
 map("n", "<leader>lg", ":Telescope live_grep<CR>", { desc = "Live grep" })
 map("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
+
+map('n', '<leader>cp', function()
+    local file = vim.fn.expand('<cfile>')
+    vim.fn.setreg('+', file)
+    print("Copied to clipboard: " .. file)
+end, { noremap = true, silent = true })
+
 -- Panes navigation
 map("n", "<C-A-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-A-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
