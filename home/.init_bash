@@ -22,7 +22,7 @@ COLOR_BLUE='\[\033[38;2;137;180;250m\]'
 COLOR_LAVENDER='\[\033[38;2;180;190;254m\]'
 NO_COLOR='\[\033[00m\]'
 
-PS_COMMAND_RESULT='$(if [[ $LAST_EXIT_CODE == 0 ]]; then echo "'$COLOR_GREEN'тЭп"; else echo "'$COLOR_RED'тЭп"; fi)'$NO_COLOR' '
+PS_COMMAND_RESULT='$(if [[ $LAST_EXIT_CODE == 0 ]]; then echo "'$COLOR_GREEN'❯"; else echo "'$COLOR_RED'❯"; fi)'$NO_COLOR' '
 PS_GIT_BRANCH='$((git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2> /dev/null) | { read branch && echo " ($branch)"; })'
 PS_NODE_VERSION='$(node --version 2> /dev/null | sed -e "/^[^v]/d" -e "s/v\([^\.]*\).*/[\1]/")'
 PS_PYTHON_VERSION='$(python --version 2> /dev/null | sed -e "/^[^P]/d" -e "s/Python \([^\.]*.[^\.]*\).*/[\1]/")'
@@ -46,7 +46,7 @@ function deleteprompt {
 }
 
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}'
-# section '\u' 			"$COLOR_TEAL" " "
+section '\u' 			"$COLOR_TEAL" " "
 section "$PS_NODE_VERSION"	"$COLOR_GREEN"
 section "$PS_GIT_BRANCH" 	"$COLOR_MAROON" " "
 section '\W' 			"$COLOR_SKY"
