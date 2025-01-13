@@ -46,7 +46,7 @@ function deleteprompt {
 }
 
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}'
-section '\u' 			"$COLOR_TEAL" " "
+# section '\u' 			"$COLOR_TEAL" " "
 section "$PS_NODE_VERSION"	"$COLOR_GREEN"
 section "$PS_GIT_BRANCH" 	"$COLOR_MAROON" " "
 section '\W' 			"$COLOR_SKY"

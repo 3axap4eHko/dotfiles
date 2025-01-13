@@ -50,29 +50,29 @@ install-zsh:
 
 install-python: install
 	curl https://pyenv.run | bash
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-go: install
 	sudo add-apt-repository ppa:longsleep/golang-backports
 	sudo apt update
 	sudo apt install golang-go
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-rust: install
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-fnm: install
 	curl -fsSL https://fnm.vercel.app/install | bash
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-bun: install
 	curl -fsSL https://bun.sh/install | bash
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-deno: install
 	curl -fsSL https://deno.land/install.sh | sh
-	source $(PROFILE) 
+	source $(PROFILE)
 
 install-miniconda:
 	curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -154,17 +154,17 @@ install-nvim:
 	fi
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/$(NVIM_FILE).tar.gz
 	tar -xzvf $(NVIM_FILE).tar.gz
-	rm -rf $(NVIM_FILE).tar.gz ~/.nvim/
+	rm -rf $(NVIM_FILE).tar.gz $(HOME)/.nvim/
 	mv $(NVIM_FILE)/ ~/.nvim/
 	if ! grep -q '# nvim' $(PROFILE); then \
 		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
-	unzip main.zip 
+	unzip main.zip
 	mv starter-main $(XDG_CONFIG_HOME)/nvim
 	mkdir -p $(XDG_CONFIG_HOME)/nvim/lua/
 	cp -r ./home/.config/nvim/lua/* $(XDG_CONFIG_HOME)/nvim/lua/
-	nvim
+	$(HOME)/.nvim/bin/nvim
 
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
