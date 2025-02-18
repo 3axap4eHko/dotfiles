@@ -13,6 +13,7 @@
 
   re = restore
   res = restore --staged
+  resf = restore --source=
   uc = reset --soft HEAD^
 
   st = status
@@ -24,3 +25,5 @@
   rebase = true
 [push]
   autoSetupRemote = true
+[branch]
+  sort = -committerdate

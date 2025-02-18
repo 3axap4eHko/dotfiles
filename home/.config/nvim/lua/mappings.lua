@@ -4,6 +4,10 @@ require "configs.git"
 local map = vim.keymap.set
 local buf = vim.lsp.buf
 local diag = vim.diagnostic
+local opts = { noremap = true, silent = true }
+-- Editing
+map('i', '<A-o>', '<Esc>A;<CR>', opts)
+map('n', '<A-o>', 'A;<CR><Esc>', opts)
 
 -- Buffers
 map("n", "<leader><Tab>", ":Telescope buffers<CR>", { desc = "list buffers" })
@@ -18,6 +22,14 @@ map('n', '<leader>cp', function()
 end, { noremap = true, silent = true })
 
 -- Panes navigation
+map("n", "b", "bzz")
+map("n", "w", "wzz")
+map("n", "n", "nzz")
+map("n", "<C-d>", "<C-d>zz")
+map("n", "<C-u>", "<C-u>zz")
+map("n", "<C-f>", "<C-f>zz")
+map("n", "<C-b>", "<C-b>zz")
+
 map("n", "<C-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
 map("n", "<C-k>", ":wincmd k<CR>", { desc = "Naviagte to top pane" })

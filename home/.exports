@@ -20,6 +20,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_LIB_HOME=$HOME/.local/lib
 export XDG_BIN_HOME=$HOME/.local/bin
 export XDG_INCLUDE_HOME=$HOME/.local/include
+unset WAYLAND_DISPLAY
 
 # Make nano the default editor.
 export EDITOR='nvim';
