@@ -12,8 +12,9 @@ map('n', '<A-o>', 'A;<CR><Esc>', opts)
 -- Buffers
 map("n", "<leader><Tab>", ":Telescope buffers<CR>", { desc = "list buffers" })
 map("n", "<C-p>", ":Telescope find_files<CR>", { desc = "Find Files" })
-map("n", "<leader>lg", ":Telescope live_grep<CR>", { desc = "Live grep" })
 map("i", "<S-Tab>", "<C-D>", { noremap = true, silent = true })
+map("n", "<space>fb", ":Telescope file_browser<CR>")
+
 
 map('n', '<leader>cp', function()
     local file = vim.fn.expand('<cfile>')

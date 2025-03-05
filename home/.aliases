@@ -17,7 +17,7 @@ alias fsp='fzf --preview="bat --color=always {}"'
 # NodeJS
 alias pn=pnpm
 alias pnx='pnpm dlx'
-alias nx='pnx nx'
+alias nx='npx nx'
 
 # Python
 alias venv='python3 -m venv $1'

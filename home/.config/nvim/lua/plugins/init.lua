@@ -5,73 +5,63 @@ return {
     priority = 1000,
     opts = { flavour = "mocha" }
   },
-  {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      local alpha = require "alpha"
-      local dashboard = require "alpha.themes.startify"
-      dashboard.section.header.val = {
-        [[                                                                       ]],
-        [[                                                                       ]],
-        [[                                                                       ]],
-        [[                                                                       ]],
-        [[                                                                     ]],
-        [[       ████ ██████           █████      ██                     ]],
-        [[      ███████████             █████                             ]],
-        [[      █████████ ███████████████████ ███   ███████████   ]],
-        [[     █████████  ███    █████████████ █████ ██████████████   ]],
-        [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
-        [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
-        [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
-        [[                                                                       ]],
-        [[                                                                       ]],
-        [[                                                                       ]],
-      }
-      alpha.setup(dashboard.opts)
-    end,
-  },
-  {
-    "rmagatti/auto-session",
-    lazy = false,
-    opts = {
-      allowed_dirs = { "~/projects/*" },
-    },
-  },
+  -- {
+  --   "rmagatti/auto-session",
+  --   lazy = false,
+  --   opts = {
+  --     allowed_dirs = { "~/projects/*" },
+  --   },
+  -- },
   {
     "L3MON4D3/LuaSnip",
     config = function()
-      print "Snip"
       require("luasnip").filetype_extend("typescript", { "javascript" })
       require "snippets.typescript"
     end,
   },
   {
-    "lewis6991/gitsigns.nvim",
-    cmd = {
-      "Gitsigns",
-    },
-  },
-  {
-    "tpope/vim-fugitive",
-    cmd = {
-      "Git",
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bigfile = { enabled = true },
+      dashboard = {
+        enabled = true,
+        preset = {
+          header = [[
+                                                                     
+       ████ ██████           █████      ██                     
+      ███████████             █████                             
+      █████████ ███████████████████ ███   ███████████   
+     █████████  ███    █████████████ █████ ██████████████   
+    █████████ ██████████ █████████ █████ █████ ████ █████   
+  ███████████ ███    ███ █████████ █████ █████ ████ █████  
+ ██████  █████████████████████ ████ █████ █████ ████ ██████]]
+        }
+      },
+      explorer = { enabled = true },
+      indent = { enabled = true },
+      input = { enabled = true },
+      picker = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
     },
   },
   {
     "kdheepak/lazygit.nvim",
-     cmd = {
-        "LazyGit",
-        "LazyGitConfig",
-        "LazyGitCurrentFile",
-        "LazyGitFilter",
-        "LazyGitFilterCurrentFile",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
     },
     keys = {
-        { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+      { "<leader>glz", "<cmd>LazyGit<cr>", desc = "LazyGit" }
     }
   },
   {
@@ -84,11 +74,6 @@ return {
       "TmuxNavigatePrevious",
       "TmuxNavigatorProcessList",
     },
-  },
-  {
-    "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
-    opts = require "configs.conform",
   },
   {
     "neovim/nvim-lspconfig",
@@ -146,8 +131,28 @@ return {
       },
     },
     config = function()
-      require("telescope").load_extension "ui-select"
+      require "configs.telescope"
     end,
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    config = function()
+      require("telescope").setup {
+        extensions = {
+          file_browser = {
+            theme = "ivy",
+            hijack_netrw = true,
+            mappings = {
+              ["i"] = {
+              },
+              ["n"] = {
+              },
+            },
+          },
+        },
+      }
+    end
   },
   {
     "nvim-telescope/telescope-ui-select.nvim",
@@ -162,95 +167,35 @@ return {
     end,
   },
   {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    config = true,
-    opts = {
-      size = 15,
-      direction = "horizontal",
-    },
-    cmd = {
-      "ToggleTerm",
-    },
-  },
-  {
     "folke/flash.nvim",
     opts = {},
     keys = {
-      { "<leader>fs", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "<leader>fS", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "<leader>fr", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "<leader>fR", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      { "<leader>fs", mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "<leader>fS", mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "<leader>fr", mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "<leader>fR", mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>",      mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
   {
     "kylechui/nvim-surround",
     event = "VeryLazy",
     config = function()
-        require("nvim-surround").setup({
-          keymaps = {
-              insert = "<C-g>s",
-              insert_line = "<C-g>S",
-              normal = "ys",
-              normal_cur = "yss",
-              normal_line = "yS",
-              normal_cur_line = "ySS",
-              visual = "S",
-              visual_line = "gS",
-              delete = "ds",
-              change = "cs",
-              change_line = "cS",
-          },
-        })
+      require("nvim-surround").setup({
+        keymaps = {
+          insert = "<C-g>s",
+          insert_line = "<C-g>S",
+          normal = "ys",
+          normal_cur = "yss",
+          normal_line = "yS",
+          normal_cur_line = "ySS",
+          visual = "S",
+          visual_line = "gS",
+          delete = "ds",
+          change = "cs",
+          change_line = "cS",
+        },
+      })
     end
   }
-  -- {
-  --   "stevearc/aerial.nvim",
-  --   cmd = {
-  --     "AerialToggle",
-  --   },
-  --   config = function()
-  --     require("aerial").setup {
-  --       backends = { "lsp", "treesitter", "markdown" },
-  --       layout = {
-  --         default_direction = "right",
-  --       },
-  --       show_guides = true,
-  --       guides = {
-  --         mid_item = "├ ",
-  --         last_item = "└ ",
-  --         nested_top = "│ ",
-  --         whitespace = "  ",
-  --       },
-  --     }
-  --   end,
-  -- },
-  -- {
-  --   "nvim-pack/nvim-spectre",
-  --   config = function()
-  --     require("spectre").setup {
-  --       highlight = { ui = "String", search = "IncSearch", replace = "DiffChange" },
-  --     }
-  --   end,
-  -- },
-  -- {
-  --   "nvimtools/none-ls.nvim",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   dependencies = {
-  --     "nvimtools/none-ls-extras.nvim",
-  --   },
-  --   config = function()
-  --     local null_ls = require "null-ls"
-  --
-  --     null_ls.setup {
-  --       sources = {
-  --         null_ls.builtins.formatting.stylua,
-  --         null_ls.builtins.formatting.prettier,
-  --         null_ls.builtins.completion.spell,
-  --         require "none-ls.diagnostics.eslint_d",
-  --       },
-  --     }
-  --   end,
-  -- },
 }
