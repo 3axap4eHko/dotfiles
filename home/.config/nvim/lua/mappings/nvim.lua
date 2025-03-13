@@ -8,11 +8,6 @@ map("i", "<C-l>", "<Right>", { desc = "move right" })
 map("i", "<C-j>", "<Down>", { desc = "move down" })
 map("i", "<C-k>", "<Up>", { desc = "move up" })
 
-map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
-map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
-map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
-map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
-
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
@@ -38,6 +33,10 @@ end, { desc = "buffer goto prev" })
 
 map("n", "<leader>x", function()
   require("nvchad.tabufline").close_buffer()
+end, { desc = "buffer close" })
+
+map("n", "<leader>X", function()
+  require("nvchad.tabufline").closeAllBufs()
 end, { desc = "buffer close" })
 
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
@@ -77,6 +76,15 @@ map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move line(s) up" })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move line(s) down" })
 map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move current line up" })
 map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move current line down" })
+map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
+map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move current line down" })
+
+map("n", "<A-h>", "<<", { desc = "Decrease indentation" })
+map("n", "<A-l>", ">>", { desc = "Increase indentation" })
+map("v", "<A-h>", "<gv", { desc = "Decrease indentation" })
+map("v", "<A-l>", ">gv", { desc = "Increase indentation" })
+map("i", "<A-h>", "<Esc><<i", { desc = "Decrease indentation" })
+map("i", "<A-l>", "<Esc>>>i", { desc = "Increase indentation" })
 
 map("v", "<S-A-j>", "y'>pgv", { desc = "Copy selected lines down" })
 map("v", "<S-A-k>", "y'<Pgv", { desc = "Copy selected lines up" })
