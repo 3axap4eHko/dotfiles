@@ -169,6 +169,7 @@ install-nvim:
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
 	cp -r ~/.config/nvim/lua/* ./home/.config/nvim/lua/
+	cp -r ~/.config/nvim/init.lua ./home/.config/nvim/init.lua
 	cp -r ~/.config/ohmyposh/ ./home/.config/
 	cp ~/.init_* ./home/
 
