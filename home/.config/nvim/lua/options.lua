@@ -5,6 +5,8 @@ local o = vim.o
 local fn = vim.fn
 local cmd = vim.cmd
 
+-- cmd.colorscheme "catppuccin"
+
 o.cursorlineopt ='both'
 o.relativenumber = true
 
@@ -24,4 +26,3 @@ g.is_git = fn.isdirectory ".git" == 1
 if g.is_directory then
   cmd("cd " .. args[1])
 end
-

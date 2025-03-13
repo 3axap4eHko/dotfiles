@@ -21,7 +21,3 @@ vim.cmd('cnoreabbrev gpush Git push<CR>')
 vim.cmd('cnoreabbrev gpushf Git push --force<CR>')
 vim.cmd('cnoreabbrev gbrc Git rev-parse --abbrev-ref HEAD<CR>')
 
-map("n", "<leader>gci", ":Telescope git_commits<CR>")
-map("n", "<leader>gst", ":Telescope git_status<CR>")
-map("n", "<leader>gbr", ":Telescope git_branches<CR>")
-

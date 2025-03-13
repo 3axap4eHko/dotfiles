@@ -29,9 +29,36 @@ local ts_select_dir_for_grep = function(prompt_bufnr)
 end
 
 telescope.setup({
+  defaults = {
+    prompt_prefix = "   ",
+    selection_caret = " ",
+    entry_prefix = " ",
+    sorting_strategy = "ascending",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top",
+        preview_width = 0.55,
+      },
+      width = 0.87,
+      height = 0.80,
+    },
+    mappings = {
+      n = { ["q"] = require("telescope.actions").close },
+    },
+  },
   extensions = {
     ["ui-select"] = {
       require("telescope.themes").get_dropdown {},
+    },
+    file_browser = {
+      theme = "ivy",
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+        },
+        ["n"] = {
+        },
+      },
     },
   },
   pickers = {
@@ -45,6 +72,19 @@ telescope.setup({
         },
       },
     },
+  },
+  file_ignore_patterns = {
+    "node%_modules", -- NodeJS modules
+    "%.git",         -- Git metadata
+    "%.DS_Store",    -- macOS system files
+    "%.lock",        -- Lock files
+    "%.log",         -- Log files
+    "%.cache",       -- Cache directories
+    "%.nx",          -- NX files
+    "%.idea",        -- JetBrains IDE files
+    "%.vscode",      -- VSCode settings
+    "dist",          -- Build outputs
+    "build",         -- Build directories
   },
 })
 
