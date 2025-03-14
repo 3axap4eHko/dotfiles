@@ -54,9 +54,9 @@ telescope.setup({
       theme = "ivy",
       hijack_netrw = true,
       mappings = {
-        ["i"] = {
+        i = {
         },
-        ["n"] = {
+        n = {
         },
       },
     },

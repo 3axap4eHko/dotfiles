@@ -1,4 +1,4 @@
-console_title_template = '{{ .Shell }} in {{ .Folder }}'
+console_title_template = '{{ .Folder }}'
 version = 3
 final_space = true
 

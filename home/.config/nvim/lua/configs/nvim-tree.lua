@@ -1,20 +1,31 @@
 local map = vim.keymap.set
 
-local function my_on_attach(bufnr)
-  local api = require("nvim-tree.api")
+local spectre = require("spectre")
+local api = require("nvim-tree.api")
 
-  local function opts(desc)
-    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-  end
+local function my_on_attach(bufnr)
 
   api.config.mappings.default_on_attach(bufnr)
 
   -- remove a default
   -- vim.keymap.del("n", "<C-]>", { buffer = bufnr })
 
-  map("n", "<ESC>", api.tree.close, { desc = "nvim-tree: Close" })
-  map("n", "h", api.node.navigate.parent, { desc = "nvim-tree: Go to parent" })
-  map("n", "l", api.node.navigate.sibling.last, { desc = "nvim-tree: Go to last" })
+  map("n", "<ESC>", api.tree.close, { desc = "nvim-tree: Close", buffer = bufnr })
+  map("n", "h", api.node.navigate.parent, { desc = "nvim-tree: Go to parent", buffer = bufnr })
+  map("n", "l", api.node.navigate.sibling.last, { desc = "nvim-tree: Go to last", buffer = bufnr })
+
+  map("n", "<leader>r", function()
+    local node = api.tree.get_node_under_cursor()
+    if node then
+      local path = node.absolute_path;
+      api.tree.close();
+      local relative_path = vim.fn.fnamemodify(path, ":.")
+      spectre.open({
+        path = relative_path .. "/**/*",
+      })
+    end
+  end, { desc = "nvim-tree: Open Spectre" })
+
 end
 
 require("nvim-tree").setup({
@@ -48,4 +59,7 @@ require("nvim-tree").setup({
     },
     width = function() return math.floor(vim.opt.columns:get() * 5) end,
   },
+  git = {
+    enable = false,
+  }
 })

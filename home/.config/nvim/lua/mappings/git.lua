@@ -1,6 +1,9 @@
 local vim = vim
 local map = vim.keymap.set
 
+map("n", "<C-g>", ":LazyGit<CR>", { desc = "Git: Lazygit" })
+vim.cmd('cnoreabbrev g LazyGit<CR>')
+
 vim.cmd('cnoreabbrev gci Git commit -am')
 vim.cmd('cnoreabbrev gcia Git commit --amend')
 vim.cmd('cnoreabbrev gcin Git commit --no-verify')
