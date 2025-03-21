@@ -1,4 +1,5 @@
 local autocmd = vim.api.nvim_create_autocmd
+
 autocmd("BufDelete", {
   callback = function()
     local bufs = vim.t.bufs
@@ -6,4 +7,9 @@ autocmd("BufDelete", {
       vim.cmd "Nvdash"
     end
   end,
+})
+
+autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.json", "*.jsonl", "*.jnl" },
+  command = "set filetype=json",
 })

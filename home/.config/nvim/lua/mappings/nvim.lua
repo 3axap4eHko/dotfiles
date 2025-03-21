@@ -11,37 +11,27 @@ map("i", "<C-k>", "<Up>", { desc = "move up" })
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
-map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
+map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general yank whole file" })
+-- map("i", "<C-c>", "<Esc>yyi", { desc = "general copy current line" })
 
-map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
-map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
-map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
+map("n", "<leader>unt", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>unr", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
+map("n", "<leader>mc", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
 
 map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 
 ---
-map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
+map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "buffer new" })
 
-map("n", "<tab>", function()
-  require("nvchad.tabufline").next()
-end, { desc = "buffer goto next" })
+map("n", "<Tab>", "<cmd> BufferLineCycleNext <CR>")
+map("n", "<S-Tab>", "<cmd> BufferLineCyclePrev <CR>")
+map("n", "<C-q>", "<cmd> bd <CR>")
+map("n", "<A-q>", "<cmd>bufdo bd<CR>")
 
-map("n", "<S-tab>", function()
-  require("nvchad.tabufline").prev()
-end, { desc = "buffer goto prev" })
+map("n", "<leader>mW", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 
-map("n", "<leader>x", function()
-  require("nvchad.tabufline").close_buffer()
-end, { desc = "buffer close" })
-
-map("n", "<leader>X", function()
-  require("nvchad.tabufline").closeAllBufs()
-end, { desc = "buffer close" })
-
-map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
-
-map("n", "<leader>wk", function()
+map("n", "<leader>mw", function()
   vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "whichkey query lookup" })
 
@@ -51,12 +41,13 @@ map('i', '<A-o>', '<Esc>A;<CR>', opts)
 map('n', '<A-o>', 'A;<CR><Esc>', opts)
 
 
-map('n', '<leader>cp', function()
+map('n', '<leader>yf', function()
   local file = vim.fn.expand('<cfile>')
   vim.fn.setreg('+', file)
   print("Copied to clipboard: " .. file)
-end, { noremap = true, silent = true })
+end, { desc = "Yank filename to the clipboard", noremap = true, silent = true })
 
+map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 
 map("n", "n", "nzz")
 map("n", "<C-d>", "<C-d>zz")
@@ -79,18 +70,18 @@ map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move current line down" })
 map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", { desc = "Move current line up" })
 map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", { desc = "Move current line down" })
 
-map("n", "<A-h>", "<<", { desc = "Decrease indentation" })
-map("n", "<A-l>", ">>", { desc = "Increase indentation" })
-map("v", "<A-h>", "<gv", { desc = "Decrease indentation" })
-map("v", "<A-l>", ">gv", { desc = "Increase indentation" })
-map("i", "<A-h>", "<Esc><<i", { desc = "Decrease indentation" })
-map("i", "<A-l>", "<Esc>>>i", { desc = "Increase indentation" })
+map("n", "<A-h>", "<<^", { desc = "Decrease indentation" })
+map("n", "<A-l>", ">>^", { desc = "Increase indentation" })
+map("v", "<A-h>", "<gv^", { desc = "Decrease indentation" })
+map("v", "<A-l>", ">gv^", { desc = "Increase indentation" })
+
+map("i", "<A-h>", "<Esc><<I", { desc = "Decrease indentation" })
+map("i", "<A-l>", "<Esc>>>I", { desc = "Increase indentation" })
 
 map("v", "<S-A-j>", "y'>pgv", { desc = "Copy selected lines down" })
 map("v", "<S-A-k>", "y'<Pgv", { desc = "Copy selected lines up" })
 map("n", "<S-A-j>", "yyp", { desc = "Copy current line down" })
 map("n", "<S-A-k>", "yyP", { desc = "Copy current line up" })
 
-
-map("n", "<leader>pr", ":let @+=expand('%')<CR>", { desc = "Copy file relative path" })
-map("n", "<leader>pa", ":let @+=expand('%:p')<CR>", { desc = "Copy file absolute path" })
+map("n", "<leader>ypr", ":let @+=expand('%')<CR>", { desc = "Copy file relative path" })
+map("n", "<leader>ypa", ":let @+=expand('%:p')<CR>", { desc = "Copy file absolute path" })

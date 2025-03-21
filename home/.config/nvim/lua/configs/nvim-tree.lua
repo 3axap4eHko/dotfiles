@@ -1,9 +1,8 @@
 local map = vim.keymap.set
 
-local spectre = require("spectre")
-local api = require("nvim-tree.api")
-
 local function my_on_attach(bufnr)
+  local api = require("nvim-tree.api")
+  local spectre = require("spectre")
 
   api.config.mappings.default_on_attach(bufnr)
 

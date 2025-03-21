@@ -50,29 +50,23 @@ install-zsh:
 
 install-python: install
 	curl https://pyenv.run | bash
-	source $(PROFILE)
 
 install-go: install
 	sudo add-apt-repository ppa:longsleep/golang-backports
 	sudo apt update
 	sudo apt install golang-go
-	source $(PROFILE)
 
 install-rust: install
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	source $(PROFILE)
 
 install-fnm: install
 	curl -fsSL https://fnm.vercel.app/install | bash
-	source $(PROFILE)
 
 install-bun: install
 	curl -fsSL https://bun.sh/install | bash
-	source $(PROFILE)
 
 install-deno: install
 	curl -fsSL https://deno.land/install.sh | sh
-	source $(PROFILE)
 
 install-miniconda:
 	curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -130,14 +124,17 @@ install-tmux:
 	bash -c "tmux -V"
 	rm -rf tmux-*
 	git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
-	mkdir -p $(XDG_CONFIG_HOME)/tmux
-	cp ./home/.config/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
+	make config-tmux
+
+config-tmux:
+	cp -r ./home/.config/tmux/ $(XDG_CONFIG_HOME)
 
 uninstall-nvim:
 	rm -rf ~/.nvim
 	rm -rf $(XDG_CONFIG_HOME)/nvim
 	rm -rf ~/.local/state/nvim
 	rm -rf ~/.local/share/nvim
+	rm -rf ~/.cache/nvim
 
 NVIM_VERSION=v0.10.3
 ifeq ($(OS),MACOS)
@@ -162,14 +159,18 @@ install-nvim:
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
 	unzip main.zip
 	mv starter-main $(XDG_CONFIG_HOME)/nvim
-	mkdir -p $(XDG_CONFIG_HOME)/nvim/lua/
-	cp -r ./home/.config/nvim/lua/* $(XDG_CONFIG_HOME)/nvim/lua/
+	make config-nvim
+
+config-nvim:
+	rm -rf ~/.local/state/nvim
+	rm -rf ~/.local/share/nvim
+	rm -rf ~/.cache/nvim
+	cp -r ./home/.config/nvim/ $(XDG_CONFIG_HOME)
 	$(HOME)/.nvim/bin/nvim
 
 save:
 	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
-	cp -r ~/.config/nvim/lua/* ./home/.config/nvim/lua/
-	cp -r ~/.config/nvim/init.lua ./home/.config/nvim/init.lua
+	cp -r ~/.config/nvim/ ./home/.config/
 	cp -r ~/.config/ohmyposh/ ./home/.config/
 	cp ~/.init_* ./home/
 
