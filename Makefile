@@ -48,6 +48,9 @@ install-macos-noroot:
 install-zsh:
 	curl -s https://ohmyposh.dev/install.sh | bash -s
 
+config-zsh:
+	cp -r ./home/.config/ohmyposh/ $(XDG_CONFIG_HOME)/ohmyposh/
+
 install-python: install
 	curl https://pyenv.run | bash
 
@@ -112,10 +115,6 @@ install-fzf:
 	git clone --depth 1 git@github.com:junegunn/fzf.git ~/.fzf
 	~/.fzf/install
 
-uninstall-tmux:
-	rm -rf ~/.tmux
-	rm -rf $(XDG_CONFIG_HOME)/tmux
-
 TMUX_VERSION=3.5a
 install-tmux:
 	curl -LO https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
@@ -126,15 +125,14 @@ install-tmux:
 	git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
 	make config-tmux
 
-config-tmux:
-	cp -r ./home/.config/tmux/ $(XDG_CONFIG_HOME)
+clean-tmux:
+	rm -rf $(XDG_CONFIG_HOME)/tmux
 
-uninstall-nvim:
-	rm -rf ~/.nvim
-	rm -rf $(XDG_CONFIG_HOME)/nvim
-	rm -rf ~/.local/state/nvim
-	rm -rf ~/.local/share/nvim
-	rm -rf ~/.cache/nvim
+uninstall-tmux: clean-tmux
+	rm -rf ~/.tmux
+
+config-tmux: clean-tmux
+	cp -r ./home/.config/tmux/ $(XDG_CONFIG_HOME)/tmux
 
 NVIM_VERSION=v0.10.3
 ifeq ($(OS),MACOS)
@@ -161,17 +159,23 @@ install-nvim:
 	mv starter-main $(XDG_CONFIG_HOME)/nvim
 	make config-nvim
 
-config-nvim:
+clean-nvim:
 	rm -rf ~/.local/state/nvim
 	rm -rf ~/.local/share/nvim
 	rm -rf ~/.cache/nvim
-	cp -r ./home/.config/nvim/ $(XDG_CONFIG_HOME)
+	rm -rf $(XDG_CONFIG_HOME)/nvim
+
+config-nvim: clean-nvim
+	cp -r ./home/.config/nvim/ $(XDG_CONFIG_HOME)/nvim/
 	$(HOME)/.nvim/bin/nvim
 
+uninstall-nvim: clean-nvim
+	rm -rf ~/.nvim
+
 save:
-	cp ~/.config/tmux/tmux.conf ./home/.config/tmux/
-	cp -r ~/.config/nvim/ ./home/.config/
-	cp -r ~/.config/ohmyposh/ ./home/.config/
+	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/
+	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/
+	cp -r $(XDG_CONFIG_HOME)/ohmyposh/ ./home/.config/
 	cp ~/.init_* ./home/
 
 backup:
