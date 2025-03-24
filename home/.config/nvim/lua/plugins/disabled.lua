@@ -11,13 +11,6 @@ return {
     end
   },
   {
-    "echasnovski/mini.statusline",
-    enabled = false,
-    config = function()
-      require("mini.statusline").setup { set_vim_settings = false }
-    end,
-  },
-  {
     "folke/edgy.nvim",
     enabled = false,
     opts = function(_, opts)

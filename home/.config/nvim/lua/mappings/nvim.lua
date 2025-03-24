@@ -23,27 +23,34 @@ map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 
 ---
 map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "buffer new" })
+map("n", "<Tab>", function()
+  require("nvchad.tabufline").next()
+end, { desc = "buffer goto next" })
+map("n", "<S-Tab>", function()
+  require("nvchad.tabufline").prev()
+end, { desc = "buffer goto prev" })
+map("n", "<C-q>", function()
+  require("nvchad.tabufline").close_buffer()
+end, { desc = "buffer close" })
+map("n", "<A-q>", function()
+  require("nvchad.tabufline").closeAllBufs()
+end, { desc = "buffer close" })
 
-map("n", "<Tab>", "<cmd> BufferLineCycleNext <CR>")
-map("n", "<S-Tab>", "<cmd> BufferLineCyclePrev <CR>")
-map("n", "<C-q>", "<cmd> bd <CR>")
-map("n", "<A-q>", "<cmd>bufdo bd<CR>")
 
 map("n", "<leader>mW", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
-
 map("n", "<leader>mw", function()
   vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "whichkey query lookup" })
 
 ---
 
-map('i', '<A-o>', '<Esc>A;<CR>', opts)
-map('n', '<A-o>', 'A;<CR><Esc>', opts)
+map("i", "<A-o>", "<Esc>A;<CR>", opts)
+map("n", "<A-o>", "A;<CR><Esc>", opts)
 
 
-map('n', '<leader>yf', function()
-  local file = vim.fn.expand('<cfile>')
-  vim.fn.setreg('+', file)
+map("n", "<leader>yf", function()
+  local file = vim.fn.expand("<cfile>")
+  vim.fn.setreg("+", file)
   print("Copied to clipboard: " .. file)
 end, { desc = "Yank filename to the clipboard", noremap = true, silent = true })
 
