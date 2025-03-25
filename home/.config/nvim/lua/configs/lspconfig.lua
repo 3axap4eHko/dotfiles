@@ -97,7 +97,7 @@ require("lspconfig").lua_ls.setup {
   },
 }
 
-local servers = { "html", "cssls", "clangd", "rust_analyzer", "ts_ls" }
+local servers = { "html", "cssls", "clangd", "gopls", "rust_analyzer", "ts_ls" }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

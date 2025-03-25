@@ -9,7 +9,12 @@ OS := $(shell \
     echo UNKNOWN; \
   fi)
 
-ifeq ($(OS),MACOS)
+USER_SHELL := $(shell getent passwd $(USER) | cut -d: -f7)
+SHELL_NAME := $(shell basename $(USER_SHELL))
+
+ifeq ($(SHELL_NAME),zsh)
+	PROFILE=~/.zshrc
+else ifeq ($(OS),MACOS)
 	PROFILE=~/.bash_profile
 else
 	PROFILE=~/.bashrc
@@ -17,6 +22,7 @@ endif
 
 install: pre-install
 	echo "Install"
+	echo "Profile $(PROFILE)"
 
 pre-install:
 	echo "Pre Install"
@@ -30,7 +36,7 @@ install-linux:
 install-configs:
 	find home/ -maxdepth 1 -type f -name ".*" -exec cp {} $$HOME \;
 	if ! grep -q '# dotfiles' $(PROFILE); then \
-		echo '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
+		printf '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
 	fi
 
 install-wsl: install-linux
@@ -42,7 +48,7 @@ install-macos:
 install-macos-noroot:
 	mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew
 	if ! grep -q '# homebrew' $(PROFILE); then \
-		echo '\n# homebrew\nexport HOMEBREW_HOME=$$HOME/.homebrew\nexport PATH=$$HOMEBREW_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# homebrew\nexport HOMEBREW_HOME=$$HOME/.homebrew\nexport PATH=$$HOMEBREW_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 
 install-zsh:
@@ -54,10 +60,20 @@ config-zsh:
 install-python: install
 	curl https://pyenv.run | bash
 
+GO_VERSION=1.24.1
+ifeq ($(OS),MACOS)
+	GO_ARCH=darwin-arm64
+else
+	GO_ARCH=linux-amd64
+endif
+
 install-go: install
-	sudo add-apt-repository ppa:longsleep/golang-backports
-	sudo apt update
-	sudo apt install golang-go
+	sudo rm -rf /usr/local/go
+	curl -L https://go.dev/dl/go$(GO_VERSION).$(GO_ARCH).tar.gz | sudo tar -C /usr/local -xzvf -
+	if ! grep -q '# go' $(PROFILE); then \
+		printf '\n# go\nexport GO_HOME=/usr/local/go\nexport PATH=$$GO_HOME/bin:$$PATH' >> $(PROFILE); \
+	fi
+
 
 install-rust: install
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -90,22 +106,20 @@ install-fira:
 	rm FiraCode.zip
 	fc-cache -fv
 
-ZIG_VERSION=0.13.0
+ZIG_VERSION=0.14.0
 ifeq ($(OS),MACOS)
 	ZIG_ARCH=macos-aarch64
 else
 	ZIG_ARCH=linux-x86_64
 endif
 ZIG_FILE=zig-$(ZIG_ARCH)-$(ZIG_VERSION)
+
 install-zig:
-	rm -rf zig-*
-	curl -LO https://ziglang.org/download/$(ZIG_VERSION)/$(ZIG_FILE).tar.xz
-	tar -xvf $(ZIG_FILE).tar.xz
 	rm -rf ~/.zig
-	mv $(ZIG_FILE) ~/.zig/
-	rm -rf zig-*
+	curl -Ls https://ziglang.org/download/$(ZIG_VERSION)/$(ZIG_FILE).tar.xz | tar -C ~/ -xJvf -
+	mv ~/$(ZIG_FILE) ~/.zig/
 	if ! grep -q '# zig' $(PROFILE); then \
-		echo '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 
 install-bat:
@@ -116,6 +130,7 @@ install-fzf:
 	~/.fzf/install
 
 TMUX_VERSION=3.5a
+
 install-tmux:
 	curl -LO https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
 	tar -xzvf tmux-$(TMUX_VERSION).tar.gz
@@ -152,7 +167,7 @@ install-nvim:
 	rm -rf $(NVIM_FILE).tar.gz $(HOME)/.nvim/
 	mv $(NVIM_FILE)/ ~/.nvim/
 	if ! grep -q '# nvim' $(PROFILE); then \
-		echo '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
 	fi
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
 	unzip main.zip
@@ -180,4 +195,4 @@ save:
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups
-	cp -r ~/.ssh /mnt/wsl/work/backups
+	cp -r ~/.ssh /mnt/wsl/work/backupsaasdte
