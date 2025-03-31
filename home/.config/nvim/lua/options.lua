@@ -24,12 +24,15 @@ o.foldlevelstart = 99
 o.foldcolumn = '0'
 o.foldtext = ''
 
+-- Disable recommended styles
+g.rust_recommended_style = 0
+
 -- Indenting
-o.expandtab = true
-o.shiftwidth = 2
-o.smartindent = true
 o.tabstop = 2
+o.shiftwidth = 2
 o.softtabstop = 2
+o.expandtab = true
+o.smartindent = true
 
 opt.fillchars = { eob = " " }
 o.ignorecase = true
