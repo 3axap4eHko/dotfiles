@@ -4,11 +4,20 @@ return {
     enabled = false,
   },
   {
-    "nvim-tree/nvim-tree.lua",
+    "nvim-telescope/telescope-file-browser.nvim",
     enabled = false,
-    config = function ()
-        require "configs.nvim-tree"
-    end
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  },
+  {
+    "echasnovski/mini.surround",
+    enabled = false,
+    event = { "BufReadPre", "BufNewFile" },
+    opts = require "configs.surround",
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    enabled = false,
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
   {
     "folke/edgy.nvim",

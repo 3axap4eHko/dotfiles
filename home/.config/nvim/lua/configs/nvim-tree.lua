@@ -1,8 +1,8 @@
 local map = vim.keymap.set
 
 local function my_on_attach(bufnr)
-  local api = require("nvim-tree.api")
-  local spectre = require("spectre")
+  local api = require "nvim-tree.api"
+  local spectre = require "spectre"
 
   api.config.mappings.default_on_attach(bufnr)
 
@@ -16,18 +16,28 @@ local function my_on_attach(bufnr)
   map("n", "<leader>r", function()
     local node = api.tree.get_node_under_cursor()
     if node then
-      local path = node.absolute_path;
-      api.tree.close();
+      local path = node.absolute_path
+      api.tree.close()
       local relative_path = vim.fn.fnamemodify(path, ":.")
-      spectre.open({
+      spectre.open {
+        is_insert_mode = true,
         path = relative_path .. "/**/*",
-      })
+      }
     end
   end, { desc = "nvim-tree: Open Spectre" })
 
+  map("n", "<leader>w", function()
+    local node = api.tree.get_node_under_cursor()
+    if node then
+      local path = node.absolute_path
+      api.tree.close()
+      local relative_path = vim.fn.fnamemodify(path, ":.")
+      require("telescope.builtin").live_grep { search_dirs = { relative_path } }
+    end
+  end, { desc = "nvim-tree: Live Grep with Telescope" })
 end
 
-require("nvim-tree").setup({
+require("nvim-tree").setup {
   on_attach = my_on_attach,
   filters = {
     git_ignored = false,
@@ -60,5 +70,5 @@ require("nvim-tree").setup({
   },
   git = {
     enable = false,
-  }
-})
+  },
+}

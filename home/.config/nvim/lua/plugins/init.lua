@@ -47,12 +47,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
   },
   {
-    "echasnovski/mini.surround",
-    enabled = false,
-    event = { "BufReadPre", "BufNewFile" },
-    opts = require "configs.surround",
-  },
-  {
     "kylechui/nvim-surround",
     version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
@@ -77,11 +71,6 @@ return {
     opts = require "configs.treesitter",
   },
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    enabled = false,
-    dependencies = "nvim-treesitter/nvim-treesitter",
-  },
-  {
     "williamboman/mason-lspconfig.nvim",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
@@ -104,12 +93,16 @@ return {
     config = function() require "configs.lspconfig" end,
   },
   {
-    "nvim-telescope/telescope.nvim",
-    config = function() require "configs.telescope" end,
+    "nvim-tree/nvim-tree.lua",
+    -- cmd = { "NvimTreeFindFile", "NvimTreeToggle" },
+    opts = require("mappings.nvim-tree"),
+    config = function ()
+        require "configs.nvim-tree"
+    end
   },
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+    "nvim-telescope/telescope.nvim",
+    config = function() require "configs.telescope" end,
   },
   {
     "nvim-telescope/telescope-ui-select.nvim",
