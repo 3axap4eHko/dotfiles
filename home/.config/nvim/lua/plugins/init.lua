@@ -84,7 +84,7 @@ return {
         "ts_ls",
         "eslint",
       },
-      automatic_installation = true,
+      automatic_installation = false,
     },
   },
   {

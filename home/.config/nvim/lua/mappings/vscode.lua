@@ -38,31 +38,15 @@ map("n", "gx", function()
 end, { desc = "Open URL under cursor", noremap = true, silent = true })
 
 ---
-map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "buffer new" })
-map("n", "<Tab>", function()
-  require("nvchad.tabufline").next()
-end, { desc = "buffer goto next" })
-map("n", "<S-Tab>", function()
-  require("nvchad.tabufline").prev()
-end, { desc = "buffer goto prev" })
-map("n", "<C-q>", function()
-  require("nvchad.tabufline").close_buffer()
-end, { desc = "buffer close" })
-map("n", "<A-q>", function()
-  require("nvchad.tabufline").closeAllBufs()
-end, { desc = "buffer close" })
-
-
-map("n", "<leader>mW", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
-map("n", "<leader>mw", function()
-  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
-end, { desc = "whichkey query lookup" })
+map("n", "<Tab>", ":Tabprevious<CR>", { desc = "Navigation: previous tab" })
+map("n", "<S-Tab>", ":Tabnext<CR>", { desc = "Navigation: next tab" })
+map("n", "<C-q>", ":Tabclose<CR>", { desc = "Navigation: close tab" })
+map("n", "<A-q>", ":Tabonly<CR>:Tabclose<CR>", { desc = "Navigation: close all tabs" })
 
 ---
 
 map("i", "<A-o>", "<Esc>A;<CR>", opts)
 map("n", "<A-o>", "A;<CR><Esc>", opts)
-
 
 map("n", "<leader>yf", function()
   local file = vim.fn.expand("<cfile>")
