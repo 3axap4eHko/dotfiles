@@ -1,9 +1,5 @@
 return {
   {
-    "lewis6991/gitsigns.nvim",
-    enabled = false,
-  },
-  {
     "nvim-telescope/telescope-file-browser.nvim",
     enabled = false,
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },

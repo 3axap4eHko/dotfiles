@@ -26,16 +26,15 @@ alias venv='python3 -m venv $1'
 if [[ "$OS" == "WINDOWS" ]]; then
 	alias pbcopy='clip.exe'
 elif [[ "$OS" == "WSL" ]]; then
-  alias pbcopy='xclip -i -selection clipboard'
+ 	alias pbcopy='xclip -i -selection clipboard'
 elif [[ "$OS" == "LINUX" ]]; then
 	alias pbcopy='xclip -i -selection clipboard'
 fi
 
 # Normalize `pbpaste` across Linux, macOS, and Windows.
 if [[ "$OS" == "WINDOWS" ]]; then
-	alias pbpaste='powershell.exe Get-Clipboard'
-elif [[ "$OS" == "WSL" ]]; then
-  alias pbpaste='xclip -o'
+	#alias pbpaste='powershell.exe Get-Clipboard'
+ 	alias pbpaste='xclip -o'
 elif [[ "$OS" == "LINUX" ]]; then
 	alias pbpaste='xclip -o'
 fi
@@ -44,8 +43,6 @@ fi
 # This is needed to make the `o` function (see below) cross-platform.
 if [[ "$OS" == "WINDOWS" ]]; then
 	alias open='explorer.exe'
-elif [[ "$OS" == "WSL" ]]; then
-  alias open='explorer.exe'
 elif [[ "$OS" == "LINUX" ]]; then
 	alias open='xdg-open'
 fi

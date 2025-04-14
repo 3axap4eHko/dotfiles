@@ -191,7 +191,10 @@ save:
 	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/
 	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/
 	cp -r $(XDG_CONFIG_HOME)/ohmyposh/ ./home/.config/
-	cp ~/.init_* ./home/
+	cp ~/.exports ./home/
+	cp ~/.aliases ./home/
+	cp ~/.functions ./home/
+	cp ~/.preexec ./home/
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups

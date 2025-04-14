@@ -141,4 +141,3 @@ function nxf() {
 }
 
 [[ -f ~/.preexec ]] && . ~/.preexec
-

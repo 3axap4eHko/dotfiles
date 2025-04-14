@@ -2,18 +2,19 @@
 
 # OS
 if grep -qi microsoft /proc/version 2>/dev/null; then
-	export OS="WSL"
+	export OS="WINDOWS"
 elif [[ "$(uname)" == "Linux" ]]; then
 	export OS="LINUX"
 elif [[ "$(uname)" == "Darwin" ]]; then
 	export OS="MACOS"
 else
-	export OS="WINDOWS"
+	export OS="UNKNOWN"
 fi
 
-export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
+export PATH=$HOME/bin:$PATH
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
@@ -42,7 +43,6 @@ export SAVEHIST='32768'
 
 setopt INC_APPEND_HISTORY
 unsetopt SHARE_HISTORY
-
 # Omit duplicates and commands that begin with a space from history.
 export HISTCONTROL='ignoreboth';
 
@@ -62,4 +62,3 @@ export GPG_TTY=$(tty);
 
 # Hide the “default interactive shell is now zsh” warning on macOS.
 export BASH_SILENCE_DEPRECATION_WARNING=1;
-
