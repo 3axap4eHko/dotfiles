@@ -75,30 +75,14 @@ return {
     opts = require "configs.treesitter",
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      ensure_installed = {
-        "clangd",
-        "cssls",
-        "html",
-        "lua_ls",
-        "marksman",
-        "rust_analyzer",
-        "ts_ls",
-        "eslint",
-      },
-      automatic_installation = false,
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function() require "configs.lspconfig" end,
   },
   {
     "nvim-tree/nvim-tree.lua",
-    -- cmd = { "NvimTreeFindFile", "NvimTreeToggle" },
+    lazy = true,
+    cmd = { "NvimTreeFindFile", "NvimTreeToggle" },
     opts = require "mappings.nvim-tree",
     config = function() require "configs.nvim-tree" end,
   },
