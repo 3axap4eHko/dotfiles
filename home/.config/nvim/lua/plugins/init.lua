@@ -95,10 +95,8 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     -- cmd = { "NvimTreeFindFile", "NvimTreeToggle" },
-    opts = require("mappings.nvim-tree"),
-    config = function ()
-        require "configs.nvim-tree"
-    end
+    opts = require "mappings.nvim-tree",
+    config = function() require "configs.nvim-tree" end,
   },
   {
     "nvim-telescope/telescope.nvim",

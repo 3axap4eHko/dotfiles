@@ -4,4 +4,3 @@ else
   require "init-terminal"
 end
 
-

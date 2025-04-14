@@ -10,8 +10,33 @@ local function my_on_attach(bufnr)
   -- vim.keymap.del("n", "<C-]>", { buffer = bufnr })
 
   map("n", "<ESC>", api.tree.close, { desc = "nvim-tree: Close", buffer = bufnr })
-  map("n", "h", api.node.navigate.parent, { desc = "nvim-tree: Go to parent", buffer = bufnr })
-  map("n", "l", api.node.navigate.sibling.last, { desc = "nvim-tree: Go to last", buffer = bufnr })
+
+  map("n", "h", function()
+    local node = api.tree.get_node_under_cursor()
+    print(node.absolute_path);
+    if node.name ~= ".." then
+      if node.type == "directory" then
+        if node.open then
+          api.node.open.edit()
+        else
+          api.node.navigate.parent()
+        end
+      else
+        api.node.navigate.parent()
+      end
+    end
+  end, { desc = "nvim-tree: Collape and go to parent", buffer = bufnr })
+
+  map("n", "l", function()
+    local node = api.tree.get_node_under_cursor()
+    if node.type == "directory" then
+      if node.open then
+        vim.cmd("normal! j")
+      else
+        api.node.open.edit()
+      end
+    end
+  end, { desc = "nvim-tree: Expand and go sibling", buffer = bufnr })
 
   map("n", "<leader>r", function()
     local node = api.tree.get_node_under_cursor()
