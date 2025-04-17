@@ -73,8 +73,13 @@ end, { desc = "Yank filename to the clipboard", noremap = true, silent = true })
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 
 map("n", "n", "nzz")
+map("n", "N", "Nzz")
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
+map("n", "<C-o>", "<C-o>zz")
+map("n", "<C-i>", "<C-i>zz")
+
+
 
 map("n", "<C-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })

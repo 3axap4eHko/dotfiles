@@ -9,6 +9,12 @@ local on_attach = function(_, bufnr)
     return { buffer = bufnr, desc = "LSP: " .. desc }
   end
 
+  local orig = vim.lsp.handlers["textDocument/definition"]
+  vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
+    orig(err, result, ctx, config)
+    vim.cmd("normal! zz")
+  end
+
   map("n", "gD", buf.declaration, opts "Go to declaration")
   map("n", "gd", buf.definition, opts "Go to definition")
   map("n", "gi", buf.implementation, opts "Go to implementation")
