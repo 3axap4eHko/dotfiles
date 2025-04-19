@@ -5,14 +5,12 @@ local diag = vim.diagnostic
 local lspconfig = require "lspconfig"
 
 local on_attach = function(_, bufnr)
-  local function opts(desc)
-    return { buffer = bufnr, desc = "LSP: " .. desc }
-  end
+  local function opts(desc) return { buffer = bufnr, desc = "LSP: " .. desc } end
 
   local orig = vim.lsp.handlers["textDocument/definition"]
   vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
     orig(err, result, ctx, config)
-    vim.cmd("normal! zz")
+    vim.cmd "normal! zz"
   end
 
   map("n", "gD", buf.declaration, opts "Go to declaration")
@@ -22,9 +20,7 @@ local on_attach = function(_, bufnr)
   map("n", "<leader>wa", buf.add_workspace_folder, opts "Add workspace folder")
   map("n", "<leader>wr", buf.remove_workspace_folder, opts "Remove workspace folder")
 
-  map("n", "<leader>wl", function()
-    print(vim.inspect(buf.list_workspace_folders()))
-  end, opts "List workspace folders")
+  map("n", "<leader>wl", function() print(vim.inspect(buf.list_workspace_folders())) end, opts "List workspace folders")
 
   map("n", "<leader>D", buf.type_definition, opts "Go to type definition")
   map("n", "<leader>ra", buf.rename, opts "NvRenamer")
@@ -42,11 +38,15 @@ local on_attach = function(_, bufnr)
   map("n", "<leader>rf", buf.format, opts "Format document")
   map("n", "<leader>rr", buf.references, opts "Find references")
   map("n", "<leader>ri", buf.code_action, opts "Refactoring actions")
+  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 end
 
-on_init = function(client, _)
+local on_init = function(client, bufnr)
   if client.supports_method "textDocument/semanticTokens" then
     client.server_capabilities.semanticTokensProvider = nil
+  end
+  if client.supports_method "textDocument/inlayHint" or client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 end
 
