@@ -113,3 +113,10 @@ map("n", "<S-A-k>", "yyP", { desc = "Copy current line up" })
 
 map("n", "<leader>ypr", ":let @+=expand('%')<CR>", { desc = "Copy file relative path" })
 map("n", "<leader>ypa", ":let @+=expand('%:p')<CR>", { desc = "Copy file absolute path" })
+
+map('i', ' ', ' <C-g>u', opts)
+for _, ch in ipairs({'.', ',', ';', ':', '!', '?', '(', '[', '{', '\'', '"', '`', '$', '%', '_' }) do
+  map('i', ch, ch .. '<C-g>u', opts)
+end
+
+
