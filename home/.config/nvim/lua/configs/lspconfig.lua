@@ -4,7 +4,7 @@ local diag = vim.diagnostic
 
 local lspconfig = require "lspconfig"
 
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local function opts(desc) return { buffer = bufnr, desc = "LSP: " .. desc } end
 
   local orig = vim.lsp.handlers["textDocument/definition"]
@@ -38,15 +38,14 @@ local on_attach = function(_, bufnr)
   map("n", "<leader>rf", buf.format, opts "Format document")
   map("n", "<leader>rr", buf.references, opts "Find references")
   map("n", "<leader>ri", buf.code_action, opts "Refactoring actions")
-  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  end
 end
 
-local on_init = function(client, bufnr)
+local on_init = function(client)
   if client.supports_method "textDocument/semanticTokens" then
     client.server_capabilities.semanticTokensProvider = nil
-  end
-  if client.supports_method "textDocument/inlayHint" or client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 end
 
@@ -103,7 +102,7 @@ require("lspconfig").lua_ls.setup {
   },
 }
 
-local servers = { "html", "cssls", "clangd", "gopls", "rust_analyzer", "ts_ls" }
+local servers = { "html", "cssls", "clangd", "gopls", "rust_analyzer", "ts_ls", "marksman", "eslint" }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

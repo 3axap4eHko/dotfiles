@@ -16,12 +16,12 @@ o.cursorlineopt = "both"
 o.relativenumber = true
 
 -- Folding
-o.foldmethod = 'expr'
-o.foldexpr = 'nvim_treesitter#foldexpr()'
+o.foldmethod = "expr"
+o.foldexpr = "nvim_treesitter#foldexpr()"
 o.foldenable = true
 o.foldlevel = 99
 o.foldlevelstart = 99
-o.foldcolumn = '1'
+o.foldcolumn = "1"
 -- o.foldtext = ''
 
 -- Disable recommended styles
@@ -64,7 +64,7 @@ g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
--- g.rust_recommended_style = 0
+g.rust_recommended_style = 0
 
 g.icons = require "icons"
 
@@ -78,7 +78,4 @@ vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. d
 local args = fn.argv()
 g.is_directory = #args == 1 and fn.isdirectory(args[1]) == 1
 g.is_git = fn.isdirectory ".git" == 1
-if g.is_directory then
-  cmd("cd " .. args[1])
-end
-
+if g.is_directory then cmd("cd " .. args[1]) end

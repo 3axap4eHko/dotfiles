@@ -75,6 +75,24 @@ return {
     opts = require "configs.treesitter",
   },
   {
+    "williamboman/mason-lspconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      ensure_installed = {
+        "clangd",
+        "cssls",
+        "html",
+        "lua_ls",
+        "marksman",
+        "rust_analyzer",
+        "ts_ls",
+        "eslint",
+        "gopls",
+      },
+      automatic_installation = true,
+    },
+  },
+  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function() require "configs.lspconfig" end,
