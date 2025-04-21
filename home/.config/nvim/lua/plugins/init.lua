@@ -47,6 +47,11 @@ return {
     opts = require "configs.conform",
   },
   {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
+  {
     "saghen/blink.cmp",
     enabled = true,
     dependencies = {
@@ -57,8 +62,6 @@ return {
     opts = {
       keymap = {
         preset = "default",
-        -- ["<Tab>"] = { "select_next", "fallback" },
-        -- ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<A-j>"] = { "select_next", "fallback" },
         ["<A-k>"] = { "select_prev", "fallback" },
         ["<Esc>"] = { "cancel", "fallback" },
