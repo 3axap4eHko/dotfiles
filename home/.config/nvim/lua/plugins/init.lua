@@ -47,6 +47,44 @@ return {
     opts = require "configs.conform",
   },
   {
+    "saghen/blink.cmp",
+    enabled = true,
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+    },
+    version = "1.*",
+    build = "cargo build --release",
+    opts = {
+      keymap = {
+        preset = "default",
+        -- ["<Tab>"] = { "select_next", "fallback" },
+        -- ["<S-Tab>"] = { "select_prev", "fallback" },
+        ["<A-j>"] = { "select_next", "fallback" },
+        ["<A-k>"] = { "select_prev", "fallback" },
+        ["<Esc>"] = { "cancel", "fallback" },
+        ["<CR>"] = { "select_and_accept", "fallback" },
+      },
+      appearance = { nerd_font_variant = "mono" },
+      completion = {
+        ghost_text = { enabled = true },
+        accept = { auto_brackets = { enabled = true } },
+        menu = { auto_show = true },
+        documentation = { auto_show = false },
+        list = {
+          selection = { preselect = true, auto_insert = false },
+        },
+      },
+      sources = { default = { "lsp", "path", "snippets", "buffer", "omni" } },
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+      signature = { enabled = true, window = { show_documentation = false } },
+    },
+    opts_extend = { "sources.default" }, -- merge rather than override
+  },
+  {
+    "saghen/blink.compat",
+    dependencies = { "saghen/blink.cmp" },
+  },
+  {
     "L3MON4D3/LuaSnip",
     event = { "BufReadPre", "BufNewFile" },
   },
@@ -95,6 +133,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "saghen/blink.cmp" },
     config = function() require "configs.lspconfig" end,
   },
   {

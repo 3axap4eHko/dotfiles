@@ -49,9 +49,9 @@ local on_init = function(client)
   end
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local base_capabilities = vim.lsp.protocol.make_client_capabilities()
 
-capabilities.textDocument.completion.completionItem = {
+base_capabilities.textDocument.completion.completionItem = {
   documentationFormat = { "markdown", "plaintext" },
   snippetSupport = true,
   preselectSupport = true,
@@ -68,6 +68,8 @@ capabilities.textDocument.completion.completionItem = {
     },
   },
 }
+
+local capabilities = require("blink.cmp").get_lsp_capabilities(base_capabilities)
 
 local x = vim.diagnostic.severity
 

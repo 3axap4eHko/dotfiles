@@ -22,15 +22,15 @@ map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 
 local opener = "xdg-open"
-if vim.fn.has("mac") == 1 then
+if vim.fn.has "mac" == 1 then
   opener = "open"
-elseif vim.fn.has("wsl") == 1 then
+elseif vim.fn.has "wsl" == 1 then
   opener = "explorer.exe"
 end
 
 map("n", "gx", function()
-  local url = vim.fn.expand("<cWORD>")
-  if url:match("^https?://") then
+  local url = vim.fn.expand "<cWORD>"
+  if url:match "^https?://" then
     vim.fn.jobstart({ opener, url }, { detach = true })
   else
     print("Not a valid URL: " .. url)
@@ -39,33 +39,26 @@ end, { desc = "Open URL under cursor", noremap = true, silent = true })
 
 ---
 map("n", "<leader>bn", "<cmd>enew<CR>", { desc = "buffer new" })
-map("n", "<Tab>", function()
-  require("nvchad.tabufline").next()
-end, { desc = "buffer goto next" })
-map("n", "<S-Tab>", function()
-  require("nvchad.tabufline").prev()
-end, { desc = "buffer goto prev" })
-map("n", "<C-q>", function()
-  require("nvchad.tabufline").close_buffer()
-end, { desc = "buffer close" })
-map("n", "<A-q>", function()
-  require("nvchad.tabufline").closeAllBufs()
-end, { desc = "buffer close" })
-
+map("n", "<Tab>", function() require("nvchad.tabufline").next() end, { desc = "buffer goto next" })
+map("n", "<S-Tab>", function() require("nvchad.tabufline").prev() end, { desc = "buffer goto prev" })
+map("n", "<C-q>", function() require("nvchad.tabufline").close_buffer() end, { desc = "buffer close" })
+map("n", "<A-q>", function() require("nvchad.tabufline").closeAllBufs() end, { desc = "buffer close" })
 
 map("n", "<leader>mW", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
-map("n", "<leader>mw", function()
-  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
-end, { desc = "whichkey query lookup" })
+map(
+  "n",
+  "<leader>mw",
+  function() vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ") end,
+  { desc = "whichkey query lookup" }
+)
 
 ---
 
 map("i", "<A-o>", "<Esc>A;<CR>", opts)
 map("n", "<A-o>", "A;<CR><Esc>", opts)
 
-
 map("n", "<leader>yf", function()
-  local file = vim.fn.expand("<cfile>")
+  local file = vim.fn.expand "<cfile>"
   vim.fn.setreg("+", file)
   print("Copied to clipboard: " .. file)
 end, { desc = "Yank filename to the clipboard", noremap = true, silent = true })
@@ -78,8 +71,6 @@ map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 map("n", "<C-o>", "<C-o>zz")
 map("n", "<C-i>", "<C-i>zz")
-
-
 
 map("n", "<C-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
 map("n", "<C-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
@@ -114,9 +105,8 @@ map("n", "<S-A-k>", "yyP", { desc = "Copy current line up" })
 map("n", "<leader>ypr", ":let @+=expand('%')<CR>", { desc = "Copy file relative path" })
 map("n", "<leader>ypa", ":let @+=expand('%:p')<CR>", { desc = "Copy file absolute path" })
 
-map('i', ' ', ' <C-g>u', opts)
-for _, ch in ipairs({'.', ',', ';', ':', '!', '?', '(', '[', '{', '\'', '"', '`', '$', '%', '_' }) do
-  map('i', ch, ch .. '<C-g>u', opts)
+map("i", " ", " <C-g>u", opts)
+for _, ch in ipairs { ".", ",", ";", ":", "!", "?", "(", "[", "{", "'", "\"", "`", "$", "%", "_" } do
+  map("i", ch, ch .. "<C-g>u", opts)
 end
-
 
