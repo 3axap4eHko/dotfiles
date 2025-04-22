@@ -64,8 +64,10 @@ return {
         preset = "default",
         ["<A-j>"] = { "select_next", "fallback" },
         ["<A-k>"] = { "select_prev", "fallback" },
-        ["<Esc>"] = { "cancel", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<C-k>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "select_and_accept", "fallback" },
+        -- ["<Esc>"] = { "cancel", "fallback" },
       },
       appearance = { nerd_font_variant = "mono" },
       completion = {
@@ -79,9 +81,8 @@ return {
       },
       sources = { default = { "lsp", "path", "snippets", "buffer", "omni" } },
       fuzzy = { implementation = "prefer_rust_with_warning" },
-      signature = { enabled = true, window = { show_documentation = false } },
     },
-    opts_extend = { "sources.default" }, -- merge rather than override
+    opts_extend = { "sources.default" },
   },
   {
     "saghen/blink.compat",
@@ -93,7 +94,7 @@ return {
   },
   {
     "kylechui/nvim-surround",
-    version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+    version = "^3.1.1",
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup {
