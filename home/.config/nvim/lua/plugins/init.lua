@@ -117,24 +117,6 @@ return {
     opts = require "configs.treesitter",
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    event = { "VimEnter" },
-    opts = {
-      ensure_installed = {
-        "rust_analyzer",
-        "ts_ls",
-        "clangd",
-        "html",
-        "cssls",
-        "lua_ls",
-        "jsonls",
-        "bashls",
-        "marksman",
-      },
-      automatic_installation = true,
-    },
-  },
-  {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "saghen/blink.cmp" },
