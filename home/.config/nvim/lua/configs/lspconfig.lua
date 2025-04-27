@@ -38,7 +38,7 @@ local on_attach = function(client, bufnr)
   map("n", "<leader>rf", buf.format, opts "Format document")
   map("n", "<leader>rr", buf.references, opts "Find references")
   map("n", "<leader>ri", buf.code_action, opts "Refactoring actions")
-  if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
+  -- if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
 end
 
 local on_init = function(client)

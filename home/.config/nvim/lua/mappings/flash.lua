@@ -1,18 +1,18 @@
 return {
   {
-    "<leader>fq",
+    "\\",
     mode = { "n", "x", "o" },
     function() require("flash").jump() end,
     desc = "Find: Flash",
   },
   {
-    "<leader>ft",
+    "<C-\\>",
     mode = { "n", "x", "o" },
     function() require("flash").treesitter() end,
     desc = "Find: Flash Treesitter",
   },
   {
-    "<leader>fr",
+    "<A-\\>",
     mode = "o",
     function() require("flash").remote() end,
     desc = "Find: Remote Flash",
@@ -24,7 +24,7 @@ return {
     desc = "Find: Treesitter",
   },
   {
-    "<c-s>",
+    "<C-\\>",
     mode = { "c" },
     function() require("flash").toggle() end,
     desc = "Find: Toggle Flash Search",

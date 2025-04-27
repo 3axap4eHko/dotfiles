@@ -139,7 +139,17 @@ return {
   },
   {
     "folke/flash.nvim",
-    opts = {},
+    event = "VeryLazy",
+    opts = {
+      modes = {
+        search = {
+          enabled = true
+        },
+        char = {
+          enabled = true
+        }
+      }
+    },
     keys = require "mappings.flash",
   },
   {
