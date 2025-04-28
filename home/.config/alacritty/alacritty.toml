@@ -1,0 +1,40 @@
+[general]
+import = [
+  "./catppuccin-mocha.toml"
+]
+
+[window]
+padding = { x = 8, y = 8 }
+decorations = "Buttonless"
+startup_mode = "Fullscreen"
+decorations_theme_variant = "Dark"
+option_as_alt = "Both"
+
+[font]
+size = 14
+normal = { family = "JetBrainsMonoNL Nerd Font Propo", style = "Regular" }
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[terminal]
+shell = { program = "wsl", args = ["~"] }
+
+[mouse]
+bindings = [
+  { mouse = "Right", action = "Paste" }
+]
+
+[keyboard]
+bindings = [
+  { key = "N", mods = "Control|Shift", action = "CreateNewWindow" },
+  { key = "W", mods = "Control|Shift", chars = "exit\n" },
+  { key = "+", mods = "Control", action = "IncreaseFontSize" },
+  { key = "-", mods = "Control", action = "DecreaseFontSize" },
+  { key = "0", mods = "Control", action = "ResetFontSize" },
+  { key = "P", mods = "Control|Shift", command = { program = "alacritty", args = ["-e", "powershell"] } },
+  { key = "L", mods = "Control|Shift", command = { program = "alacritty", args = ["-e", "wsl", "~"] } },
+
+  { key = "Space", mods = "Control", chars = "\u0000" },
+]

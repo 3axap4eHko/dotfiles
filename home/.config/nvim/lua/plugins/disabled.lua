@@ -17,6 +17,11 @@ return {
     enabled = false,
   },
   {
+    "L3MON4D3/LuaSnip",
+    enabled = false,
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  {
     "nvim-telescope/telescope-file-browser.nvim",
     enabled = false,
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },

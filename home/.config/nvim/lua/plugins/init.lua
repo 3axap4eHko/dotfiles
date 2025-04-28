@@ -72,25 +72,23 @@ return {
       appearance = { nerd_font_variant = "mono" },
       completion = {
         ghost_text = { enabled = true },
-        accept = { auto_brackets = { enabled = true } },
+        accept = { auto_brackets = { enabled = false } },
         menu = { auto_show = true },
         documentation = { auto_show = false },
         list = {
           selection = { preselect = true, auto_insert = false },
         },
       },
-      sources = { default = { "lsp", "path", "snippets", "buffer", "omni" } },
-      fuzzy = { implementation = "prefer_rust_with_warning" },
+      sources = { default = { "buffer", "snippets", "lsp", "path", "omni" } },
+      fuzzy = {
+        implementation = "prefer_rust_with_warning",
+      },
     },
     opts_extend = { "sources.default" },
   },
   {
     "saghen/blink.compat",
     dependencies = { "saghen/blink.cmp" },
-  },
-  {
-    "L3MON4D3/LuaSnip",
-    event = { "BufReadPre", "BufNewFile" },
   },
   {
     "kylechui/nvim-surround",
@@ -135,6 +133,7 @@ return {
   },
   {
     "nvim-telescope/telescope-ui-select.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
   {
@@ -143,12 +142,12 @@ return {
     opts = {
       modes = {
         search = {
-          enabled = true
+          enabled = true,
         },
         char = {
-          enabled = true
-        }
-      }
+          enabled = false,
+        },
+      },
     },
     keys = require "mappings.flash",
   },

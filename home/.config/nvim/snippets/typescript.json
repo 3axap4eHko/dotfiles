@@ -1,0 +1,9 @@
+{
+  "Throw an Error": {
+    "prefix": "thr",
+    "body": [
+      "throw new Error($0)"
+    ],
+    "description": "Inserts throw Error block"
+  }
+}

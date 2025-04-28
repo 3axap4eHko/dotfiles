@@ -16,11 +16,9 @@ autocmd({ "BufRead", "BufNewFile" }, {
 autogroup("UndoAfterComplete", { clear = true })
 autocmd("CompleteDone", {
   group = "UndoAfterComplete",
-  callback = function(opts)
-    for k, v in pairs(opts) do
-      print("CompleteDone", k, v)
-    end
-    local break_undo = vim.api.nvim_replace_termcodes("<C-g>u", true, true, true)
-    vim.api.nvim_feedkeys(break_undo, "n", true)
+  callback = function()
+    -- if vim.v.completed_item.user_data and vim.v.completed_item.user_data ~= "" then return end
+    -- local break_undo = vim.api.nvim_replace_termcodes("<C-g>u", true, true, true)
+    -- vim.api.nvim_feedkeys(break_undo, "n", true)
   end,
 })

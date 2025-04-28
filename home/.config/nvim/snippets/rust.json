@@ -1,0 +1,12 @@
+{
+  "Create test module": {
+    "prefix": "tst",
+    "body": [
+      "#[cfg(test)]",
+      "mod test {",
+      "    $0",
+      "}"
+    ],
+    "description": "Insert a #[cfg(test)] mod test block"
+  }
+}
