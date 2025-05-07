@@ -1,4 +1,7 @@
 local map = vim.keymap.set
+local cmd = vim.cmd
+local fn = vim.fn
+local api = vim.api
 local opts = { noremap = true, silent = true }
 
 map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
@@ -12,7 +15,6 @@ map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general yank whole file" })
--- map("i", "<C-c>", "<Esc>yyi", { desc = "general copy current line" })
 
 map("n", "<leader>unt", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 map("n", "<leader>unr", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
@@ -22,16 +24,16 @@ map("n", "<leader>/", "gcc", { desc = "toggle comment", remap = true })
 map("v", "<leader>/", "gc", { desc = "toggle comment", remap = true })
 
 local opener = "xdg-open"
-if vim.fn.has "mac" == 1 then
+if fn.has "mac" == 1 then
   opener = "open"
-elseif vim.fn.has "wsl" == 1 then
+elseif fn.has "wsl" == 1 then
   opener = "explorer.exe"
 end
 
 map("n", "gx", function()
-  local url = vim.fn.expand "<cWORD>"
+  local url = fn.expand "<cWORD>"
   if url:match "^https?://" then
-    vim.fn.jobstart({ opener, url }, { detach = true })
+    fn.jobstart({ opener, url }, { detach = true })
   else
     print("Not a valid URL: " .. url)
   end
@@ -48,7 +50,7 @@ map("n", "<leader>mW", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 map(
   "n",
   "<leader>mw",
-  function() vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ") end,
+  function() cmd("WhichKey " .. fn.input "WhichKey: ") end,
   { desc = "whichkey query lookup" }
 )
 
@@ -58,12 +60,21 @@ map("i", "<A-o>", "<Esc>A;<CR>", opts)
 map("n", "<A-o>", "A;<CR><Esc>", opts)
 
 map("n", "<leader>yf", function()
-  local file = vim.fn.expand "<cfile>"
-  vim.fn.setreg("+", file)
+  local file = fn.expand "<cfile>"
+  fn.setreg("+", file)
   print("Copied to clipboard: " .. file)
 end, { desc = "Yank filename to the clipboard", noremap = true, silent = true })
 
+map("n", "<A-v>", "<C-v>", { noremap = true })
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
+map("x", "ro", [[:'<,'>!sort <CR>]], { desc = "Replace: sort selected lines", silent = true })
+map("x", "rs", [[:s/\%V]], { desc = "Replace: in selected text" })
+map("x", "rr", function()
+  cmd "normal! \"zy"
+  local yanked = fn.getreg "z"
+  local esc = fn.escape(yanked, [[\^$.*\/\[\]%]])
+  api.nvim_feedkeys(":%s/" .. esc .. "/", "n", false)
+end, { desc = "Replace: search/replace selected text" })
 
 map("n", "n", "nzz")
 map("n", "N", "Nzz")
@@ -109,4 +120,3 @@ map("i", " ", " <C-g>u", opts)
 for _, ch in ipairs { ".", ",", ";", ":", "!", "?", "(", "[", "{", "'", "\"", "`", "$", "%", "_" } do
   map("i", ch, ch .. "<C-g>u", opts)
 end
-

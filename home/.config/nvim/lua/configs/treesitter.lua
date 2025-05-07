@@ -1,9 +1,11 @@
+require("nvim-treesitter.install").prefer_git = true
+
 return {
   auto_install = true,
   highlight = {
     enable = true,
     use_languagetree = true,
-    additional_vim_regex_highlighting = false
+    additional_vim_regex_highlighting = { "jinja" },
   },
   indent = { enable = true },
   ensure_installed = {
@@ -17,9 +19,11 @@ return {
     "diff",
     "json",
     "javascript",
+    "jinja",
     "typescript",
     "graphql",
     "prisma",
+    "make",
     "c",
     "sql",
     "cpp",
@@ -29,6 +33,6 @@ return {
     "toml",
     "yaml",
     "bash",
-    "zig"
+    "zig",
   },
 }

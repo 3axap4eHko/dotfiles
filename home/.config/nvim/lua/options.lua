@@ -7,6 +7,9 @@ local cmd = vim.cmd
 -------------------------------------- options ------------------------------------------
 require "nvchad.options"
 
+opt.backup = false
+opt.writebackup = false
+
 o.laststatus = 3
 o.showmode = false
 
@@ -46,6 +49,7 @@ o.ruler = false
 -- disable nvim intro
 opt.shortmess:append "sI"
 
+opt.signcolumn = "yes"
 o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true

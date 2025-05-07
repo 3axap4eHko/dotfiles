@@ -13,6 +13,11 @@ autocmd({ "BufRead", "BufNewFile" }, {
   command = "set filetype=json",
 })
 
+autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.jinja" },
+  command = "set filetype=jinja",
+})
+
 autogroup("UndoAfterComplete", { clear = true })
 autocmd("CompleteDone", {
   group = "UndoAfterComplete",

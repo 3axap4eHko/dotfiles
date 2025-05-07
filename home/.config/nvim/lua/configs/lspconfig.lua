@@ -67,7 +67,8 @@ base_capabilities.textDocument.completion.completionItem = {
   },
 }
 
-local capabilities = require("blink.cmp").get_lsp_capabilities(base_capabilities)
+-- local capabilities = require("blink.cmp").get_lsp_capabilities(base_capabilities)
+local capabilities = base_capabilities
 
 local x = vim.diagnostic.severity
 
@@ -112,7 +113,7 @@ local servers = {
   "jsonls",
   "bashls",
   "marksman",
-  "gopls"
+  "gopls",
 }
 
 for _, lsp in ipairs(servers) do

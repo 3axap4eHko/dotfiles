@@ -123,9 +123,14 @@ function psid() {
 }
 
 # Python
-function venv() {
-    python3 -m venv "$1"
+function mkv() {
+  python3 -m venv ~/.venvs/$1
 }
+
+function v() {
+  source ~/.venvs/$1/bin/activate
+}
+
 
 # Node.js
 function nxa() {

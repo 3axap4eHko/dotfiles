@@ -47,48 +47,12 @@ return {
     opts = require "configs.conform",
   },
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = true,
-  },
-  {
-    "saghen/blink.cmp",
-    enabled = true,
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-    },
-    version = "1.*",
-    build = "cargo build --release",
-    opts = {
-      keymap = {
-        preset = "default",
-        ["<A-j>"] = { "select_next", "fallback" },
-        ["<A-k>"] = { "select_prev", "fallback" },
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
-        ["<CR>"] = { "select_and_accept", "fallback" },
-        -- ["<Esc>"] = { "cancel", "fallback" },
-      },
-      appearance = { nerd_font_variant = "mono" },
-      completion = {
-        ghost_text = { enabled = true },
-        accept = { auto_brackets = { enabled = false } },
-        menu = { auto_show = true },
-        documentation = { auto_show = false },
-        list = {
-          selection = { preselect = true, auto_insert = false },
-        },
-      },
-      sources = { default = { "buffer", "snippets", "lsp", "path", "omni" } },
-      fuzzy = {
-        implementation = "prefer_rust_with_warning",
-      },
-    },
-    opts_extend = { "sources.default" },
-  },
-  {
-    "saghen/blink.compat",
-    dependencies = { "saghen/blink.cmp" },
+    "neoclide/coc.nvim",
+    branch = "release",
+    event = { "VeryLazy" },
+    config = function()
+      require "mappings.coc"
+    end
   },
   {
     "kylechui/nvim-surround",
