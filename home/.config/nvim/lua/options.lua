@@ -24,8 +24,8 @@ o.foldexpr = "nvim_treesitter#foldexpr()"
 o.foldenable = true
 o.foldlevel = 99
 o.foldlevelstart = 99
-o.foldcolumn = "1"
--- o.foldtext = ''
+-- o.foldcolumn = "1"
+o.foldtext = ''
 
 -- Disable recommended styles
 

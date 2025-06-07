@@ -47,12 +47,46 @@ return {
     opts = require "configs.conform",
   },
   {
-    "neoclide/coc.nvim",
-    branch = "release",
-    event = { "VeryLazy" },
-    config = function()
-      require "mappings.coc"
-    end
+    "L3MON4D3/LuaSnip",
+    event = { "BufReadPre", "BufNewFile" },
+  },
+  {
+    "saghen/blink.pairs",
+    version = "*", -- Use the latest version
+    build = "cargo build --release",
+    opts = {
+      mappings = {
+        enabled = true,
+        pairs = {}, -- Customize pairs if needed
+      },
+      highlights = {
+        enabled = true,
+        groups = {
+          "BlinkPairsOrange",
+          "BlinkPairsPurple",
+          "BlinkPairsBlue",
+        },
+        matchparen = {
+          enabled = true,
+          group = "MatchParen",
+        },
+      },
+      debug = false,
+    },
+  },
+  {
+    "saghen/blink.cmp",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      "saghen/blink.pairs",
+    },
+    event = { "InsertEnter", "CmdLineEnter" },
+    version = "1.*",
+    build = "cargo build --release",
+    opts = function ()
+      return require "configs.blink"
+    end,
+    opts_extend = { "sources.default", "sources.providers" },
   },
   {
     "kylechui/nvim-surround",

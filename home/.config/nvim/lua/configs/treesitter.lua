@@ -18,6 +18,8 @@ return {
     "css",
     "diff",
     "json",
+    "jsonc",
+    "gitcommit",
     "javascript",
     "jinja",
     "typescript",
