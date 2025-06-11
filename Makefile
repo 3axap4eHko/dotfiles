@@ -190,6 +190,7 @@ uninstall-nvim: clean-nvim
 save:
 	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/
 	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/
+	cp -r $(XDG_CONFIG_HOME)/zed/ ./home/.config/
 	cp -r $(XDG_CONFIG_HOME)/ohmyposh/ ./home/.config/
 	cp ~/.exports ./home/
 	cp ~/.aliases ./home/

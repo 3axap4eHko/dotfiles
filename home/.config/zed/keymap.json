@@ -1,0 +1,42 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-`": "terminal_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock",
+      "space f r": "pane::RevealInProjectPanel"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "tab": "panel::NextPanelTab",
+      "shift-tab": "panel::PreviousPanelTab",
+      "alt-k": "editor::MoveLineUp",
+      "alt-j": "editor::MoveLineDown",
+      "shift-alt-k": "editor::DuplicateLineUp",
+      "shift-alt-j": "editor::DuplicateLineDown"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "r r": "buffer_search::DeployReplace",
+      "alt-k": "editor::MoveLineUp",
+      "alt-j": "editor::MoveLineDown",
+      "shift-alt-k": "editor::DuplicateLineUp",
+      "shift-alt-j": "editor::DuplicateLineDown"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+    }
+  }
+]

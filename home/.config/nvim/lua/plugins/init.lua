@@ -78,7 +78,6 @@ return {
     "saghen/blink.cmp",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      "saghen/blink.pairs",
     },
     event = { "InsertEnter", "CmdLineEnter" },
     version = "1.*",

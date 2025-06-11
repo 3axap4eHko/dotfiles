@@ -18,6 +18,6 @@ return {
   },
   {
     "windwp/nvim-autopairs",
-    enabled = false,
+    enabled = true,
   },
 }
