@@ -7,23 +7,33 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "vim_mode": true,
-  "vim": {
-    "toggle_relative_line_numbers": true,
-    "use_system_clipboard": "always"
+  "ssh_connections": [],
+  "theme": "Catppuccin Macchiato"
   },
-  "ssh_connections": [
-    {
-      "host": "localhost",
-      "projects": []
+  "agent": {
+    "play_sound_when_agent_done": true,
+    "always_allow_tool_actions": true,
+    "default_profile": "write",
+    "model_parameters": [],
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
     }
-  ],
-  "ui_font_size": 16,
-  "buffer_font_size": 16,
+  },
+  // "base_keymap": "None",
+  "vim_mode": true,
+  "ui_font_size": 20,
+  "buffer_font_size": 18,
+  "agent_font_size": 20,
+  "tab_size": 2,
   "buffer_font_family": "JetBrainsMonoNL Nerd Font Propo",
-  "theme": {
-    "mode": "system",
-    "light": "Catppuccin Mocha",
-    "dark": "One Dark"
+  "show_edit_predictions": false,
+  "terminal": {
+    "dock": null,
+    "alternate_scroll": "off",
+    "copy_on_select": true
+  },
+  "preview_tabs": {
+    "enabled": false
   }
 }

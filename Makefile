@@ -40,6 +40,7 @@ install-configs:
 	fi
 
 install-wsl: install-linux
+	curl -sL https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip | unzip -p - win32yank.exe | sudo tee /usr/local/bin/win32yank > /dev/null && sudo chmod +x /usr/local/bin/win32yank
 	echo 'WSL'
 
 install-macos:

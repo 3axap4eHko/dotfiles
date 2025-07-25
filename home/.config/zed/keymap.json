@@ -6,21 +6,43 @@
     }
   },
   {
+    "context": "Dock || vim_mode == normal",
+    "bindings": {
+      // "space e": "workspace::ToggleLeftDock",
+      // "space tab": "tab_switcher::Toggle"
+    }
+  },
+  {
+    "context": "Picker || menu",
+    "bindings": {
+      "j": "menu::SelectNext",
+      "k": "menu::SelectPrevious"
+    }
+  },
+  {
+    "context": "Editor && menu && showing_code_actions",
+    "bindings": {
+      "j": "editor::ContextMenuNext",
+      "k": "editor::ContextMenuPrevious"
+    }
+  },
+  {
     "context": "VimControl && !menu",
     "bindings": {
-      "space e": "workspace::ToggleLeftDock",
-      "space f r": "pane::RevealInProjectPanel"
+      "space f r": "pane::RevealInProjectPanel",
+      "space q": "pane::CloseActiveItem"
     }
   },
   {
     "context": "vim_mode == normal",
     "bindings": {
-      "tab": "panel::NextPanelTab",
-      "shift-tab": "panel::PreviousPanelTab",
       "alt-k": "editor::MoveLineUp",
       "alt-j": "editor::MoveLineDown",
+      "alt-h": "editor::Outdent",
+      "alt-l": "editor::Indent",
       "shift-alt-k": "editor::DuplicateLineUp",
-      "shift-alt-j": "editor::DuplicateLineDown"
+      "shift-alt-j": "editor::DuplicateLineDown",
+      "space /": ["editor::ToggleComments", { "advance_downwards": false }]
     }
   },
   {
@@ -29,14 +51,22 @@
       "r r": "buffer_search::DeployReplace",
       "alt-k": "editor::MoveLineUp",
       "alt-j": "editor::MoveLineDown",
+      "alt-h": "editor::Outdent",
+      "alt-l": "editor::Indent",
       "shift-alt-k": "editor::DuplicateLineUp",
-      "shift-alt-j": "editor::DuplicateLineDown"
+      "shift-alt-j": "editor::DuplicateLineDown",
+      "space /": ["editor::ToggleComments", { "advance_downwards": false }]
     }
   },
   {
-    "context": "Editor",
+    "context": "vim_mode == insert",
     "bindings": {
-      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "alt-k": "editor::MoveLineUp",
+      "alt-j": "editor::MoveLineDown",
+      "alt-h": "editor::Outdent",
+      "alt-l": "editor::Indent",
+      "shift-alt-k": "editor::DuplicateLineUp",
+      "shift-alt-j": "editor::DuplicateLineDown"
     }
   }
 ]
