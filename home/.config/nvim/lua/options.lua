@@ -72,17 +72,8 @@ g.rust_recommended_style = 0
 
 g.icons = require "icons"
 
-g.clipboard = {
-  name = 'win32yank',
-  copy = {
-    ['+'] = 'win32yank -i --crlf',
-    ['*'] = 'win32yank -i --crlf',
-  },
-  paste = {
-    ['+'] = 'win32yank -o --lf',
-    ['*'] = 'win32yank -o --lf',
-  },
-}
+-- WSL clipboard configuration
+require("configs.clipboard").setup()
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.fn.has "win32" ~= 0

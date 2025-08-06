@@ -7,8 +7,125 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "ssh_connections": [],
-  "theme": "Catppuccin Macchiato"
+  "ssh_connections": [
+    {
+      "host": "localhost",
+      "projects": [
+        {
+          "paths": [
+            "/home/zource/projects/addons"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/ajoq"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/ascertain"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/bigwigs-voice-gcp"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/darkest-kingdoms"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/evnty"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/fastds"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/overtake"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/rust-learn/flatc-rs"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/rust-learn/twitter"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/rust-learn/zerg"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/sabcom"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/zenpie/code"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/zenpie/platform"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/zerg"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/zource/app"
+          ]
+        },
+        {
+          "paths": [
+            "/home/zource/projects/zource/course"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "github.com",
+      "projects": []
+    }
+  ],
+  "theme": "Catppuccin Macchiato",
+  "language_models": {
+    "ollama": {
+      "api_url": "http://host.docker.internal:11434",
+      "version": "1",
+      "available_models": [
+        {
+          "name": "devstral:latest",
+          "display_name": "Devstral",
+          "max_tokens": 32768
+        },
+        {
+          "name": "qwen3:30b-a3b",
+          "display_name": "Qwen3 30B",
+          "max_tokens": 32768
+        },
+        {
+          "name": "qwen3:14b",
+          "display_name": "Qwen3 14B",
+          "max_tokens": 32768
+        }
+      ]
+    }
   },
   "agent": {
     "play_sound_when_agent_done": true,

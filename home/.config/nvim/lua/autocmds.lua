@@ -18,12 +18,13 @@ autocmd({ "BufRead", "BufNewFile" }, {
   command = "set filetype=jinja",
 })
 
-autogroup("UndoAfterComplete", { clear = true })
-autocmd("CompleteDone", {
-  group = "UndoAfterComplete",
-  callback = function()
-    -- if vim.v.completed_item.user_data and vim.v.completed_item.user_data ~= "" then return end
-    -- local break_undo = vim.api.nvim_replace_termcodes("<C-g>u", true, true, true)
-    -- vim.api.nvim_feedkeys(break_undo, "n", true)
-  end,
-})
+-- Undo breaking for certain autocompletions (kept for future use)
+-- autogroup("UndoAfterComplete", { clear = true })
+-- autocmd("CompleteDone", {
+--   group = "UndoAfterComplete",
+--   callback = function()
+--     -- if vim.v.completed_item.user_data and vim.v.completed_item.user_data ~= "" then return end
+--     -- local break_undo = vim.api.nvim_replace_termcodes("<C-g>u", true, true, true)
+--     -- vim.api.nvim_feedkeys(break_undo, "n", true)
+--   end,
+-- })

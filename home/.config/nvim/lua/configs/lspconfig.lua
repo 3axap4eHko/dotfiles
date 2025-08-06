@@ -69,36 +69,20 @@ base_capabilities.textDocument.completion.completionItem = {
 
 local capabilities = require("blink.cmp").get_lsp_capabilities(base_capabilities)
 
+-- Reduce LSP logging for better performance
+vim.lsp.set_log_level("ERROR")
+
 local x = vim.diagnostic.severity
 
 vim.diagnostic.config {
   virtual_text = { prefix = "" },
   signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
   underline = true,
-  float = { border = "single" },
-}
-
-require("lspconfig").lua_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  on_init = on_init,
-
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { "vim" },
-      },
-      workspace = {
-        library = {
-          vim.fn.expand "$VIMRUNTIME/lua",
-          vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
-          vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
-          "${3rd}/luv/library",
-        },
-        maxPreload = 100000,
-        preloadFileSize = 10000,
-      },
-    },
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "single",
+    source = "always",
   },
 }
 
@@ -115,10 +99,38 @@ local servers = {
   "gopls",
 }
 
+local server_configs = {
+  lua_ls = {
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = {
+            vim.fn.expand "$VIMRUNTIME/lua",
+            vim.fn.expand "$VIMRUNTIME/lua/vim/lsp",
+            vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+            "${3rd}/luv/library",
+          },
+          maxPreload = 100000,
+          preloadFileSize = 10000,
+        },
+      },
+    },
+  },
+}
+
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  local config = {
     on_attach = on_attach,
     on_init = on_init,
     capabilities = capabilities,
   }
+  
+  if server_configs[lsp] then
+    config = vim.tbl_deep_extend("force", config, server_configs[lsp])
+  end
+  
+  lspconfig[lsp].setup(config)
 end

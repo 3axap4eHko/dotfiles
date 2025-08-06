@@ -6,14 +6,20 @@
     }
   },
   {
-    "context": "Dock || vim_mode == normal",
+    "context": "!Terminal && !Editor && Dock",
     "bindings": {
-      // "space e": "workspace::ToggleLeftDock",
-      // "space tab": "tab_switcher::Toggle"
+      "space e": "workspace::ToggleLeftDock"
     }
   },
   {
-    "context": "Picker || menu",
+    "context": "vim_mode == normal",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock",
+      "space tab": "tab_switcher::Toggle"
+    }
+  },
+  {
+    "context": "!Editor && (Picker || menu)",
     "bindings": {
       "j": "menu::SelectNext",
       "k": "menu::SelectPrevious"

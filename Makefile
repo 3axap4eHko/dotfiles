@@ -1,3 +1,7 @@
+XDG_CONFIG_HOME ?= $(HOME)/.config
+SHELL := /bin/bash
+.SHELLFLAGS := -ec
+
 OS := $(shell \
   if grep -qi microsoft /proc/version 2>/dev/null; then \
     echo WSL; \
@@ -39,8 +43,10 @@ install-configs:
 		printf '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
 	fi
 
+WIN32YANK_VERSION=$(shell curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | jq -r '.tag_name')
+
 install-wsl: install-linux
-	curl -sL https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip | unzip -p - win32yank.exe | sudo tee /usr/local/bin/win32yank > /dev/null && sudo chmod +x /usr/local/bin/win32yank
+	curl -sL https://github.com/equalsraf/win32yank/releases/download/$(WIN32YANK_VERSION)/win32yank-x64.zip | unzip -p - win32yank.exe | sudo tee /usr/local/bin/win32yank > /dev/null && sudo chmod +x /usr/local/bin/win32yank
 	echo 'WSL'
 
 install-macos:
@@ -61,11 +67,19 @@ config-zsh:
 install-python: install
 	curl https://pyenv.run | bash
 
-GO_VERSION=1.24.1
+GO_VERSION=$(shell curl -s https://go.dev/VERSION?m=text | head -1 | sed 's/go//')
 ifeq ($(OS),MACOS)
-	GO_ARCH=darwin-arm64
+	ifeq ($(shell uname -m),arm64)
+		GO_ARCH=darwin-arm64
+	else
+		GO_ARCH=darwin-amd64
+	endif
 else
-	GO_ARCH=linux-amd64
+	ifeq ($(shell uname -m),aarch64)
+		GO_ARCH=linux-arm64
+	else
+		GO_ARCH=linux-amd64
+	endif
 endif
 
 install-go: install
@@ -107,11 +121,19 @@ install-fira:
 	rm FiraCode.zip
 	fc-cache -fv
 
-ZIG_VERSION=0.14.0
+ZIG_VERSION=$(shell curl -s https://api.github.com/repos/ziglang/zig/releases/latest | jq -r '.tag_name')
 ifeq ($(OS),MACOS)
-	ZIG_ARCH=macos-aarch64
+	ifeq ($(shell uname -m),arm64)
+		ZIG_ARCH=macos-aarch64
+	else
+		ZIG_ARCH=macos-x86_64
+	endif
 else
-	ZIG_ARCH=linux-x86_64
+	ifeq ($(shell uname -m),aarch64)
+		ZIG_ARCH=linux-aarch64
+	else
+		ZIG_ARCH=linux-x86_64
+	endif
 endif
 ZIG_FILE=zig-$(ZIG_ARCH)-$(ZIG_VERSION)
 
@@ -130,7 +152,7 @@ install-fzf:
 	git clone --depth 1 git@github.com:junegunn/fzf.git ~/.fzf
 	~/.fzf/install
 
-TMUX_VERSION=3.5a
+TMUX_VERSION=$(shell curl -s https://api.github.com/repos/tmux/tmux/releases/latest | jq -r '.tag_name')
 
 install-tmux:
 	curl -LO https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
@@ -150,11 +172,15 @@ uninstall-tmux: clean-tmux
 config-tmux: clean-tmux
 	cp -r ./home/.config/tmux/ $(XDG_CONFIG_HOME)/tmux
 
-NVIM_VERSION=v0.10.3
+NVIM_VERSION=$(shell curl -s https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.tag_name')
 ifeq ($(OS),MACOS)
-	NVIM_ARCH=macos-x86_64
+	ifeq ($(shell uname -m),arm64)
+		NVIM_ARCH=macos-arm64
+	else
+		NVIM_ARCH=macos-x86_64
+	endif
 else
-	NVIM_ARCH=linux64
+	NVIM_ARCH=linux-x86_64
 endif
 
 NVIM_FILE=nvim-$(NVIM_ARCH)
@@ -191,7 +217,11 @@ uninstall-nvim: clean-nvim
 save:
 	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/
 	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/
-	cp -r $(XDG_CONFIG_HOME)/zed/ ./home/.config/
+ifeq ($(OS),WSL)
+	mkdir -p ./home/.config/zed && cp /mnt/c/Users/$$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')/AppData/Roaming/Zed/{settings.json,keymap.json} ./home/.config/zed/
+else
+	mkdir -p ./home/.config/zed && cp $(XDG_CONFIG_HOME)/zed/{settings.json,keymap.json} ./home/.config/zed/ 2>/dev/null || true
+endif
 	cp -r $(XDG_CONFIG_HOME)/ohmyposh/ ./home/.config/
 	cp ~/.exports ./home/
 	cp ~/.aliases ./home/
@@ -200,4 +230,4 @@ save:
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups
-	cp -r ~/.ssh /mnt/wsl/work/backupsaasdte
+	cp -r ~/.ssh /mnt/wsl/work/backups

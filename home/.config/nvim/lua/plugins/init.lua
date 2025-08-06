@@ -16,6 +16,8 @@ return {
   {
     "nvim-pack/nvim-spectre",
     dependencies = "nvim-lua/plenary.nvim",
+    cmd = "Spectre",
+    lazy = true,
   },
   {
     "christoomey/vim-tmux-navigator",
@@ -30,6 +32,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     config = function() require "configs.gitsigns" end,
   },
   {
@@ -126,6 +129,8 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function() require "configs.telescope" end,
   },
   {
@@ -157,5 +162,87 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+  },
+  {
+    "LunarVim/bigfile.nvim",
+    lazy = false,
+    config = function()
+      require("bigfile").setup {
+        filesize = 2, -- size in MB
+        pattern = { "*" },
+        features = {
+          "indent_blankline",
+          "illuminate",
+          "lsp",
+          "treesitter",
+          "syntax",
+          "matchparen",
+          "vimopts",
+          "filetype",
+        },
+      }
+    end,
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "BufReadPost",
+    config = function()
+      require("ufo").setup {
+        provider_selector = function(bufnr, filetype, buftype)
+          return { "treesitter", "indent" }
+        end,
+      }
+    end,
+    init = function()
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    keys = {
+      { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds" },
+      { "zM", function() require("ufo").closeAllFolds() end, desc = "Close all folds" },
+      { "zr", function() require("ufo").openFoldsExceptKinds() end, desc = "Fold less" },
+      { "zm", function() require("ufo").closeFoldsWith() end, desc = "Fold more" },
+      { "K", function()
+        local winid = require("ufo").peekFoldedLinesUnderCursor()
+        if not winid then
+          vim.lsp.buf.hover()
+        end
+      end, desc = "Peek fold or hover" },
+    },
+  },
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    config = function()
+      local ai = require("mini.ai")
+      ai.setup {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+          a = ai.gen_spec.argument(),
+        },
+      }
+    end,
+  },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = {
+      dir = vim.fn.expand(vim.fn.stdpath("state") .. "/sessions/"),
+      options = { "buffers", "curdir", "tabpages", "winsize" },
+    },
+    keys = {
+      { "<leader>qs", function() require("persistence").load() end, desc = "Restore Session" },
+      { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Restore Last Session" },
+      { "<leader>qd", function() require("persistence").stop() end, desc = "Don't Save Current Session" },
+    },
   },
 }
