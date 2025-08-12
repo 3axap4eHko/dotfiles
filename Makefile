@@ -34,7 +34,7 @@ pre-install:
 install-linux:
 	sudo locale-gen en_US.UTF-8
 	sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-	sudo apt-get update -y && sudo apt-get install gcc make software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl wget libbz2-dev jq xclip -y
+	sudo apt-get update -y && sudo apt-get install gcc make bison byacc software-properties-common unzip xz-utils build-essential libevent-dev libncurses-dev zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev curl wget libbz2-dev jq -y
 	sudo apt-get remove -y tmux neovim
 
 install-configs:
@@ -43,11 +43,14 @@ install-configs:
 		printf '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
 	fi
 
-WIN32YANK_VERSION=$(shell curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | jq -r '.tag_name')
+WIN32YANK_VERSION := $(shell curl -s https://api.github.com/repos/equalsraf/win32yank/releases/latest | jq -r '.tag_name')
 
 install-wsl: install-linux
-	curl -sL https://github.com/equalsraf/win32yank/releases/download/$(WIN32YANK_VERSION)/win32yank-x64.zip | unzip -p - win32yank.exe | sudo tee /usr/local/bin/win32yank > /dev/null && sudo chmod +x /usr/local/bin/win32yank
-	echo 'WSL'
+	mkdir -p ~/.local/bin
+	curl -sL https://github.com/equalsraf/win32yank/releases/download/$(WIN32YANK_VERSION)/win32yank-x64.zip -o win32yank.zip
+	unzip -p win32yank.zip win32yank.exe > ~/.local/bin/win32yank
+	rm win32yank.zip
+	chmod +x ~/.local/bin/win32yank
 
 install-macos:
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -198,7 +201,7 @@ install-nvim:
 	fi
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
 	unzip main.zip
-	mv starter-main $(XDG_CONFIG_HOME)/nvim
+	mv starter-main/ $(XDG_CONFIG_HOME)/nvim
 	make config-nvim
 
 clean-nvim:

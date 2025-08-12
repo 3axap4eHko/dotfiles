@@ -41,8 +41,6 @@ export HISTSIZE='32768';
 export HISTFILESIZE="${HISTSIZE}";
 export SAVEHIST='32768'
 
-setopt INC_APPEND_HISTORY
-unsetopt SHARE_HISTORY
 # Omit duplicates and commands that begin with a space from history.
 export HISTCONTROL='ignoreboth';
 

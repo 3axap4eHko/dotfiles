@@ -24,6 +24,23 @@ NO_COLOR='\[\033[00m\]'
 
 PS_COMMAND_RESULT='$(if [[ $LAST_EXIT_CODE == 0 ]]; then echo "'$COLOR_GREEN'❯"; else echo "'$COLOR_RED'❯"; fi)'$NO_COLOR' '
 PS_GIT_BRANCH='$((git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2> /dev/null) | { read branch && echo " ($branch)"; })'
+PS_GIT_STATUS='$(
+    if git rev-parse --git-dir &>/dev/null; then
+        status=""
+        if [[ -n $(git status --porcelain 2>/dev/null) ]]; then
+            status="${status}*"
+        fi
+        if [[ -n $(git rev-parse --abbrev-ref @{u} 2>/dev/null) ]]; then
+            behind=$(git rev-list --count HEAD..@{u} 2>/dev/null)
+            [[ $behind -gt 0 ]] && status="${status}?"
+        fi
+        if [[ -n $(git rev-parse --abbrev-ref @{u} 2>/dev/null) ]]; then
+            ahead=$(git rev-list --count @{u}..HEAD 2>/dev/null)
+            [[ $ahead -gt 0 ]] && status="${status}!"
+        fi
+        [[ -n $status ]] && echo " [$status]"
+    fi
+)'
 PS_NODE_VERSION='$(node --version 2> /dev/null | sed -e "/^[^v]/d" -e "s/v\([^\.]*\).*/[\1]/")'
 PS_PYTHON_VERSION='$(python --version 2> /dev/null | sed -e "/^[^P]/d" -e "s/Python \([^\.]*.[^\.]*\).*/[\1]/")'
 PS_RUST_VERSION='$(rustc --version 2> /dev/null | sed -e "/^[^r]/d" -e "s/rustc \([^\.]*.[^\.]*\).*/[\1]/")'
@@ -46,12 +63,14 @@ function deleteprompt {
 }
 
 PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}'
+PS1='\[\e]0;\w\a\]${debian_chroot:+($debian_chroot)}'
+
 section '\u' 			"$COLOR_TEAL" " "
 section "$PS_NODE_VERSION"	"$COLOR_GREEN"
-section "$PS_GIT_BRANCH" 	"$COLOR_MAROON" " "
+section "$PS_GIT_BRANCH$PS_GIT_STATUS" 	"$COLOR_MAROON" " "
 section '\W' 			"$COLOR_SKY"
 section '\n' 			"$COLOR_RESET" "$PS_COMMAND_RESULT"
 
 
 PS0='\[$(deleteprompt)\]\$ $(lastcommand)\n\[${PS1:0:$((EXPS0=1,0))}\]'
-PROMPT_COMMAND='LAST_EXIT_CODE=$?; [ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'
+PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"; LAST_EXIT_CODE=$?; [ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'
