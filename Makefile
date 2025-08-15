@@ -155,6 +155,12 @@ install-fzf:
 	git clone --depth 1 git@github.com:junegunn/fzf.git ~/.fzf
 	~/.fzf/install
 
+install-zed-server:
+	mkdir -p ~/.zed_server
+	curl -L "$$(curl -sL https://api.github.com/repos/zed-industries/zed/releases/latest | jq -r '.assets[] | select(.name == "zed-remote-server-linux-x86_64.gz") | .browser_download_url')" | gunzip > ~/.zed_server/zed-remote-server-dev-build
+	chmod +x ~/.zed_server/zed-remote-server-dev-build
+	@echo "✓ Zed server installed at ~/.zed_server/zed-remote-server-dev-build"
+
 TMUX_VERSION=$(shell curl -s https://api.github.com/repos/tmux/tmux/releases/latest | jq -r '.tag_name')
 
 install-tmux:
@@ -230,6 +236,7 @@ endif
 	cp ~/.aliases ./home/
 	cp ~/.functions ./home/
 	cp ~/.preexec ./home/
+	cp ~/.rules ./home/
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups
