@@ -2,42 +2,40 @@ local map = vim.keymap.set
 local buf = vim.lsp.buf
 local diag = vim.diagnostic
 
-local lspconfig = require "lspconfig"
+local orig = vim.lsp.handlers["textDocument/definition"]
+vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
+  orig(err, result, ctx, config)
+  vim.cmd "normal! zz"
+end
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   local function opts(desc) return { buffer = bufnr, desc = "LSP: " .. desc } end
-
-  local orig = vim.lsp.handlers["textDocument/definition"]
-  vim.lsp.handlers["textDocument/definition"] = function(err, result, ctx, config)
-    orig(err, result, ctx, config)
-    vim.cmd "normal! zz"
-  end
 
   map("n", "gD", buf.declaration, opts "Go to declaration")
   map("n", "gd", buf.definition, opts "Go to definition")
   map("n", "gi", buf.implementation, opts "Go to implementation")
+  map("n", "grx", buf.references, opts "Show references")
+  map("n", "grn", buf.rename, opts "Rename symbol")
+  map("n", "<leader>cf", function() buf.format { async = true } end, opts "Format document")
+  map("n", "grf", buf.code_action, opts "Refactoring actions")
+
+  map({ "n", "v" }, "g.", buf.code_action, opts "Code action")
+
   map("n", "<leader>sh", buf.signature_help, opts "Show signature help")
   map("n", "<leader>wa", buf.add_workspace_folder, opts "Add workspace folder")
   map("n", "<leader>wr", buf.remove_workspace_folder, opts "Remove workspace folder")
 
   map("n", "<leader>wl", function() print(vim.inspect(buf.list_workspace_folders())) end, opts "List workspace folders")
 
-  map("n", "<leader>D", buf.type_definition, opts "Go to type definition")
+  map("n", "gtd", buf.type_definition, opts "Go to type definition")
   map("n", "<leader>ra", buf.rename, opts "NvRenamer")
-
-  map({ "n", "v" }, "<leader>ca", buf.code_action, opts "Code action")
-  map("n", "gr", buf.references, opts "Show references")
 
   map("n", "<leader>re", diag.open_float, opts "Show error")
   map("n", "<leader>rd", diag.setloclist, opts "diagnostic loclist")
 
-  map("n", "]d", diag.goto_next, opts "Next diagnostic")
-  map("n", "[d", diag.goto_prev, opts "Previous diagnostic")
+  map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, opts "Next diagnostic")
+  map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, opts "Previous diagnostic")
 
-  map("n", "<leader>rn", buf.rename, opts "Rename symbol")
-  map("n", "<leader>rf", buf.format, opts "Format document")
-  map("n", "<leader>rr", buf.references, opts "Find references")
-  map("n", "<leader>ri", buf.code_action, opts "Refactoring actions")
   -- if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
 end
 
@@ -66,11 +64,15 @@ base_capabilities.textDocument.completion.completionItem = {
     },
   },
 }
+base_capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 
 local capabilities = require("blink.cmp").get_lsp_capabilities(base_capabilities)
 
 -- Reduce LSP logging for better performance
-vim.lsp.set_log_level("ERROR")
+vim.lsp.set_log_level "ERROR"
 
 local x = vim.diagnostic.severity
 
@@ -82,7 +84,7 @@ vim.diagnostic.config {
   severity_sort = true,
   float = {
     border = "single",
-    source = "always",
+    source = "if_many",
   },
 }
 
@@ -121,16 +123,11 @@ local server_configs = {
   },
 }
 
-for _, lsp in ipairs(servers) do
-  local config = {
-    on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
-  }
-  
-  if server_configs[lsp] then
-    config = vim.tbl_deep_extend("force", config, server_configs[lsp])
-  end
-  
-  lspconfig[lsp].setup(config)
+local shared = { on_attach = on_attach, on_init = on_init, capabilities = capabilities }
+
+for _, name in ipairs(servers) do
+  local override = server_configs[name] or {}
+  local cfg = vim.tbl_deep_extend("force", shared, override)
+  vim.lsp.config(name, cfg)
+  vim.lsp.enable(name)
 end

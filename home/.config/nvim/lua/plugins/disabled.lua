@@ -18,6 +18,11 @@ return {
   },
   {
     "windwp/nvim-autopairs",
-    enabled = true,
+    enabled = false,
+  },
+  {
+    "stevearc/conform.nvim",
+    enabled = false,
   },
 }
+

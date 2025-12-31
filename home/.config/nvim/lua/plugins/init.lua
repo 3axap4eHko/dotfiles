@@ -31,6 +31,13 @@ return {
     },
   },
   {
+    "mg979/vim-visual-multi",
+    lazy = true,
+    config = function()
+      require "configs.visual-multi"
+    end,
+  },
+  {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function() require "configs.gitsigns" end,
@@ -45,13 +52,8 @@ return {
     } },
   },
   {
-    "stevearc/conform.nvim",
-    event = "BufWritePre",
-    opts = require "configs.conform",
-  },
-  {
     "L3MON4D3/LuaSnip",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "InsertEnter",
   },
   {
     "saghen/blink.pairs",
@@ -82,7 +84,7 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
     },
-    event = { "InsertEnter", "CmdLineEnter" },
+    event = "InsertEnter",
     version = "1.*",
     build = "cargo build --release",
     opts = function ()
@@ -165,7 +167,7 @@ return {
   },
   {
     "LunarVim/bigfile.nvim",
-    lazy = false,
+    event = "BufReadPre",
     config = function()
       require("bigfile").setup {
         filesize = 2, -- size in MB
@@ -190,7 +192,7 @@ return {
     config = function()
       require("ufo").setup {
         provider_selector = function(bufnr, filetype, buftype)
-          return { "treesitter", "indent" }
+          return { "lsp", "indent" }
         end,
       }
     end,

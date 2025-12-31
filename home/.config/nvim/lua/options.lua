@@ -18,14 +18,6 @@ o.cursorline = true
 o.cursorlineopt = "both"
 o.relativenumber = true
 
--- Folding
-o.foldmethod = "expr"
-o.foldexpr = "nvim_treesitter#foldexpr()"
-o.foldenable = true
-o.foldlevel = 99
-o.foldlevelstart = 99
--- o.foldcolumn = "1"
-o.foldtext = ''
 
 -- Disable recommended styles
 

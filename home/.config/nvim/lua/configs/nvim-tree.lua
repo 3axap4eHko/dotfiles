@@ -2,7 +2,6 @@ local map = vim.keymap.set
 
 local function my_on_attach(bufnr)
   local api = require "nvim-tree.api"
-  local spectre = require "spectre"
 
   api.config.mappings.default_on_attach(bufnr)
 
@@ -13,7 +12,6 @@ local function my_on_attach(bufnr)
 
   map("n", "h", function()
     local node = api.tree.get_node_under_cursor()
-    print(node.absolute_path);
     if node.name ~= ".." then
       if node.type == "directory" then
         if node.open then
@@ -44,7 +42,7 @@ local function my_on_attach(bufnr)
       local path = node.absolute_path
       api.tree.close()
       local relative_path = vim.fn.fnamemodify(path, ":.")
-      spectre.open {
+      require("spectre").open {
         is_insert_mode = true,
         path = relative_path .. "/**/*",
       }
@@ -91,7 +89,6 @@ require("nvim-tree").setup {
         }
       end,
     },
-    width = function() return math.floor(vim.opt.columns:get() * 5) end,
   },
   git = {
     enable = false,

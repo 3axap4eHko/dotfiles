@@ -27,3 +27,6 @@
   autoSetupRemote = true
 [branch]
   sort = -committerdate
+[user]
+	email = 
+	name = 

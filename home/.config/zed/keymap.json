@@ -35,6 +35,7 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
+      "r r": "buffer_search::DeployReplace",
       "space f r": "pane::RevealInProjectPanel",
       "space q": "pane::CloseActiveItem"
     }
@@ -54,7 +55,6 @@
   {
     "context": "vim_mode == visual",
     "bindings": {
-      "r r": "buffer_search::DeployReplace",
       "alt-k": "editor::MoveLineUp",
       "alt-j": "editor::MoveLineDown",
       "alt-h": "editor::Outdent",

@@ -5,10 +5,10 @@ local diag = vim.diagnostic
 map("n", "<leader>de", diag.open_float, { desc = "LSP: Show error" })
 -- map("n", "<leader>dl", diag.setloclist, { desc = "LSP: diagnostic loclist" })
 
-map("n", "<leader>cf", function()
-  vim.cmd([[%s/\r//ge]])
-  require("conform").format { lsp_fallback = true }
-end, { desc = "general format file" })
+-- map("n", "<leader>cf", function()
+--   vim.cmd([[%s/\r//ge]])
+--   require("conform").format { lsp_fallback = true }
+-- end, { desc = "general format file" })
 
 ---
 

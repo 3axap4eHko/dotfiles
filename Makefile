@@ -58,7 +58,7 @@ install-macos:
 install-macos-noroot:
 	mkdir ~/.homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C ~/.homebrew
 	if ! grep -q '# homebrew' $(PROFILE); then \
-		printf '\n# homebrew\nexport HOMEBREW_HOME=$$HOME/.homebrew\nexport PATH=$$HOMEBREW_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# homebrew\nexport HOMEBREW_HOME="$$HOME/.homebrew"\nexport PATH="$$HOMEBREW_HOME/bin:$$PATH"' >> $(PROFILE); \
 	fi
 
 install-zsh:
@@ -89,7 +89,7 @@ install-go: install
 	sudo rm -rf /usr/local/go
 	curl -L https://go.dev/dl/go$(GO_VERSION).$(GO_ARCH).tar.gz | sudo tar -C /usr/local -xzvf -
 	if ! grep -q '# go' $(PROFILE); then \
-		printf '\n# go\nexport GO_HOME=/usr/local/go\nexport PATH=$$GO_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# go\nexport GO_HOME="/usr/local/go"\nexport GO_HOME_LOCAL="$$HOME/go"\nexport PATH="$$GO_HOME/bin:$$GO_HOME_LOCAL/bin:$$PATH"\n' >> $(PROFILE); \
 	fi
 
 
@@ -124,28 +124,33 @@ install-fira:
 	rm FiraCode.zip
 	fc-cache -fv
 
-ZIG_VERSION=$(shell curl -s https://api.github.com/repos/ziglang/zig/releases/latest | jq -r '.tag_name')
+ZIG_VERSION=$(shell curl -s https://ziglang.org/download/index.json | jq -r 'del(.master) | to_entries | sort_by(.value.date) | reverse | .[0].key')
 ifeq ($(OS),MACOS)
 	ifeq ($(shell uname -m),arm64)
-		ZIG_ARCH=macos-aarch64
+		ZIG_OS=macos
+		ZIG_ARCH=aarch64
 	else
-		ZIG_ARCH=macos-x86_64
+		ZIG_OS=macos
+		ZIG_ARCH=x86_64
 	endif
 else
 	ifeq ($(shell uname -m),aarch64)
-		ZIG_ARCH=linux-aarch64
+		ZIG_OS=linux
+		ZIG_ARCH=aarch64
 	else
-		ZIG_ARCH=linux-x86_64
+		ZIG_OS=linux
+		ZIG_ARCH=x86_64
 	endif
 endif
-ZIG_FILE=zig-$(ZIG_ARCH)-$(ZIG_VERSION)
+ZIG_FILE=zig-$(ZIG_ARCH)-$(ZIG_OS)-$(ZIG_VERSION)
 
 install-zig:
 	rm -rf ~/.zig
+	echo "https://ziglang.org/download/$(ZIG_VERSION)/$(ZIG_FILE).tar.xz "
 	curl -Ls https://ziglang.org/download/$(ZIG_VERSION)/$(ZIG_FILE).tar.xz | tar -C ~/ -xJvf -
 	mv ~/$(ZIG_FILE) ~/.zig/
 	if ! grep -q '# zig' $(PROFILE); then \
-		printf '\n# zig\nexport ZIG_HOME=$$HOME/.zig\nexport PATH=$$ZIG_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# zig\nexport ZIG_HOME="$$HOME/.zig"\nexport PATH="$$ZIG_HOME/bin:$$PATH"' >> $(PROFILE); \
 	fi
 
 install-bat:
@@ -162,6 +167,20 @@ install-zed-server:
 	@echo "✓ Zed server installed at ~/.zed_server/zed-remote-server-dev-build"
 
 TMUX_VERSION=$(shell curl -s https://api.github.com/repos/tmux/tmux/releases/latest | jq -r '.tag_name')
+
+install-blesh:
+	git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git ~/.local/share/blesh
+	make -C ~/.local/share/blesh install PREFIX=~/.local
+	if ! grep -q '# blesh' $(PROFILE); then \
+		printf '\n# blesh\n[[ $$- == *i* ]] && . ~/.local/share/blesh/ble.sh --noattach\n' >> $(PROFILE); \
+	fi
+
+clean-blesh:
+	rm -rf ~/.local/share/blesh
+	rm -rf ~/.local/share/blesh-contrib
+
+uninstall-blesh: clean-blesh
+	sed -i '/# blesh/,+1d' $(PROFILE)
 
 install-tmux:
 	curl -LO https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
@@ -193,6 +212,13 @@ else
 endif
 
 NVIM_FILE=nvim-$(NVIM_ARCH)
+
+upgrade-nvim:
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/$(NVIM_FILE).tar.gz
+	tar -xzvf $(NVIM_FILE).tar.gz
+	rm -rf $(NVIM_FILE).tar.gz $(HOME)/.nvim/
+	mv $(NVIM_FILE)/ ~/.nvim/
+
 install-nvim:
 	@if [ -d "$$XDG_CONFIG_HOME/nvim" ]; then \
 		echo "Error: $$XDG_CONFIG_HOME/nvim exists, please backup or remove it"; \
@@ -203,7 +229,7 @@ install-nvim:
 	rm -rf $(NVIM_FILE).tar.gz $(HOME)/.nvim/
 	mv $(NVIM_FILE)/ ~/.nvim/
 	if ! grep -q '# nvim' $(PROFILE); then \
-		printf '\n# nvim\nexport NVIM_HOME=$$HOME/.nvim\nexport PATH=$$NVIM_HOME/bin:$$PATH' >> $(PROFILE); \
+		printf '\n# nvim\nexport NVIM_HOME="$$HOME/.nvim"\nexport PATH="$$NVIM_HOME/bin:$$PATH"' >> $(PROFILE); \
 	fi
 	curl -LO https://github.com/NvChad/starter/archive/refs/heads/main.zip
 	unzip main.zip
@@ -224,19 +250,20 @@ uninstall-nvim: clean-nvim
 	rm -rf ~/.nvim
 
 save:
-	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/
-	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/
+	cp $(XDG_CONFIG_HOME)/tmux/tmux.conf ./home/.config/tmux/ || true
+	cp -r $(XDG_CONFIG_HOME)/nvim/ ./home/.config/ || true
 ifeq ($(OS),WSL)
 	mkdir -p ./home/.config/zed && cp /mnt/c/Users/$$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')/AppData/Roaming/Zed/{settings.json,keymap.json} ./home/.config/zed/
 else
 	mkdir -p ./home/.config/zed && cp $(XDG_CONFIG_HOME)/zed/{settings.json,keymap.json} ./home/.config/zed/ 2>/dev/null || true
 endif
-	cp -r $(XDG_CONFIG_HOME)/ohmyposh/ ./home/.config/
-	cp ~/.exports ./home/
+	cp ~/.exports ./home/ 
 	cp ~/.aliases ./home/
 	cp ~/.functions ./home/
-	cp ~/.preexec ./home/
-	cp ~/.rules ./home/
+	cp ~/.preexec ./home/ || true
+	cp ~/.init_bash ./home/ || true
+	cp ~/.init_zsh ./home/ || true
+	cp ~/.rules ./home/ || true
 
 backup:
 	cp -r ~/bin /mnt/wsl/work/backups

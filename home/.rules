@@ -1,26 +1,76 @@
-# Coding guidelines
+# AI Agent Rules
 
-* Prioritize code correctness and clarity. Speed and efficiency are secondary priorities unless otherwise specified.
-* Do not sacrifice performance, use Map or Set where appropriate.
-* Do not write organizational or comments that summarize the code. Comments should only be written in order to explain "why" the code is written in some way in the case there is a reason that is tricky / non-obvious.
+## Coding guidelines
+
+* Correctness and clarity are the top priority; within that, avoid unnecessary performance regressions by using appropriate data structures (Map, Set, hash maps, etc.) when they materially improve complexity.
+* Do not write organizational comments or comments that summarize the code. Comments should only explain "why" the code is written in a non-obvious way, when there is important reasoning that is not obvious from reading the code.
+* Write self-documented code instead of comments explaining what the code does.
 * Prefer implementing functionality in existing files unless it is a new logical component. Avoid creating many small files.
-* Use clear, meaningful names that reflect the variable or function’s purpose. Avoid redundant context already implied by the surrounding scope (e.g., directory, class, or module).
+* Use clear, meaningful names that reflect the variable or function's purpose. Avoid redundant context already implied by the surrounding scope (directory, class, module, etc.).
+* Do not use any Unicode symbols unless explicitly requested. For example, use a regular dash (-) instead of an em dash, and plain double quotes (") instead of smart quotes.
+* Do not make any design or architectural changes without approval or a specific request.
+* Focus only on real critical architecture issues, violations, and problems.
+* No speculative abstractions: interfaces, factories, traits, base classes, and wrapper types must solve a real, current problem, not a hypothetical future one.
+* Delete unused code: no commented-out code, no "might need later" exports, and no backwards-compatibility shims for internal code. Remove dead code together with its call sites.
+* Minimal indirection: prefer direct imports and direct function calls over dependency injection containers or global service locators unless there is a clear, current need (for example, plugin systems or complex testing scenarios).
+* Flat structure: avoid folders that contain a single file. Nest only when there are multiple closely related files.
 
-## Typescript
+## Analysis approach
 
-* All @types must be installed as dev dependencies.
-* Manage dependencies strictly by specified package manager in package.json file and never do changes manually.
+* First analyze code structure and organization: verify proper architectural patterns, lifecycle management, and separation of concerns before analyzing business logic.
+* Understand the code first: read the code thoroughly, understand the problem it solves, and check relevant framework/library documentation before drawing conclusions.
+* Verify claims against documentation: when questioning patterns (for example, KafkaJS resolveOffset, React hooks, async patterns), check official documentation first.
+* Prefer official framework/library documentation, language references, or standards as evidence when possible.
+* Understand context and tradeoffs: recognize that apparent issues may be deliberate design choices with documented reasoning.
+* Verify before claiming: check if race conditions or bugs actually exist, and understand framework patterns and built-in guarantees.
+* Distinguish actual issues from preferences: focus on real problems that affect correctness, not theoretical or stylistic improvements.
+* Consider existing comments: if code has explanatory comments, understand them before flagging issues.
+* Avoid false positives: redundant checks might be intentional; familiar patterns might be idiomatic.
+* Statement evidence: issues should be supported by documentation quotes if possible, plus a concrete suggestion with a correct approach.
 
-## Rust 
+## Focus points
 
-* Avoid using functions that panic like `unwrap()`, instead use mechanisms like `?` to propagate errors.
-* Be careful with operations like indexing which may panic if the indexes are out of bounds.
-* Never silently discard errors with `let _ =` on fallible operations. Always handle errors appropriately:
-  - Propagate errors with `?` when the calling function should handle them
-  - Use `.log_err()` or similar when you need to ignore errors but want visibility
-  - Use explicit error handling with `match` or `if let Err(...)` when you need custom logic
-  - Example: avoid `let _ = client.request(...).await?;` - use `client.request(...).await?;` instead
-* When implementing async operations that may fail, ensure errors propagate to the UI layer so users get meaningful feedback.
-* Never create files with `mod.rs` paths - prefer `src/some_module.rs` instead of `src/some_module/mod.rs`.
-* Use the latest stable rust edition.
+* SOLID (verify actual violations, not theoretical):
 
+  * SRP: only flag when a class has truly unrelated responsibilities. Managing different aspects of a core responsibility is not a violation.
+  * OCP / LSP / ISP / DIP: only apply when they are genuinely violated, not as style preferences.
+* DRY: focus on actually harmful duplication, not similar patterns with different purposes.
+* KISS: flag complexity without purpose, not just unfamiliar patterns.
+* Coupling / CoC: avoid inappropriate dependencies between unrelated modules.
+* Testability: focus on genuinely untestable code with complex business logic, not simple orchestration.
+* Maintainability: focus on real impediments to future changes.
+* Race conditions and errors: verify that race conditions exist, understand the language/framework synchronization model, and ensure error handling is correct (for example, clearInterval stops future executions).
+* Redundant state guards: flag unnecessary synchronization mechanisms, defensive flags for synchronous operations, or state tracking that duplicates built-in guarantees (indicates misunderstanding of the concurrency model, event loop, or execution order).
+* Improper function scope: functions must be defined at the highest scope they can operate in. If a function does not use closure variables, it should be module-level. Avoid defining functions inside other functions/methods when they do not need closure, to avoid repeated allocations. Only make a method static if it conceptually operates on the class itself or its instances.
+* Mutable reassignment: flag "last write wins" patterns where variables are initialized with a default value and then conditionally reassigned across different branches (for example, `let result = defaultValue; if (conditionA) { result = X; } if (conditionB) { result = Y; }`). Prefer `const` with single assignment using logical operators, ternaries, or small helper functions. Do not flag idiomatic patterns like clearing collections (`obj = {}`, `arr = []`), accumulator patterns in loops, or necessary state tracking. Focus on problematic branching reassignments where the final value depends on multiple conditional paths.
+* Inefficient data structures: flag inappropriate data structure choices that impact performance. Use hash maps/dictionaries for O(1) lookups instead of arrays with O(n) searches. Use sets for uniqueness checks instead of `array.includes`. Use appropriate collections (Queue, Stack, PriorityQueue) for their intended patterns. Consider memory vs speed tradeoffs.
+* Time complexity issues: identify unnecessary O(n^2) or worse algorithms. Flag double iterations over the same data that could be a single pass. Look for nested loops that could be optimized with better data structures, redundant sorting, unnecessary array operations in loops, or repeated expensive computations that could be memoized. Focus on real performance problems, not micro-optimizations.
+* Code smells: focus on actual problems, not style preferences or redundant safety checks.
+
+## Language-specific guidelines
+
+### TypeScript
+
+* No single-use classes: if a type is instantiated only once, prefer module-level functions and module-level state instead of a class.
+* Honest async: only use `async`/`await` when at least one awaited operation is actually asynchronous (I/O, timers, network, etc.). Do not mark functions async just to match an existing call site.
+* Declarative initialization: prefer module-level initialization and configuration (top-level constants, factories, or immediately executed setup) over imperative "setup" functions that must be called at startup, as long as this does not harm testability or predictability.
+* Avoid speculative abstractions: interfaces, factories, and wrapper classes must exist to solve a concrete problem (for example, multiple implementations, testing seams, or cross-cutting concerns).
+* All `@types/*` packages must be installed as devDependencies.
+* Manage dependencies strictly with the package manager specified in `package.json`. Do not manually edit lockfiles or bypass the specified package manager.
+
+### Rust
+
+* Use idiomatic Rust code style and standard Rust tooling.
+* Use the latest stable Rust edition available (check with `rustc --version` and `rustc --print=cfg`).
+* Prefer existing, well-maintained crates instead of implementing your own solution, unless there is a clear, documented reason (for example, performance, security, or missing functionality).
+* Avoid functions that panic in non-test code (such as `unwrap` and `expect`). Prefer propagating errors with `?` or handling them explicitly.
+* Be careful with operations that can panic, such as indexing; validate lengths or use methods that return `Option` or `Result`.
+* Never silently discard errors with `let _ =` on fallible operations. Handle errors explicitly:
+
+  * Propagate errors with `?` when the calling function should handle them.
+  * Log errors when they must be ignored but should remain visible.
+  * Use explicit handling with `match` or `if let Err(..)` when custom logic is required.
+* Async operations that may fail must propagate meaningful errors so that the UI or caller can surface them to users.
+* Environment and side effects: access to environment variables and other process-level state must be abstracted so code can be tested without side effects and in parallel. Prefer passing configuration explicitly (structs, traits, interfaces) instead of reading from `std::env` directly in core business logic.
+* Prefer declarative style (iterators, combinators, pattern matching, builder patterns) over overly imperative control flow when it improves clarity.
+* Never create modules with `mod.rs`. Prefer flat files like `src/foo.rs` instead of `src/foo/mod.rs`.

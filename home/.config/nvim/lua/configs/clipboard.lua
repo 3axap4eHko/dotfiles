@@ -1,6 +1,12 @@
 local M = {}
 
 function M.setup()
+  if vim.fn.has("wsl") ~= 1 then
+    return
+  end
+  if vim.fn.executable("win32yank") == 0 then
+    return
+  end
   vim.g.clipboard = {
     name = 'win32yank',
     copy = {

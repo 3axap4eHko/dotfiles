@@ -7,141 +7,45 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "wsl_connections": [
+    {
+      "distro_name": "Ubuntu",
+      "user": null,
+      "projects": [
+      ]
+    }
+  ],
+  "disable_ai": false,
   "ssh_connections": [
     {
       "host": "localhost",
-      "projects": [
-        {
-          "paths": [
-            "/home/zource/projects/addons"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/ajoq"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/ascertain"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/bigwigs-voice-gcp"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/darkest-kingdoms"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/evnty"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/fastds"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/overtake"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/rust-learn/flatc-rs"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/rust-learn/twitter"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/rust-learn/zerg"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/sabcom"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/zenpie/code"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/zenpie/platform"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/zerg"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/zource/app"
-          ]
-        },
-        {
-          "paths": [
-            "/home/zource/projects/zource/course"
-          ]
-        }
-      ]
+      "args": [],
+      "projects": []
     },
     {
       "host": "github.com",
+      "args": [],
       "projects": []
     }
   ],
-  "theme": "Catppuccin Macchiato",
-  "language_models": {
-    "ollama": {
-      "api_url": "http://host.docker.internal:11434",
-      "version": "1",
-      "available_models": [
-        {
-          "name": "devstral:latest",
-          "display_name": "Devstral",
-          "max_tokens": 32768
-        },
-        {
-          "name": "qwen3:30b-a3b",
-          "display_name": "Qwen3 30B",
-          "max_tokens": 32768
-        },
-        {
-          "name": "qwen3:14b",
-          "display_name": "Qwen3 14B",
-          "max_tokens": 32768
-        }
-      ]
-    }
-  },
+  "theme": "Catppuccin Mocha",
   "agent": {
     "play_sound_when_agent_done": true,
     "always_allow_tool_actions": true,
-    "default_profile": "write",
+    "default_profile": "ask",
     "model_parameters": [],
     "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4"
+      "provider": "anthropic",
+      "model": "claude-opus-4-5-thinking-latest"
     }
   },
   // "base_keymap": "None",
+  "format_on_save": "off",
+  "autosave": "on_focus_change",
   "vim_mode": true,
   "ui_font_size": 20,
   "buffer_font_size": 18,
-  "agent_font_size": 20,
+  "agent_ui_font_size": 20,
   "tab_size": 2,
   "buffer_font_family": "JetBrainsMonoNL Nerd Font Propo",
   "show_edit_predictions": false,
