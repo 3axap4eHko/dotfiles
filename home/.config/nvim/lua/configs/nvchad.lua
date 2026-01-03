@@ -31,6 +31,23 @@ term.display = function(o)
 
   map({ "", "n", "t" }, "<A-`>", function() term.toggle { pos = termPos, id = termId, float_opts = float_opts } end, opts "Toggle")
   map("n", "gf", function() openFile() end, opts "Toggle")
+  map("t", "<C-h>", "<C-h>", opts "Pass to terminal")
+  map("t", "<C-j>", "<C-j>", opts "Pass to terminal")
+  map("t", "<C-k>", "<C-k>", opts "Pass to terminal")
+  map("t", "<C-l>", "<C-l>", opts "Pass to terminal")
+
+  vim.api.nvim_create_autocmd("BufLeave", {
+    buffer = o.buf,
+    callback = function()
+      local win = vim.fn.bufwinid(o.buf)
+      if win ~= -1 then
+        local win_config = vim.api.nvim_win_get_config(win)
+        if win_config.relative ~= "" then
+          vim.api.nvim_win_close(win, true)
+        end
+      end
+    end,
+  })
 
   map({ "", "t", "n" }, "<C-LeftMouse>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<LeftMouse>", true, false, true), "n", false)

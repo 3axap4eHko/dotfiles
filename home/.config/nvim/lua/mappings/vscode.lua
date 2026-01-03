@@ -60,16 +60,6 @@ map("n", "n", "nzz")
 map("n", "<C-d>", "<C-d>zz")
 map("n", "<C-u>", "<C-u>zz")
 
-map("n", "<C-h>", ":wincmd h<CR>", { desc = "Naviagte to left pane" })
-map("n", "<C-j>", ":wincmd j<CR>", { desc = "Naviagte to bottom pane" })
-map("n", "<C-k>", ":wincmd k<CR>", { desc = "Naviagte to top pane" })
-map("n", "<C-l>", ":wincmd l<CR>", { desc = "Naviagte to right pane" })
-
-map("n", "<C-h>", ":TmuxNavigateLeft<CR>", { desc = "Naviagte to left pane" })
-map("n", "<C-j>", ":TmuxNavigateDown<CR>", { desc = "Naviagte to bottom pane" })
-map("n", "<C-k>", ":TmuxNavigateUp<CR>", { desc = "Naviagte to top pane" })
-map("n", "<C-l>", ":TmuxNavigateRight<CR>", { desc = "Naviagte to right pane" })
-
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move line(s) up" })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move line(s) down" })
 map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move current line up" })

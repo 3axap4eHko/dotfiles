@@ -1,5 +1,4 @@
 local autocmd = vim.api.nvim_create_autocmd
-local autogroup = vim.api.nvim_create_augroup
 
 autocmd("BufDelete", {
   callback = function()
@@ -19,6 +18,7 @@ autocmd({ "BufRead", "BufNewFile" }, {
 })
 
 -- Undo breaking for certain autocompletions (kept for future use)
+-- local autogroup = vim.api.nvim_create_augroup
 -- autogroup("UndoAfterComplete", { clear = true })
 -- autocmd("CompleteDone", {
 --   group = "UndoAfterComplete",
