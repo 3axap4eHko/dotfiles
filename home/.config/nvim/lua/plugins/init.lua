@@ -1,5 +1,22 @@
 return {
   {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "typescript-language-server",
+        "rust-analyzer",
+        "clangd",
+        "html-lsp",
+        "css-lsp",
+        "lua-language-server",
+        "json-lsp",
+        "bash-language-server",
+        "marksman",
+        "gopls",
+      },
+    },
+  },
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
