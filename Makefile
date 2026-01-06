@@ -257,6 +257,7 @@ ifeq ($(OS),WSL)
 else
 	mkdir -p ./home/.config/zed && cp $(XDG_CONFIG_HOME)/zed/{settings.json,keymap.json} ./home/.config/zed/ 2>/dev/null || true
 endif
+	cp -r $(XDG_CONFIG_HOME)/opencode/opencode.json $(XDG_CONFIG_HOME)/opencode/oh-my-opencode.json ./home/.config/opencode/ || true
 	cp ~/.exports ./home/ 
 	cp ~/.aliases ./home/
 	cp ~/.functions ./home/
