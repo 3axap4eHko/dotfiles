@@ -3,8 +3,7 @@
     {
       "distro_name": "Ubuntu",
       "user": null,
-      "projects": [
-      ]
+      "projects": []
     }
   ],
   "disable_ai": false,
