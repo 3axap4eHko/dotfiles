@@ -3,6 +3,7 @@
 ## Coding guidelines
 
 * Correctness and clarity are the top priority; within that, avoid unnecessary performance regressions by using appropriate data structures (Map, Set, hash maps, etc.) when they materially improve complexity.
+* Prefer fixed-arity code paths over building temporary collections with higher-order methods when the arity is small and known. Inline handling for common cases (0-5 arguments); use a loop fallback only for variable arity.
 * Do not write organizational comments or comments that summarize the code. Comments should only explain "why" the code is written in a non-obvious way, when there is important reasoning that is not obvious from reading the code.
 * Write self-documented code instead of comments explaining what the code does.
 * Prefer implementing functionality in existing files unless it is a new logical component. Avoid creating many small files.
@@ -46,6 +47,12 @@
 * Inefficient data structures: flag inappropriate data structure choices that impact performance. Use hash maps/dictionaries for O(1) lookups instead of arrays with O(n) searches. Use sets for uniqueness checks instead of `array.includes`. Use appropriate collections (Queue, Stack, PriorityQueue) for their intended patterns. Consider memory vs speed tradeoffs.
 * Time complexity issues: identify unnecessary O(n^2) or worse algorithms. Flag double iterations over the same data that could be a single pass. Look for nested loops that could be optimized with better data structures, redundant sorting, unnecessary array operations in loops, or repeated expensive computations that could be memoized. Focus on real performance problems, not micro-optimizations.
 * Code smells: focus on actual problems, not style preferences or redundant safety checks.
+
+
+## WORKFLOW
+
+When you start, you have to read file PROGRESS.md in the cwd if the file exists or create the file if it does not.
+In this file you have to append short and consice checkpoints as your descisions, actions and conclusions.
 
 ## Language-specific guidelines
 
