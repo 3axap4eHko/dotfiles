@@ -12,3 +12,4 @@ include mk/tools.mk
 include mk/tmux.mk
 include mk/nvim.mk
 include mk/zed.mk
+include mk/ai.mk

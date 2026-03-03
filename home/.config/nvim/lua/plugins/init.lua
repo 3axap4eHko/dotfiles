@@ -69,10 +69,6 @@ return {
     } },
   },
   {
-    "L3MON4D3/LuaSnip",
-    event = "InsertEnter",
-  },
-  {
     "saghen/blink.pairs",
     version = "*", -- Use the latest version
     build = "cargo build --release",

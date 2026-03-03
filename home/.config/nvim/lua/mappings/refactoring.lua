@@ -12,9 +12,6 @@ map("n", "<leader>de", diag.open_float, { desc = "LSP: Show error" })
 
 ---
 
-map("n", "]d", diag.goto_next, { desc = "LSP: Next diagnostic" })
-map("n", "[d", diag.goto_prev, { desc = "LSP: Previous diagnostic" })
-
 map("n", "<leader>cr", buf.rename, { desc = "LSP: Rename symbol" })
 map("n", "<leader>clf", buf.format, { desc = "LSP: Format document" })
 map("n", "<leader>cx", buf.references, { desc = "LSP: Find references" })

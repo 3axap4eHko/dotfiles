@@ -1,5 +1,31 @@
 # AI Agent Rules
 
+## General rules
+
+* Never use Python for any task unless explicitly told to. Use esm js/ts for all scripting, shell one-liners, JSON parsing, and automation. Use `bun` as the runtime, not `node`.
+* Prefer js/ts inline code execution via bash heredoc with a **quoted** delimiter via `bun` or `node` depending on the case
+```bash
+bun run - << 'JS'
+// code here
+JS
+```
+```bash
+node - << 'JS'
+// code here
+JS
+```
+* Use /tmp/claude/ directory to create temp files
+* For simple stdout/HTTP text/JSON filtering, prefer shell tools first (`curl | jq`, `xh`, `rg`). Use bun heredoc when logic exceeds a one-liner or needs JS APIs (fetch, JSON manipulation, etc.).
+
+
+ ## Communication
+
+* When user asks follow-up questions, treat them as challenges to verify claims, not requests for basic
+explanations.
+* Investigate contradictions instead of assuming user ignorance.
+* Do not make assumptions that go beyond what the context provides. If context is insufficient, ask. If context supports an inference, use it - do not ask obvious questions.
+* If the answer is too obvious likely the user means something else
+
 ## Coding guidelines
 
 * Correctness and clarity are the top priority; within that, avoid unnecessary performance regressions by using appropriate data structures (Map, Set, hash maps, etc.) when they materially improve complexity.
@@ -47,12 +73,20 @@
 * Inefficient data structures: flag inappropriate data structure choices that impact performance. Use hash maps/dictionaries for O(1) lookups instead of arrays with O(n) searches. Use sets for uniqueness checks instead of `array.includes`. Use appropriate collections (Queue, Stack, PriorityQueue) for their intended patterns. Consider memory vs speed tradeoffs.
 * Time complexity issues: identify unnecessary O(n^2) or worse algorithms. Flag double iterations over the same data that could be a single pass. Look for nested loops that could be optimized with better data structures, redundant sorting, unnecessary array operations in loops, or repeated expensive computations that could be memoized. Focus on real performance problems, not micro-optimizations.
 * Code smells: focus on actual problems, not style preferences or redundant safety checks.
+* Fake polymorphism: flag class hierarchies where subclasses share identical logic and differ only by constants passed to the constructor or `super()`. Test: can one function take the varying parts as parameters? If yes, the "types" are values - use a single type with different data. Do not flag hierarchies with irreducibly different implementations (different algorithms, control flow, state machines, protocols).
+* Value-type costumes: flag classes that exist only because the language punishes alternatives (e.g., Java catch-by-type forcing `NotFoundException` vs `ForbiddenException` for a status code integer). Prefer value-based matching where the language supports it (pattern matching, discriminated unions). In TypeScript, prefer discriminated unions over class hierarchies for closed variant sets.
+* Constructor side effects: flag constructors that execute behavior beyond field assignment (network calls, migrations, subscriptions, I/O). `new` should mean allocate + initialize, not allocate + initialize + execute.
+* Inheritance for reuse: flag base classes that grow to satisfy descendants rather than model a real abstraction. If a descendant must override or ignore inherited behavior, the hierarchy is wrong. Prefer composition or standalone functions over inheritance when sharing behavior between unrelated types.
+* Retrofitted abstraction: flag top-down abstract base classes designed before concrete implementations exist. Real abstractions emerge from concrete code - extract when you see the pattern, not before. Do not flag extraction of a genuine shared interface from two or more existing implementations.
 
 
 ## WORKFLOW
 
-When you start, you have to read file PROGRESS.md in the cwd if the file exists or create the file if it does not.
-In this file you have to append short and consice checkpoints as your descisions, actions and conclusions.
+When you start, the first you have to read file .progress/{branch}.md in the cwd if the file exists.
+When you work on something that requires changes you have to log your work into .progress/{branch}.md.
+Only append with short checkpoints as you work: hypotheses, what you tried, what worked or failed and why. Keep it informal like a scratchpad, not documentation.
+Do not try to organize file, and keep appending and follow the format:
+[TIME yyyy-mm-dd hh:mm:ss] - LOG MESSAGE
 
 ## Language-specific guidelines
 
@@ -64,6 +98,13 @@ In this file you have to append short and consice checkpoints as your descisions
 * Avoid speculative abstractions: interfaces, factories, and wrapper classes must exist to solve a concrete problem (for example, multiple implementations, testing seams, or cross-cutting concerns).
 * All `@types/*` packages must be installed as devDependencies.
 * Manage dependencies strictly with the package manager specified in `package.json`. Do not manually edit lockfiles or bypass the specified package manager.
+* Completely avoid using private methods they are not testable and consider them as anti-pattern.
+* Completely avoid classes that only wrap data layer without real polymorphism (NotFoundError is bad, only wraps data, no actual logic behind, HttpError(404, 'Not found') is good, just different values, logic stays the same)
+* Prefer global level await
+* Stdin: `console.log(await Bun.stdin.json())`
+* HTTP Web API: `console.log(await (await fetch("url")).json())`
+* Base64: `console.log(Buffer.from("text").toString("base64"))`
+* Microbenchmarks must be implemented in separate files to avoid concurent GC pollution
 
 ### Rust
 
@@ -77,6 +118,7 @@ In this file you have to append short and consice checkpoints as your descisions
   * Propagate errors with `?` when the calling function should handle them.
   * Log errors when they must be ignored but should remain visible.
   * Use explicit handling with `match` or `if let Err(..)` when custom logic is required.
+
 * Async operations that may fail must propagate meaningful errors so that the UI or caller can surface them to users.
 * Environment and side effects: access to environment variables and other process-level state must be abstracted so code can be tested without side effects and in parallel. Prefer passing configuration explicitly (structs, traits, interfaces) instead of reading from `std::env` directly in core business logic.
 * Prefer declarative style (iterators, combinators, pattern matching, builder patterns) over overly imperative control flow when it improves clarity.
