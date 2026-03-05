@@ -14,13 +14,14 @@ fi
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export PATH=$HOME/bin:$PATH
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_LIB_HOME=$HOME/.local/lib
 export XDG_BIN_HOME=$HOME/.local/bin
 export XDG_INCLUDE_HOME=$HOME/.local/include
+export PATH=$HOME/bin:$XDG_BIN_HOME:$PATH
+
 unset WAYLAND_DISPLAY
 
 # Make nano the default editor.

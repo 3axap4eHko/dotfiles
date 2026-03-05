@@ -13,7 +13,7 @@ install-configs:
 		printf '\n# dotfiles\n. ~/.exports\n. ~/.aliases\n. ~/.functions\n. ~/.prompt\n' >> $(PROFILE); \
 	fi
 
-save: save-zed save-tmux save-nvim save-opencode
+save: save-zed save-tmux save-nvim save-opencode save-ai
 	cp ~/.exports ./home/ || true
 	cp ~/.aliases ./home/ || true
 	cp ~/.functions ./home/ || true

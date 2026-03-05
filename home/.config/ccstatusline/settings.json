@@ -23,7 +23,7 @@
       },
       {
         "id": "3",
-        "type": "session-usage",
+        "type": "context-bar",
         "color": "black"
       }
     ],

@@ -33,7 +33,6 @@
     }
   },
   "plugin": [
-//    "oh-my-opencode",
     "opencode-openai-codex-auth"
   ],
   "provider": {
@@ -280,6 +279,12 @@
           }
         }
       }
+    }
+  },
+  "mcp": {
+    "pencode": {
+      "type": "remote",
+      "url": "http://localhost:4401/mcp"
     }
   }
 }
