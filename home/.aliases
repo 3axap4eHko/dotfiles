@@ -17,6 +17,7 @@ alias opencode='npx --yes opencode-ai@latest'
 alias gemini='npx --yes @google/gemini-cli@latest'
 alias copilot='npx --yes @github/copilot@latest'
 alias qwen='npx --yes @qwen-code/qwen-code@latest'
+alias openspec='npx --yes @fission-ai/openspec@latest'
 
 # FzF
 alias fsp='fzf --preview="bat --color=always {}"'
