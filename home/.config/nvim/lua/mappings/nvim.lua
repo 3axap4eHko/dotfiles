@@ -31,11 +31,13 @@ elseif fn.has "wsl" == 1 then
 end
 
 map("n", "gx", function()
-  local url = fn.expand "<cWORD>"
-  if url:match "^https?://" then
+  local word = fn.expand "<cWORD>"
+  local url = word:match "https?://[%w%.%-%_~:/%?#%[%]@!%$&'%(%)%*%+,;=%%]+"
+  if url then
+    url = url:gsub("[%)%]>,.;:!?]+$", "")
     fn.jobstart({ opener, url }, { detach = true })
   else
-    print("Not a valid URL: " .. url)
+    print("Not a valid URL: " .. word)
   end
 end, { desc = "Open URL under cursor", noremap = true, silent = true })
 
