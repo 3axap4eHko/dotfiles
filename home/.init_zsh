@@ -6,3 +6,36 @@
 setopt INC_APPEND_HISTORY
 unsetopt SHARE_HISTORY
 
+setopt PROMPT_SUBST
+
+__last_exit_code=0
+__preexec_ran=1
+
+PROMPT='$(prmt --shell zsh --code $__last_exit_code "{path:#89dceb}{node:#a6e3a1:f: [:]}{rust:#f38ba8:f: 🦀}{git:#f9e2af:f: 󰊢 }\n{ok:#a6e3a1}{fail:#f38ba8} ")'
+
+function deleteprompt {
+    local expanded=${(%)PROMPT}
+    local nl=${expanded//[^$'\n']}
+    tput cuu $((${#nl} + 1))
+    tput ed
+}
+
+function prompt_indicator {
+    prmt --shell none --code ${1:-0} "{ok:#a6e3a1:❯}{fail:#f38ba8:❯}"
+}
+
+function preexec {
+    __preexec_ran=1
+    deleteprompt
+    print -r -- "$(prompt_indicator $__last_exit_code) $1"
+}
+
+function precmd {
+    __last_exit_code=$?
+    print -Pn "\e]0;%1~\a"
+    if [[ $__preexec_ran -eq 0 ]]; then
+        deleteprompt
+        print -r -- "$(prompt_indicator $__last_exit_code)"
+    fi
+    __preexec_ran=0
+}
