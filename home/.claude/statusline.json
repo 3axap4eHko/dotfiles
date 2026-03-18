@@ -1,0 +1,7 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "prmt --stdin '{path:#89dceb}{node:#a6e3a1:f: [:]}{rust:#f38ba8:f: 🦀}{git:#f9e2af:f: 󰊢 } {json:#d97757:.model.id: :}{json:#f5c2e7:.context_window.used_percentage: :%}'",
+    "padding": 0
+  }
+}

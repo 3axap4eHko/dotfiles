@@ -7,7 +7,7 @@
 
 # Full prompt
 PS1='\[\e]0;\w\a\]${debian_chroot:+($debian_chroot)}'
-PS1+='$(prmt --shell bash --code $? "{path:#89dceb}{node:#a6e3a1:f: [:]}{rust:#f38ba8:f: 🦀}{git:#f9e2af:f: }\n{ok:#a6e3a1}{fail:#f38ba8} ")'
+PS1+='$(prmt --shell bash --code $? "{path:#89dceb}{node:#a6e3a1:f: [:]}{rust:#f38ba8:f: 🦀}{git:#f9e2af:f: 󰊢 }\n{ok:#a6e3a1}{fail:#f38ba8} ")'
 
 function lastcommand {
     history | tail -1 | cut -c 8-
