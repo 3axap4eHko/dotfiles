@@ -18,6 +18,11 @@ o.cursorline = true
 o.cursorlineopt = "both"
 o.relativenumber = true
 
+opt.wrap = true
+opt.linebreak = true
+opt.breakindent = true
+opt.showbreak = "\\ "
+
 
 -- Disable recommended styles
 

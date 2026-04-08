@@ -20,7 +20,6 @@ save: save-zed save-tmux save-nvim save-opencode save-ai
 	cp ~/.preexec ./home/ || true
 	cp ~/.init_bash ./home/ || true
 	cp ~/.init_zsh ./home/ || true
-	cp ~/.rules ./home/ || true
 
 save-opencode:
 	cp -r $(XDG_CONFIG_HOME)/opencode/opencode.json $(XDG_CONFIG_HOME)/opencode/oh-my-opencode.json ./home/.config/opencode/ || true

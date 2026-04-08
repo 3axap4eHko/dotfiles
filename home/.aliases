@@ -13,6 +13,8 @@ alias weather='curl wttr.in; echo'
 
 # AI
 alias codex='npx --yes @openai/codex@latest'
+alias codex-p='npx --yes @openai/codex@latest --sandbox read-only --ask-for-approval on-request'
+alias codex-w='npx --yes @openai/codex@latest --sandbox workspace-write --ask-for-approval on-request'
 alias opencode='npx --yes opencode-ai@latest'
 alias gemini='npx --yes @google/gemini-cli@latest'
 alias copilot='npx --yes @github/copilot@latest'
@@ -24,6 +26,7 @@ alias fsp='fzf --preview="bat --color=always {}"'
 
 # NodeJS
 alias pn=pnpm
+alias pnw="pnpm exec pnw"
 alias pnx='pnpm dlx'
 alias nx='npx nx'
 

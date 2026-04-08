@@ -78,6 +78,9 @@ map("x", "rr", function()
   api.nvim_feedkeys(":%s/" .. esc .. "/", "n", false)
 end, { desc = "Replace: search/replace selected text" })
 
+map({ "n", "x" }, "j", function() return vim.v.count == 0 and "gj" or "j" end, { expr = true })
+map({ "n", "x" }, "k", function() return vim.v.count == 0 and "gk" or "k" end, { expr = true })
+
 map("n", "n", "nzz")
 map("n", "N", "Nzz")
 map("n", "<C-d>", "<C-d>zz")

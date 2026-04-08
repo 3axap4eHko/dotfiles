@@ -23,6 +23,7 @@ map(
   { desc = "telescope find all files" }
 )
 
+map("n", "<leader>fc", "<cmd>Telescope commands<CR>", { desc = "telescope command palette" })
 map("n", "<leader><Tab>", ":Telescope buffers<CR>", { desc = "list buffers" })
 -- map("n", "<space>fe", ":Telescope file_browser<CR>", { desc = "telescope file explorer" })
 
