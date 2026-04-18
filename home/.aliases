@@ -32,11 +32,14 @@ alias nx='npx nx'
 
 # Normalize `pbcopy` across Linux, macOS, and Windows.
 if [[ "$OS" == "WINDOWS" ]]; then
-	alias pbcopy='clip.exe'
+  alias pbcopy='win32yank -i --crlf'
+  alias pbpaste='win32yank -o --lf'
 elif [[ "$OS" == "WSL" ]]; then
- 	alias pbcopy='xclip -i -selection clipboard'
+  alias pbcopy='win32yank -i --crlf'
+  alias pbpaste='win32yank -o --lf'
 elif [[ "$OS" == "LINUX" ]]; then
-	alias pbcopy='xclip -i -selection clipboard'
+  alias pbcopy='xclip -i -selection clipboard'
+  alias pbpaste='xclip -o'
 fi
 
 # Normalize `pbpaste` across Linux, macOS, and Windows.
