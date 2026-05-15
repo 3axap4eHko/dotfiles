@@ -127,6 +127,10 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
+    branch = "master",
+    dependencies = {
+      { "nvim-treesitter/nvim-treesitter-textobjects", branch = "master" },
+    },
     opts = require "configs.treesitter",
   },
   {

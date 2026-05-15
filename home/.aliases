@@ -42,6 +42,7 @@ elif [[ "$OS" == "LINUX" ]]; then
   alias pbpaste='xclip -o'
 fi
 
+
 # Normalize `pbpaste` across Linux, macOS, and Windows.
 if [[ "$OS" == "WINDOWS" ]]; then
 	#alias pbpaste='powershell.exe Get-Clipboard'

@@ -1,4 +1,5 @@
 local map = vim.keymap.set
+local fn = vim.fn
 local opts = { noremap = true, silent = true }
 
 map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
@@ -25,15 +26,17 @@ local opener = "xdg-open"
 if vim.fn.has("mac") == 1 then
   opener = "open"
 elseif vim.fn.has("wsl") == 1 then
-  opener = "explorer.exe"
+  opener = "wslview"
 end
 
 map("n", "gx", function()
-  local url = vim.fn.expand("<cWORD>")
-  if url:match("^https?://") then
-    vim.fn.jobstart({ opener, url }, { detach = true })
+  local word = fn.expand "<cWORD>"
+  local url = word:match "https?://[%w%.%-%_~:/%?#@!%$&'%*%+,;=%%]+"
+  if url then
+    url = url:gsub("[>,.;:!?]+$", "")
+    fn.jobstart({ opener, url }, { detach = true })
   else
-    print("Not a valid URL: " .. url)
+    print("Not a valid URL: " .. word)
   end
 end, { desc = "Open URL under cursor", noremap = true, silent = true })
 

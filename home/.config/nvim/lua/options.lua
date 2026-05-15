@@ -2,7 +2,6 @@ local opt = vim.opt
 local g = vim.g
 local o = vim.o
 local fn = vim.fn
-local cmd = vim.cmd
 
 -------------------------------------- options ------------------------------------------
 require "nvchad.options"
@@ -37,6 +36,7 @@ opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
 o.mouse = "a"
+o.mousemodel = "extend"
 
 -- Numbers
 o.number = true
@@ -46,7 +46,6 @@ o.ruler = false
 -- disable nvim intro
 opt.shortmess:append "sI"
 
-opt.signcolumn = "yes"
 o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true
@@ -82,4 +81,4 @@ vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. d
 local args = fn.argv()
 g.is_directory = #args == 1 and fn.isdirectory(args[1]) == 1
 g.is_git = fn.isdirectory ".git" == 1
-if g.is_directory then cmd("cd " .. args[1]) end
+if g.is_directory then vim.api.nvim_set_current_dir(args[1]) end

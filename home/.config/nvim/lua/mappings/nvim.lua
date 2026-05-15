@@ -27,14 +27,15 @@ local opener = "xdg-open"
 if fn.has "mac" == 1 then
   opener = "open"
 elseif fn.has "wsl" == 1 then
-  opener = "explorer.exe"
+  opener = "wslview"
+  -- opener = "explorer.exe"
 end
 
 map("n", "gx", function()
   local word = fn.expand "<cWORD>"
-  local url = word:match "https?://[%w%.%-%_~:/%?#%[%]@!%$&'%(%)%*%+,;=%%]+"
+  local url = word:match "https?://[%w%.%-%_~:/%?#@!%$&'%*%+,;=%%]+"
   if url then
-    url = url:gsub("[%)%]>,.;:!?]+$", "")
+    url = url:gsub("[>,.;:!?]+$", "")
     fn.jobstart({ opener, url }, { detach = true })
   else
     print("Not a valid URL: " .. word)
