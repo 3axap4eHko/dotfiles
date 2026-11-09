@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "plan",
   "permission": {
     "*": "ask",
     "edit": "ask",
@@ -276,6 +275,22 @@
               "reasoningSummary": "detailed",
               "textVerbosity": "high"
             }
+          }
+        }
+      }
+    },
+    "ninfer": {
+      "npm": "@ai-sdk/openai-compatible@3.0.34",
+      "name": "nInfer (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8000/v1"
+      },
+      "models": {
+        "qwen3.8-27b-huihui-abliterated-ninfer-nvfp4": {
+          "name": "Qwen3.8 27B Huihui Abliterated nInfer NVFP4",
+          "limit": {
+            "context": 204800,
+            "output": 16384
           }
         }
       }

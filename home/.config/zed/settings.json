@@ -1,4 +1,25 @@
 {
+  "cli_default_open_behavior": "new_window",
+  "agent_servers": {
+    "codex-acp": {
+      "type": "registry"
+    },
+    "opencode": {
+      "type": "registry"
+    }
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "wsl_connections": [
     {
       "distro_name": "Ubuntu",
@@ -21,6 +42,7 @@
   ],
   "theme": "Catppuccin Mocha",
   "agent": {
+    "dock": "right",
     "play_sound_when_agent_done": true,
     "always_allow_tool_actions": true,
     "default_profile": "ask",

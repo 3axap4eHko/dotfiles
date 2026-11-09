@@ -9,8 +9,9 @@ install-tmux:
 	git clone https://github.com/tmux-plugins/tpm.git ~/.tmux/plugins/tpm
 	$(MAKE) config-tmux
 
-config-tmux: clean-tmux
-	cp -r ./home/.config/tmux/ $(XDG_CONFIG_HOME)/tmux
+config-tmux:
+	mkdir -p "$(XDG_CONFIG_HOME)/tmux"
+	cp ./home/.config/tmux/tmux.conf "$(XDG_CONFIG_HOME)/tmux/tmux.conf"
 
 clean-tmux:
 	rm -rf $(XDG_CONFIG_HOME)/tmux

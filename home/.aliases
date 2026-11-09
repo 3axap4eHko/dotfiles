@@ -12,13 +12,10 @@ alias myip='curl ifconfig.me; echo'
 alias weather='curl wttr.in; echo'
 
 # AI
-alias codex='npx --yes @openai/codex@latest'
-alias codex-p='npx --yes @openai/codex@latest --sandbox read-only --ask-for-approval on-request'
-alias codex-w='npx --yes @openai/codex@latest --sandbox workspace-write --ask-for-approval on-request'
-alias opencode='npx --yes opencode-ai@latest'
-alias gemini='npx --yes @google/gemini-cli@latest'
-alias copilot='npx --yes @github/copilot@latest'
-alias qwen='npx --yes @qwen-code/qwen-code@latest'
+#alias codex='npx --yes @openai/codex@latest'
+alias codex-p='codex --sandbox read-only --ask-for-approval on-request'
+alias codex-w='codex --sandbox workspace-write --ask-for-approval on-request'
+alias codex-work='CODEX_HOME="$HOME/.codex-work" codex -c cli_auth_credentials_store=\"file\"'
 alias openspec='npx --yes @fission-ai/openspec@latest'
 
 # FzF

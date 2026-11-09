@@ -39,12 +39,6 @@ local on_attach = function(_, bufnr)
   -- if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = bufnr }) end
 end
 
-local on_init = function(client)
-  if client.supports_method "textDocument/semanticTokens" then
-    client.server_capabilities.semanticTokensProvider = nil
-  end
-end
-
 local base_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 base_capabilities.textDocument.completion.completionItem = {
@@ -89,6 +83,7 @@ vim.diagnostic.config {
 }
 
 local servers = {
+  "denols",
   "ts_ls",
   "rust_analyzer",
   "clangd",
@@ -102,6 +97,12 @@ local servers = {
 }
 
 local server_configs = {
+  denols = {
+    root_dir = function(bufnr, on_dir)
+      local root = vim.fs.root(bufnr, { "deno.json", "deno.jsonc" })
+      if root then on_dir(root) end
+    end,
+  },
   lua_ls = {
     settings = {
       Lua = {
@@ -123,7 +124,7 @@ local server_configs = {
   },
 }
 
-local shared = { on_attach = on_attach, on_init = on_init, capabilities = capabilities }
+local shared = { on_attach = on_attach, capabilities = capabilities }
 
 for _, name in ipairs(servers) do
   local override = server_configs[name] or {}
